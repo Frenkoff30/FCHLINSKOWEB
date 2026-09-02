@@ -52,12 +52,12 @@ Fotky pocházejí z původního webu fchlinsko.cz, jde tedy o materiál klubu:
 
 | Soubor | Kde se používá |
 |--------|----------------|
-| `hero-travnik.jpg` | Hero na úvodu a na stránce Zápasy, neutrální trávník |
+| `hero-olsinky.jpg` | Hero na úvodní stránce, areál Olšinky s tribunou |
+| `hero-travnik.jpg` | Hero na stránce Zápasy, neutrální trávník |
 | `olsinky-panorama.jpg` | Stadion na stránce Klub, hero Partneři a Kontakt |
 | `areal-olsinky.jpg` | Hero stránky Klub, karta aktuality |
 | `tym-mladez.jpg` | Hero stránky Nábor, blok náboru na úvodu |
 | `tymy/*.jpg` | Fotky jednotlivých mužstev, dvojice `nazev.jpg` (velká) a `nazev-nahled.jpg` (do karty) |
-| `klub-dresy.jpg`, `klub-otevreni.jpg` | Plakáty v aktualitách |
 | `znak-fchlinsko.png`, `znak-fchlinsko@3x.png` | Znak klubu |
 | `partneri/*.png` | Loga partnerů |
 
@@ -101,7 +101,7 @@ Data je potřeba udržovat ručně podle Fotbal.cz, klub tam nemá veřejné API
 
 ## Aktuality
 
-Aktuality jsou tři karty v `index.html` v sekci `<!-- AKTUALITY -->`.
+Aktuality jsou dvě karty v `index.html` v sekci `<!-- AKTUALITY -->`.
 Nová aktualita = zkopírovat blok `<article class="card">` a přepsat
 obrázek, datum, nadpis a text.
 
