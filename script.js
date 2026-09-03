@@ -14,7 +14,11 @@
      datum:  'RRRR-MM-DDTHH:MM'  (24h, místní čas)
      domaci: true = hrajeme doma
      souper: název soupeře
-     tym:    'A' | 'B' | 'dorost' | 'zaci' | 'pripravky'
+     tym:    'A' | 'B' | 'dorost-u19' | 'dorost-u17' | 'zaci-u15' | 'zaci-u13'
+             | 'pripravka-u11' | 'pripravka-u10' | 'pripravka-u9' | 'pripravka-u8'
+             Podle toho se zapas objevi na stránce daného mužstva. Stačí
+             i hrubší 'dorost', 'zaci' nebo 'pripravka', pak se ukáže
+             u všech mužstev dané kategorie.
      typ:    'liga' | 'pohar' | 'priprava'
      skore:  null dokud se nehraje, po zápase např. '3:1'
      ---------------------------------------------------------------------- */
@@ -31,6 +35,66 @@
 
   var TYP_NAZEV = { liga: 'Mistrovské utkání', pohar: 'MOL Cup', priprava: 'Přípravné utkání' };
   var MESICE = ['led', 'úno', 'bře', 'dub', 'kvě', 'čvn', 'čvc', 'srp', 'zář', 'říj', 'lis', 'pro'];
+  var MESICE_DLOUHE = ['ledna', 'února', 'března', 'dubna', 'května', 'června',
+                      'července', 'srpna', 'září', 'října', 'listopadu', 'prosince'];
+
+  /* ------------------------------------------------------------------------
+     NOVINKY, JEDINÉ MÍSTO, KDE SE NOVINKY PÍŠÍ
+     ------------------------------------------------------------------------
+     Novou novinku přidejte kamkoliv do pole, web ji sám seřadí od nejnovější
+     a vykreslí na stránce Novinky. Na úvodní stránku se automaticky dostanou
+     jen ty nejnovější (kolik, řídí atribut data-limit v index.html).
+
+     id:           krátký název bez diakriktiky a mezer, tvoří adresu článku
+                   (novinka.html?id=...), musí být u každé novinky jiné
+     datum:        'RRRR-MM-DD'
+     stitek:       štítek nad fotkou, např. 'Akce pro děti' (nepovinné)
+     stitekZlaty:  true = zlatý štítek místo zeleného (nepovinné)
+     obrazek:      cesta k fotce, sirka a vyska jsou její rozměry v pixelech
+     popisObrazku: popis fotky pro čtečky a vyhledávače
+     nadpis:       titulek novinky
+     perex:        krátký odstavec do karty na výpisu
+     obsah:        pole odstavců, ze kterých se skládá samotný článek
+     odkaz:        kam vede odkaz pod textem, odkazText je jeho popisek
+                   (obojí vynechte, pokud odkaz nemá být)
+     ---------------------------------------------------------------------- */
+  var NOVINKY = [
+    {
+      id: 'fotbalovy-den-a-drazba-dresu',
+      datum: '2026-07-18',
+      stitek: 'Akce pro děti',
+      obrazek: 'images/tym-mladez.jpg', sirka: 1400, vyska: 933,
+      popisObrazku: 'Mládežníci FC Hlinsko na hřišti',
+      nadpis: 'Fotbalový den a dražba dresů',
+      perex: 'Děti od 5 do 9 let si vyzkouší cvičení z našich tréninků. Součástí dne je '
+           + 'dražba podepsaných dresů, výtěžek putuje přípravkám FC Hlinsko.',
+      obsah: [
+        'Fotbalový den je otevřený dětem od pěti do devíti let. Vyzkouší si cvičení, '
+          + 'která používáme na běžných trénincích našich přípravek.',
+        'Součástí dne je dražba podepsaných dresů. Celý výtěžek putuje přípravkám '
+          + 'FC Hlinsko.'
+      ],
+      odkaz: 'nabor.html', odkazText: 'Info o náboru'
+    },
+    {
+      id: 'slavnostni-otevreni-arealu-olsinky',
+      datum: '2026-07-18',
+      stitek: 'Areál', stitekZlaty: true,
+      obrazek: 'images/olsinky-panorama.jpg', sirka: 1600, vyska: 900,
+      popisObrazku: 'Hlavní hrací plocha areálu Olšinky s tribunou',
+      nadpis: 'Slavnostní otevření areálu Olšinky',
+      perex: 'Utkání přípravek, exhibiční zápas staré gardy, soutěže, hudba a občerstvení. '
+           + 'Přijďte si prohlédnout nový areál.',
+      obsah: [
+        'Program otevření nového areálu Olšinky začíná utkáními přípravek. Po nich '
+          + 'nastoupí stará garda k exhibičnímu zápasu.',
+        'Pro návštěvníky jsou připravené soutěže, hudba a občerstvení. Areál si můžete '
+          + 'během dne v klidu projít.'
+      ],
+      odkaz: 'klub.html#stadion', odkazText: 'Náš stadion'
+    }
+  ];
+
 
   var $ = function (s, c) { return (c || document).querySelector(s); };
   var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
@@ -185,6 +249,52 @@
   /* ------------------------------------------------------------------------
      5. ROZPIS ZÁPASŮ
      ---------------------------------------------------------------------- */
+  /* Sedi zapas do kategorie? 'dorost' bere i 'dorost-u19'. */
+  function tymSedi(tym, klic) {
+    tym = String(tym || '');
+    return tym === klic || tym.indexOf(klic + '-') === 0;
+  }
+
+  function fixtureHtml(z, now) {
+    var d = parseDatum(z.datum);
+    var odehrano = d.getTime() < now;
+
+    var cls = ['fixture'];
+    if (z.domaci) cls.push('is-home');
+    if (z.typ === 'pohar') cls.push('is-cup');
+    if (odehrano) cls.push('is-done');
+
+    var domaciTym = z.domaci ? 'FC Hlinsko' : z.souper;
+    var hosteTym = z.domaci ? z.souper : 'FC Hlinsko';
+    var zvyrazni = function (n) {
+      return n === 'FC Hlinsko' ? '<b>' + esc(n) + '</b>' : esc(n);
+    };
+
+    var badge = z.typ === 'pohar'
+      ? '<span class="fixture__badge fixture__badge--cup">Pohár</span>'
+      : (z.domaci ? '<span class="fixture__badge fixture__badge--home">Doma</span>'
+                  : '<span class="fixture__badge">Venku</span>');
+
+    var pravy = z.skore
+      ? '<div class="fixture__time">' + esc(z.skore) + '</div>' + badge
+      : '<div class="fixture__time">' + pad(d.getHours()) + ':' + pad(d.getMinutes()) + '</div>' + badge;
+
+    return '<article class="' + cls.join(' ') + '">' +
+      '<div class="fixture__date">' +
+        '<span class="fixture__day">' + d.getDate() + '.</span>' +
+        '<span class="fixture__mon">' + MESICE[d.getMonth()] + ' ' + d.getFullYear() + '</span>' +
+      '</div>' +
+      '<div class="fixture__main">' +
+        '<div class="fixture__teams">' + zvyrazni(domaciTym) + '<i>vs</i>' + zvyrazni(hosteTym) + '</div>' +
+        '<div class="fixture__info">' +
+          '<span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>' + esc(TYP_NAZEV[z.typ] || '') + '</span>' +
+          '<span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>' + esc(z.misto) + '</span>' +
+        '</div>' +
+      '</div>' +
+      '<div class="fixture__right">' + pravy + '</div>' +
+    '</article>';
+  }
+
   function initFixtureList() {
     var host = $('#fixture-list');
     if (!host) return;
@@ -196,7 +306,9 @@
       });
 
       if (filtr && filtr !== 'vse') {
-        data = data.filter(function (z) { return z.typ === filtr || z.tym === filtr; });
+        data = data.filter(function (z) {
+          return z.typ === filtr || tymSedi(z.tym, filtr);
+        });
       }
 
       if (!data.length) {
@@ -205,43 +317,7 @@
       }
 
       host.innerHTML = data.map(function (z) {
-        var d = parseDatum(z.datum);
-        var odehrano = d.getTime() < now;
-
-        var cls = ['fixture'];
-        if (z.domaci) cls.push('is-home');
-        if (z.typ === 'pohar') cls.push('is-cup');
-        if (odehrano) cls.push('is-done');
-
-        var domaciTym = z.domaci ? 'FC Hlinsko' : z.souper;
-        var hosteTym = z.domaci ? z.souper : 'FC Hlinsko';
-        var zvyrazni = function (n) {
-          return n === 'FC Hlinsko' ? '<b>' + esc(n) + '</b>' : esc(n);
-        };
-
-        var badge = z.typ === 'pohar'
-          ? '<span class="fixture__badge fixture__badge--cup">Pohár</span>'
-          : (z.domaci ? '<span class="fixture__badge fixture__badge--home">Doma</span>'
-                      : '<span class="fixture__badge">Venku</span>');
-
-        var pravy = z.skore
-          ? '<div class="fixture__time">' + esc(z.skore) + '</div>' + badge
-          : '<div class="fixture__time">' + pad(d.getHours()) + ':' + pad(d.getMinutes()) + '</div>' + badge;
-
-        return '<article class="' + cls.join(' ') + '">' +
-          '<div class="fixture__date">' +
-            '<span class="fixture__day">' + d.getDate() + '.</span>' +
-            '<span class="fixture__mon">' + MESICE[d.getMonth()] + ' ' + d.getFullYear() + '</span>' +
-          '</div>' +
-          '<div class="fixture__main">' +
-            '<div class="fixture__teams">' + zvyrazni(domaciTym) + '<i>vs</i>' + zvyrazni(hosteTym) + '</div>' +
-            '<div class="fixture__info">' +
-              '<span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>' + esc(TYP_NAZEV[z.typ] || '') + '</span>' +
-              '<span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>' + esc(z.misto) + '</span>' +
-            '</div>' +
-          '</div>' +
-          '<div class="fixture__right">' + pravy + '</div>' +
-        '</article>';
+        return fixtureHtml(z, now);
       }).join('');
     }
 
@@ -438,7 +514,138 @@
   }
 
   /* ------------------------------------------------------------------------
-     10. ROK V PATIČCE
+     10. NOVINKY
+     ---------------------------------------------------------------------- */
+  function datumText(iso) {
+    var d = new Date(String(iso) + 'T00:00');
+    if (isNaN(d.getTime())) return iso;
+    return d.getDate() + '. ' + MESICE_DLOUHE[d.getMonth()] + ' ' + d.getFullYear();
+  }
+
+  function initNews() {
+    var hosts = $$('[data-novinky]');
+    if (!hosts.length) return;
+
+    var razeno = NOVINKY.slice().sort(function (a, b) {
+      return a.datum < b.datum ? 1 : (a.datum > b.datum ? -1 : 0);
+    });
+
+    hosts.forEach(function (host) {
+      var limit = parseInt(host.getAttribute('data-limit'), 10);
+      var vyber = limit > 0 ? razeno.slice(0, limit) : razeno;
+
+      if (!vyber.length) {
+        host.innerHTML = '<p class="sec-lead">Zatím tu nic nového nemáme. '
+          + 'Sledujte nás na Facebooku.</p>';
+        return;
+      }
+
+      host.innerHTML = vyber.map(function (n, i) {
+        var stitek = n.stitek
+          ? '<span class="card__tag' + (n.stitekZlaty ? ' card__tag--gold' : '') + '">'
+            + esc(n.stitek) + '</span>'
+          : '';
+        var odkaz = '<div class="card__foot">'
+          + '<a class="link-arrow card__link" href="novinka.html?id='
+          + encodeURIComponent(n.id) + '">Číst dál'
+          + '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" '
+          + 'aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>'
+          + '</a></div>';
+        return '<article class="card card--sm card--news reveal" data-d="' + ((i % 3) + 1) + '">'
+          + '<div class="card__media">' + stitek
+            + '<img src="' + esc(n.obrazek) + '" alt="' + esc(n.popisObrazku || '')
+            + '" loading="lazy" width="' + esc(n.sirka || 1400)
+            + '" height="' + esc(n.vyska || 933) + '">'
+          + '</div>'
+          + '<div class="card__body">'
+            + '<span class="card__date">' + esc(datumText(n.datum)) + '</span>'
+            + '<h3 class="card__title">' + esc(n.nadpis) + '</h3>'
+            + '<p class="card__text">' + esc(n.perex || n.text) + '</p>'
+            + odkaz
+          + '</div>'
+        + '</article>';
+      }).join('');
+    });
+  }
+
+  /* ------------------------------------------------------------------------
+     11. DETAIL NOVINKY (novinka.html?id=...)
+     ---------------------------------------------------------------------- */
+  function initArticle() {
+    var host = $('[data-novinka]');
+    if (!host) return;
+
+    var sip = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" '
+      + 'stroke-width="2.5" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+    var zpet = '<a class="link-arrow" href="novinky.html">Všechny novinky' + sip + '</a>';
+
+    var m = /[?&]id=([^&]*)/.exec(location.search);
+    var id = m ? decodeURIComponent(m[1]) : '';
+    var n = null;
+    NOVINKY.forEach(function (x) { if (x.id === id) n = x; });
+
+    var elNadpis = $('[data-novinka-nadpis]');
+    var elMeta = $('[data-novinka-meta]');
+    var elDrobek = $('[data-novinka-drobek]');
+
+    if (!n) {
+      if (elNadpis) elNadpis.textContent = 'Novinka nenalezena';
+      if (elMeta) elMeta.textContent = 'Tenhle článek na webu není, možná se přesunul.';
+      if (elDrobek) elDrobek.textContent = 'Novinka nenalezena';
+      host.innerHTML = '<div class="clanek"><div class="clanek__foot">' + zpet + '</div></div>';
+      return;
+    }
+
+    document.title = n.nadpis + ' | FC Hlinsko';
+    if (elNadpis) elNadpis.textContent = n.nadpis;
+    if (elDrobek) elDrobek.textContent = n.nadpis;
+    if (elMeta) {
+      elMeta.textContent = (n.stitek ? n.stitek + ' · ' : '') + datumText(n.datum);
+    }
+
+    var odstavce = (n.obsah && n.obsah.length ? n.obsah : [n.perex || n.text || ''])
+      .map(function (t) { return '<p>' + esc(t) + '</p>'; }).join('');
+
+    var extra = n.odkaz
+      ? '<a class="link-arrow" href="' + esc(n.odkaz) + '">'
+        + esc(n.odkazText || 'Více') + sip + '</a>'
+      : '';
+
+    host.innerHTML = '<article class="clanek">'
+      + '<figure class="clanek__img"><img src="' + esc(n.obrazek) + '" alt="'
+        + esc(n.popisObrazku || '') + '" width="' + esc(n.sirka || 1400)
+        + '" height="' + esc(n.vyska || 933) + '"></figure>'
+      + odstavce
+      + '<div class="clanek__foot">' + extra + zpet + '</div>'
+    + '</article>';
+  }
+
+  /* ------------------------------------------------------------------------
+     13. ROZPIS ZÁPASŮ NA STRÁNCE MUŽSTVA
+     ---------------------------------------------------------------------- */
+  function initTeamFixtures() {
+    $$('[data-rozpis]').forEach(function (host) {
+      var klic = host.getAttribute('data-rozpis');
+      var now = Date.now();
+
+      var data = ZAPASY.slice()
+        .filter(function (z) { return tymSedi(z.tym, klic); })
+        .sort(function (a, b) { return parseDatum(a.datum) - parseDatum(b.datum); });
+
+      if (!data.length) {
+        host.innerHTML = '<p class="sec-lead">Rozpis téhle kategorie zatím nemáme. '
+          + 'Zápasy se sem doplní samy, jakmile je přidáme do rozpisu.</p>';
+        return;
+      }
+
+      host.innerHTML = data.map(function (z) {
+        return fixtureHtml(z, now);
+      }).join('');
+    });
+  }
+
+  /* ------------------------------------------------------------------------
+     12. ROK V PATIČCE
      ---------------------------------------------------------------------- */
   function initYear() {
     $$('[data-year]').forEach(function (el) { el.textContent = new Date().getFullYear(); });
@@ -448,8 +655,11 @@
     initHeader();
     initDrawer();
     initActiveNav();
+    initNews();
+    initArticle();
     initReveal();
     initFixtureList();
+    initTeamFixtures();
     initMarquee();
     initForms();
     initLightbox();

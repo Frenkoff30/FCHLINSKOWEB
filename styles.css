@@ -2065,3 +2065,93 @@ table.tbl tr.is-us td { border-color: var(--green-tint-2); }
 
   .teamphoto__zoom { right: 8px; bottom: 8px; padding: 7px 11px; font-size: 13px; }
 }
+
+/* --------------------------------------------------------------------------
+   30. MASKOTI
+   Kreslený fotbalista a fotbalistka. Čistá dekorace mimo tok dokumentu –
+   nikdy nepřekrývají text a pod 1080 px se skryjí, aby na mobilu
+   nezabíraly místo.
+   -------------------------------------------------------------------------- */
+.mascot {
+  position: absolute;
+  z-index: 3;
+  display: none;
+  width: auto;
+  pointer-events: none;
+  user-select: none;
+  filter: drop-shadow(0 16px 24px rgba(4, 30, 17, 0.34));
+}
+
+/* Zelený CTA pruh – postava stojí na spodní hraně pruhu */
+.cta-band { position: relative; overflow: hidden; }
+
+.mascot--band {
+  right: 24px;
+  bottom: 0;
+  height: clamp(230px, 24vw, 310px);
+}
+
+/* Hero podstránky – postava stojí na spodní hraně hera */
+.mascot--hero {
+  right: 24px;
+  bottom: calc(-1 * clamp(44px, 5.2vw, 68px));
+  height: clamp(270px, 29vw, 375px);
+}
+
+@media (min-width: 1080px) {
+  .mascot { display: block; }
+
+  /* Uvolní místo, aby tlačítka nekolidovala s postavou */
+  .cta-band--mascot .cta-band__in { padding-right: 200px; }
+}
+
+/* Dvojice u náboru – stojí vpravo dole vedle tlačítek */
+.media-split--mascot { position: relative; }
+
+.mascot--split {
+  right: 0;
+  bottom: 0;
+  height: clamp(225px, 24vw, 305px);
+}
+
+@media (min-width: 1080px) {
+  /* Text si drží odstup, aby do něj postavy nezasahovaly */
+  .media-split--mascot .media-split__text { padding-right: 205px; }
+}
+
+/* --------------------------------------------------------------------------
+   31. DETAIL NOVINKY
+   -------------------------------------------------------------------------- */
+.clanek { max-width: 800px; margin-inline: auto; }
+
+.clanek__img {
+  margin: 0 0 30px;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  box-shadow: var(--sh-md);
+}
+
+.clanek__img img { display: block; width: 100%; height: auto; }
+
+.clanek p {
+  font-size: 17.5px;
+  line-height: 1.75;
+  color: var(--text-soft);
+  margin: 0 0 18px;
+}
+
+.clanek__foot {
+  display: flex;
+  gap: 28px;
+  flex-wrap: wrap;
+  margin-top: 34px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+}
+
+/* Celá karta novinky je proklik na článek */
+.card--news .card__link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
