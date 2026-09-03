@@ -142,6 +142,8 @@ je potřeba doplnit serverový skript nebo službu typu Formspree.
 ## Přístupnost a technické
 
 - Responzivní od 375 px výš, bez vodorovného posuvu
+- Tabulky se pod 620 px skládají pod sebe místo vodorovného posouvání
+- Dotykové cíle na mobilu mají nejméně 40 px
 - Klávesová navigace včetně přeskočení na obsah a uzavřeného fokusu v mobilním menu
 - Respektuje `prefers-reduced-motion`
 - Popisky `alt` u všech obrázků, `aria-label` u ikonových tlačítek

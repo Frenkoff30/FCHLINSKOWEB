@@ -1241,7 +1241,7 @@ table.tbl .t-name {
   justify-content: space-between;
   gap: 40px;
   flex-wrap: wrap;
-  padding: clamp(46px, 5.6vw, 78px) 0;
+  padding-block: clamp(46px, 5.6vw, 78px);
 }
 
 .cta-band .kicker { color: rgba(255, 255, 255, 0.86); }
@@ -1688,7 +1688,7 @@ table.tbl .t-name {
   grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
   gap: clamp(30px, 4.4vw, 64px);
   align-items: center;
-  padding: clamp(40px, 4.4vw, 62px) 0;
+  padding-block: clamp(40px, 4.4vw, 62px);
 }
 
 .ateam__badge {
@@ -1940,4 +1940,124 @@ table.tbl tr.is-us td { border-color: var(--green-tint-2); }
 
 @media (max-width: 620px) {
   .card--sm .card__media { aspect-ratio: 16 / 9; }
+}
+
+/* ==========================================================================
+   29. MOBILNÍ OPTIMALIZACE
+   ========================================================================== */
+
+@media (max-width: 780px) {
+  /* Dotykové cíle na velikost prstu */
+  .link-arrow {
+    min-height: 42px;
+    align-items: center;
+  }
+
+  .chip {
+    padding: 9px 14px;
+    font-size: 14px;
+  }
+
+  .crumbs a {
+    display: inline-block;
+    padding: 9px 0;
+  }
+
+  .contact-item__v a,
+  .foot-contact a,
+  .panel a:not(.btn):not(.chip) {
+    display: inline-block;
+    padding: 9px 0;
+  }
+
+  .webo {
+    display: inline-block;
+    padding: 10px 0;
+  }
+
+  .foot-col ul { gap: 0; }
+
+  .foot-col a {
+    display: block;
+    padding: 9px 0;
+  }
+
+  .topbar__left a { display: inline-block; padding: 6px 0; }
+
+  /* Tlačítka ve dvojici raději přes celou šířku než v půlce */
+  .btn-row > .btn { flex: 1 1 auto; min-width: 46%; }
+
+  /* Drobné popisky na mobilu čitelněji */
+  .card__tag { font-size: 13px; }
+  .card--sm .card__tag { font-size: 13px; }
+  .card__date, .card--sm .card__date { font-size: 13px; }
+  .teamphoto__zoom { font-size: 13px; }
+  .catcard__age { font-size: 14px; }
+
+  /* Nižší fotky mužstev, ať stránka není nekonečná */
+  .catcard .teamphoto { aspect-ratio: 16 / 9; }
+  .catcard__body { padding: 16px 18px 18px; }
+  .grid { gap: 14px; }
+}
+
+/* Tabulky se na mobilu skládají pod sebe místo vodorovného posuvu */
+@media (max-width: 620px) {
+  .table-wrap { overflow-x: visible; }
+
+  table.tbl { min-width: 0; }
+
+  table.tbl caption {
+    padding: 16px 18px 6px;
+    white-space: normal;
+  }
+
+  table.tbl thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  table.tbl tr {
+    display: block;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  table.tbl tr:last-child { border-bottom: 0; }
+
+  table.tbl td {
+    display: block;
+    border: 0;
+    padding: 2px 18px;
+    white-space: normal;
+  }
+
+  table.tbl td:first-child,
+  table.tbl th:first-child { padding-left: 18px; }
+
+  table.tbl .t-name {
+    font-size: 19px;
+    margin-bottom: 2px;
+  }
+
+  table.tbl td .link-arrow { margin-top: 4px; }
+
+  table.tbl tr.is-us { border-left: 3px solid var(--green); }
+}
+
+@media (max-width: 480px) {
+  /* Na úzkých telefonech tlačítka na celou šířku */
+  .btn-row > .btn { flex: 1 1 100%; }
+  .hero .btn-row > .btn { flex: 1 1 100%; }
+
+  .ateam__facts dt { font-size: 13.5px; }
+  .ateam__facts dd { font-size: 16px; }
+
+  .dl > div { gap: 12px; }
+  .dl dd { font-size: 18px; }
+
+  .teamphoto__zoom { right: 8px; bottom: 8px; padding: 7px 11px; font-size: 13px; }
 }
