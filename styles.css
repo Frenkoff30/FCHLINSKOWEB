@@ -1567,6 +1567,10 @@ table.tbl .t-name {
 @media (max-width: 980px) {
   .grid--4, .grid--3 { grid-template-columns: repeat(2, 1fr); }
   .media-split { grid-template-columns: 1fr; }
+
+  /* Na mobilu nejdřív text, fotka až pod ním, stejně jako u bloku áčka */
+  .media-split > .media-figure,
+  .media-split > .teamphoto { order: 2; }
   .hero { min-height: 0; padding: clamp(44px, 8vw, 72px) 0 clamp(52px, 9vw, 84px); }
   .hero__in { grid-template-columns: 1fr; gap: 26px; }
   .hero__crest { order: -1; width: clamp(112px, 26vw, 160px); }
