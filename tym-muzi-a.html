@@ -3,17 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Novinka | FC Hlinsko</title>
-<meta name="description" content="Článek z dění kolem FC Hlinsko.">
+<title>Muži A | FC Hlinsko</title>
+<meta name="description" content="Muži A FC Hlinsko. Divize, skupina C. Vlajková loď klubu, celostátní soutěž pod třetí ligou. Domácí zápasy hraje na hlavní ploše areálu Olšinky.">
 <meta name="theme-color" content="#040C07">
-<link rel="canonical" href="https://fchlinsko.cz/novinka.html">
+<link rel="canonical" href="https://fchlinsko.cz/tym-muzi-a.html">
 <link rel="icon" type="image/png" href="images/znak-fchlinsko.png">
 <link rel="apple-touch-icon" href="images/znak-fchlinsko.png">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="cs_CZ">
 <meta property="og:site_name" content="FC Hlinsko">
-<meta property="og:title" content="Novinka | FC Hlinsko">
-<meta property="og:description" content="Článek z dění kolem FC Hlinsko.">
+<meta property="og:title" content="Muži A | FC Hlinsko">
+<meta property="og:description" content="Muži A FC Hlinsko. Divize, skupina C. Vlajková loď klubu, celostátní soutěž pod třetí ligou. Domácí zápasy hraje na hlavní ploše areálu Olšinky.">
 <meta property="og:image" content="images/znak-fchlinsko.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -162,44 +162,78 @@
 
 <main id="main">
 
-<!-- ================= HERO STRÁNKY =================
-     Nadpis, datum i text se doplní podle ?id= v adrese, obsah novinky
-     se píše v script.js do pole NOVINKY. -->
+<!-- ================= HERO STRÁNKY ================= -->
 <section class="page-hero on-dark">
-  <img class="page-hero__img" src="images/hero-travnik.jpg" alt="" width="2200" height="563">
+  <img class="page-hero__img" src="images/tymy/muzi-a.jpg" alt="" width="1500" height="937">
   <span class="page-hero__veil" aria-hidden="true"></span>
   <div class="wrap">
     <ol class="crumbs">
       <li><a href="index.html">Úvod</a></li>
-      <li><a href="novinky.html">Novinky</a></li>
-      <li aria-current="page" data-novinka-drobek>Novinka</li>
+      <li><a href="tymy.html">Týmy</a></li>
+      <li aria-current="page">Muži A</li>
     </ol>
-    <h1 class="page-hero__title" data-novinka-nadpis>Novinka</h1>
-    <p class="page-hero__lead" data-novinka-meta></p>
+    <h1 class="page-hero__title">Muži A</h1>
+    <p class="page-hero__lead">Divize, skupina C. Vlajková loď klubu, celostátní soutěž pod třetí ligou. Domácí zápasy hraje na hlavní ploše areálu Olšinky.</p>
   </div>
 </section>
 
-<!-- ================= TĚLO ČLÁNKU ================= -->
+<!-- ================= O TÝMU ================= -->
 <section class="section">
-  <div class="wrap" data-novinka></div>
+  <div class="wrap media-split">
+    <figure class="media-figure reveal" style="margin:0">
+      <img src="images/tymy/muzi-a.jpg" alt="Tým mužů A FC Hlinsko" loading="lazy" width="1500" height="937">
+      <figcaption>Muži A</figcaption>
+    </figure>
+    <div class="reveal" data-d="2">
+      <span class="kicker">Divize, skupina C</span>
+      <h2 class="sec-title">O <em>týmu</em></h2>
+      <!-- SEM napiste par vet o tymu: kdo ho vede, jak se mu dari, cim zije. -->
+      <p class="sec-lead" style="margin-bottom:22px">
+        Popis týmu sem teprve doplníme.
+      </p>
+      <div class="btn-row">
+        <a class="btn btn--lg" href="https://www.fotbal.cz/souteze/turnaje/table/0782e247-3b72-4ead-af8b-d538a3dd11e0" target="_blank" rel="noopener">Tabulka soutěže</a>
+        <a class="btn btn--ghost btn--lg" href="#rozpis">Rozpis zápasů</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ROZPIS ZÁPASŮ =================
+     Zápasy se píší v script.js do pole ZAPASY. Sem se dostane každý,
+     který má tym: 'A'. -->
+<section class="section section--alt" id="rozpis">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <span class="kicker">Kdy hrajeme</span>
+        <h2 class="sec-title">Rozpis <em>zápasů</em></h2>
+      </div>
+      <a class="link-arrow" href="zapasy.html">
+        Zápasy všech mužstev
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+    </div>
+
+    <div class="fixtures reveal" data-rozpis="A"></div>
+  </div>
 </section>
 
 <!-- ================= CTA ================= -->
-<section class="cta-band cta-band--mascot on-dark">
+<section class="cta-band on-dark">
   <div class="wrap cta-band__in">
     <div class="reveal">
-      <span class="kicker">Ať vám nic neuteče</span>
-      <h2 class="cta-band__title">Sledujte nás na sítích</h2>
+      <span class="kicker">Nábor běží celý rok</span>
+      <h2 class="cta-band__title">Chceš hrát za Hlinsko?</h2>
       <p class="cta-band__text">
-        Fotky ze zápasů, pozvánky na akce a rychlé zprávy dáváme na Facebook a Instagram.
+        Napište nám věk dítěte a poradíme, do kterého mužstva zapadne
+        a kdy chodí na trénink. První trénink je zdarma.
       </p>
     </div>
     <div class="btn-row reveal" data-d="2">
-      <a class="btn btn--white btn--lg" href="https://www.facebook.com/FcHlinsko" target="_blank" rel="noopener">Facebook</a>
-      <a class="btn btn--ghost btn--lg" href="https://www.instagram.com/fchlinsko/" target="_blank" rel="noopener">Instagram</a>
+      <a class="btn btn--white btn--lg" href="nabor.html">Přihlásit se</a>
+      <a class="btn btn--ghost btn--lg" href="tymy.html">Všechna mužstva</a>
     </div>
-    <img class="mascot mascot--band mascot--flat" src="images/animovanepostavy/klukmobil.webp"
-         alt="" aria-hidden="true" width="416" height="900" loading="lazy" decoding="async">
   </div>
 </section>
 

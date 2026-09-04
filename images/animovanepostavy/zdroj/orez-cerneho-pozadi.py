@@ -7,20 +7,31 @@ CROSS = np.array([[0, 1, 0], [1, 1, 1], [0, 1, 0]], bool)
 ST8 = np.ones((3, 3), bool)
 
 
-def cutout_black(path, out_path, erode=2, unmul=1.0, min_gap=300, pad=4):
+def cutout_black(path, out_path, erode=2, unmul=1.0, min_gap=300, pad=4,
+                 thr=12, satthr=8, gap_thr=12, gap_sat=8):
     im = Image.open(path).convert("RGB")
     a = np.asarray(im).astype(np.float32)
     ai = a.astype(np.int16)
-    black = (ai.max(2) <= 12) & (ai.max(2) - ai.min(2) <= 8)
+    mx, mn = ai.max(2), ai.min(2)
 
+    # 1) flood od okraje volnejsim prahem, aby vzal i zari kolem telefonu
+    black = (mx <= thr) & (mx - mn <= satthr)
     lab, n = ndimage.label(black, structure=CROSS)
     b = np.concatenate([lab[0, :], lab[-1, :], lab[:, 0], lab[:, -1]])
     out = set(int(v) for v in np.unique(b) if v)
     bg = np.isin(lab, list(out))
-    areas = ndimage.sum(np.ones(lab.shape, np.float32), lab, index=np.arange(1, n + 1))
-    gaps = [i + 1 for i in range(n) if (i + 1) not in out and areas[i] >= min_gap]
+
+    # 2) uzavrene mezery jen v ryze cerne, at zustanou cerne plochy kresby
+    #    (petiuhelniky na mici, zornicky) netknute
+    gap = (mx <= gap_thr) & (mx - mn <= gap_sat)
+    glab, gn = ndimage.label(gap, structure=CROSS)
+    gb = np.concatenate([glab[0, :], glab[-1, :], glab[:, 0], glab[:, -1]])
+    gout = set(int(v) for v in np.unique(gb) if v)
+    gareas = ndimage.sum(np.ones(glab.shape, np.float32), glab,
+                         index=np.arange(1, gn + 1))
+    gaps = [i + 1 for i in range(gn) if (i + 1) not in gout and gareas[i] >= min_gap]
     if gaps:
-        bg |= np.isin(lab, gaps)
+        bg |= np.isin(glab, gaps)
 
     keep = ~bg
     kl, kn = ndimage.label(keep, structure=ST8)

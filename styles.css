@@ -620,14 +620,14 @@ ul, ol { margin: 0 0 1.1em; padding-left: 1.2em; }
   z-index: 1;
   background:
     linear-gradient(96deg,
-      rgba(4, 24, 13, 0.95) 0%,
-      rgba(4, 24, 13, 0.88) 32%,
-      rgba(4, 24, 13, 0.52) 62%,
-      rgba(4, 24, 13, 0.34) 100%),
+      rgba(4, 24, 13, 0.84) 0%,
+      rgba(4, 24, 13, 0.72) 32%,
+      rgba(4, 24, 13, 0.34) 62%,
+      rgba(4, 24, 13, 0.16) 100%),
     linear-gradient(180deg,
-      rgba(4, 24, 13, 0.55) 0%,
+      rgba(4, 24, 13, 0.40) 0%,
       rgba(4, 24, 13, 0) 34%,
-      rgba(4, 24, 13, 0.45) 100%);
+      rgba(4, 24, 13, 0.30) 100%);
 }
 
 .hero__in {
@@ -737,7 +737,7 @@ ul, ol { margin: 0 0 1.1em; padding-left: 1.2em; }
   width: 100%;
   height: 100%;
   object-fit: cover;
-  opacity: 0.3;
+  opacity: 0.48;
   z-index: 0;
 }
 
@@ -745,10 +745,22 @@ ul, ol { margin: 0 0 1.1em; padding-left: 1.2em; }
   position: absolute;
   inset: 0;
   z-index: 1;
-  background: linear-gradient(90deg, rgba(5, 46, 25, 0.96) 12%, rgba(5, 46, 25, 0.66) 100%);
+  background: linear-gradient(90deg, rgba(5, 46, 25, 0.93) 12%, rgba(5, 46, 25, 0.42) 100%);
 }
 
 .page-hero > .wrap { position: relative; z-index: 2; }
+
+/* Hero s týmovou fotkou: vyšší, aby se do něj vešlo celé mužstvo,
+   a s méně staženou fotkou, ať je pořádně vidět */
+.page-hero--foto .page-hero__img { opacity: 0.72; }
+
+.page-hero--foto .page-hero__veil {
+  background: linear-gradient(90deg,
+    rgba(5, 46, 25, 0.94) 6%,
+    rgba(5, 46, 25, 0.82) 30%,
+    rgba(5, 46, 25, 0.40) 62%,
+    rgba(5, 46, 25, 0.18) 100%);
+}
 
 .page-hero__title { font-size: clamp(38px, 5.6vw, 68px); font-weight: 900; line-height: 0.96; color: #fff; margin: 0 0 14px; }
 .page-hero__title em { font-style: normal; color: var(--green-light); }
@@ -1106,6 +1118,13 @@ table.tbl th {
 
 table.tbl td { padding: 14px 18px; border-bottom: 1px solid var(--border); font-size: 15.5px; color: var(--text-soft); }
 table.tbl tbody tr { transition: background-color var(--t); }
+
+/* Drobnější varianta tabulky pro delší přehledy */
+table.tbl.tbl--sm { min-width: 520px; }
+table.tbl.tbl--sm caption { padding: 14px 16px 2px; font-size: 12.5px; }
+table.tbl.tbl--sm th { padding: 10px 16px; font-size: 12.5px; }
+table.tbl.tbl--sm td { padding: 9px 16px; font-size: 14.5px; }
+table.tbl.tbl--sm .t-name { font-size: 15px; }
 table.tbl tbody tr:hover { background: var(--green-tint); }
 table.tbl tbody tr:last-child td { border-bottom: 0; }
 table.tbl td:first-child, table.tbl th:first-child { padding-left: 22px; }
@@ -2082,6 +2101,9 @@ table.tbl tr.is-us td { border-color: var(--green-tint-2); }
   filter: drop-shadow(0 16px 24px rgba(4, 30, 17, 0.34));
 }
 
+/* Postava s vlastním zeleným pozadím splývá s pruhem, stín by ji orámoval */
+.mascot--flat { filter: none; }
+
 /* Zelený CTA pruh – postava stojí na spodní hraně pruhu */
 .cta-band { position: relative; overflow: hidden; }
 
@@ -2093,8 +2115,9 @@ table.tbl tr.is-us td { border-color: var(--green-tint-2); }
 
 /* Hero podstránky – postava stojí na spodní hraně hera */
 .mascot--hero {
-  right: 24px;
-  bottom: calc(-1 * clamp(44px, 5.2vw, 68px));
+  /* u okraje okna, aby nestála nikomu ve fotce v cestě */
+  right: 20px;
+  bottom: 0;
   height: clamp(270px, 29vw, 375px);
 }
 
@@ -2155,3 +2178,15 @@ table.tbl tr.is-us td { border-color: var(--green-tint-2); }
   position: absolute;
   inset: 0;
 }
+
+/* Delší text v odstavcích */
+.prose { max-width: 70ch; }
+
+.prose p {
+  font-size: 17.5px;
+  line-height: 1.75;
+  color: var(--text-soft);
+  margin: 0 0 18px;
+}
+
+.prose p:last-child { margin-bottom: 0; }

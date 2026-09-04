@@ -163,9 +163,11 @@
 <main id="main">
 
 <!-- ================= HERO STRÁNKY ================= -->
-<section class="page-hero on-dark">
-  <img class="page-hero__img" src="images/tym-mladez.jpg" alt="" width="1400" height="933">
+<section class="page-hero page-hero--foto on-dark">
+  <img class="page-hero__img" src="images/tym-mladez.jpg" alt="" width="1400" height="933" fetchpriority="high">
   <span class="page-hero__veil" aria-hidden="true"></span>
+  <img class="mascot mascot--hero" src="images/animovanepostavy/kluk.webp"
+       alt="" aria-hidden="true" width="417" height="900" decoding="async">
   <div class="wrap">
     <ol class="crumbs">
       <li><a href="index.html">Úvod</a></li>
@@ -180,8 +182,6 @@
       <a class="btn btn--lg btn--white" href="#prihlaska">Vyplnit přihlášku</a>
       <a class="btn btn--ghost btn--lg" href="tel:+420774424648">774 424 648</a>
     </div>
-    <img class="mascot mascot--hero" src="images/animovanepostavy/kluk.webp"
-         alt="" aria-hidden="true" width="417" height="900" decoding="async">
   </div>
 </section>
 
@@ -193,7 +193,7 @@
         <span class="kicker">Proč zrovna Hlinsko</span>
         <h2 class="sec-title">Co u nás <em>dítě získá</em></h2>
         <p class="sec-lead">
-          Nejsme jen o výsledcích. Chceme, aby děti chodily na trénink rády a odnesly si
+          Není to jen o výsledcích. Chceme, aby děti chodily na trénink rády a odnesly si
           návyky, které jim zůstanou i mimo hřiště.
         </p>
       </div>
@@ -260,8 +260,8 @@
       </div>
     </div>
 
-    <div class="table-wrap reveal">
-      <table class="tbl">
+    <div class="table-wrap reveal" style="max-width:920px">
+      <table class="tbl tbl--sm">
         <caption>Věkové kategorie mládeže FC Hlinsko</caption>
         <thead>
           <tr>
