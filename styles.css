@@ -1628,7 +1628,13 @@ table.tbl .t-name {
   .media-split > .teamphoto { order: 2; }
   .hero { padding: clamp(36px, 7vw, 64px) 0 clamp(44px, 8vw, 76px); }
   .hero__in { grid-template-columns: 1fr; gap: clamp(20px, 4vw, 30px); }
-  .hero__crest { order: -1; width: clamp(112px, 26vw, 160px); margin-inline: auto; }
+
+  /* Obsah hera se na mobilu řadí pod sebe: nápis, rok, znak, tlačítka */
+  .hero__in > div { display: contents; }
+  .hero__title { order: 1; margin-bottom: 0; }
+  .hero__sub { order: 2; margin-bottom: 0; }
+  .hero__crest { order: 3; width: clamp(112px, 26vw, 160px); margin-inline: auto; }
+  .hero .btn-row { order: 4; }
 }
 
 @media (max-width: 780px) {
@@ -2131,7 +2137,7 @@ table.tbl tr.is-us td { border-color: var(--green-tint-2); }
 .mascot {
   position: absolute;
   z-index: 3;
-  display: block;
+  display: none;
   width: auto;
   pointer-events: none;
   user-select: none;
@@ -2159,6 +2165,8 @@ table.tbl tr.is-us td { border-color: var(--green-tint-2); }
 }
 
 @media (min-width: 1080px) {
+  .mascot { display: block; }
+
   /* Uvolní místo, aby tlačítka nekolidovala s postavou */
   .cta-band--mascot .cta-band__in { padding-right: 200px; }
 }
@@ -2172,33 +2180,9 @@ table.tbl tr.is-us td { border-color: var(--green-tint-2); }
   height: clamp(225px, 24vw, 305px);
 }
 
-@media (min-width: 981px) {
+@media (min-width: 1080px) {
   /* Text si drží odstup, aby do něj postavy nezasahovaly */
   .media-split--mascot .media-split__text { padding-right: 205px; }
-}
-
-/* Na mobilu se obsah skládá pod sebe, postava si tedy stoupne pod něj */
-@media (max-width: 780px) {
-  .mascot--band { right: 0; height: clamp(148px, 33vw, 225px); }
-  .cta-band--mascot .cta-band__in { padding-bottom: clamp(152px, 34vw, 230px); }
-
-  .mascot--hero { right: 0; height: clamp(168px, 37vw, 255px); }
-  .page-hero--mascot .wrap { padding-bottom: clamp(172px, 38vw, 260px); }
-}
-
-/* Tablet: obsah je zase vedle sebe, postava tedy zpátky k pravému okraji */
-@media (min-width: 781px) and (max-width: 1079px) {
-  .mascot--band { height: clamp(215px, 26vw, 268px); }
-  .cta-band--mascot .cta-band__in { padding-right: 170px; }
-
-  .mascot--hero { height: clamp(240px, 30vw, 305px); }
-  .page-hero--mascot .wrap { padding-right: 190px; }
-}
-
-/* Dvojice u náboru: do 980 px je blok v jednom sloupci, postava jde pod fotku */
-@media (max-width: 980px) {
-  .mascot--split { right: 0; height: clamp(148px, 30vw, 235px); }
-  .media-split--mascot { padding-bottom: clamp(170px, 34vw, 258px); }
 }
 
 /* --------------------------------------------------------------------------
