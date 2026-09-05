@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=Barlow:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@500;600;700;800;900&family=Barlow:wght@300;400;500;600;700&display=swap');
 
 /* ==========================================================================
    FC HLINSKO
@@ -611,6 +611,7 @@ ul, ol { margin: 0 0 1.1em; padding-left: 1.2em; }
   height: 100%;
   object-fit: cover;
   object-position: center 58%;
+  filter: brightness(1.08) saturate(1.05);
   z-index: 0;
 }
 
@@ -620,14 +621,14 @@ ul, ol { margin: 0 0 1.1em; padding-left: 1.2em; }
   z-index: 1;
   background:
     linear-gradient(96deg,
-      rgba(4, 24, 13, 0.84) 0%,
-      rgba(4, 24, 13, 0.72) 32%,
-      rgba(4, 24, 13, 0.34) 62%,
-      rgba(4, 24, 13, 0.16) 100%),
+      rgba(4, 24, 13, 0.68) 0%,
+      rgba(4, 24, 13, 0.52) 34%,
+      rgba(4, 24, 13, 0.20) 64%,
+      rgba(4, 24, 13, 0.05) 100%),
     linear-gradient(180deg,
-      rgba(4, 24, 13, 0.40) 0%,
-      rgba(4, 24, 13, 0) 34%,
-      rgba(4, 24, 13, 0.30) 100%);
+      rgba(4, 24, 13, 0.30) 0%,
+      rgba(4, 24, 13, 0) 36%,
+      rgba(4, 24, 13, 0.22) 100%);
 }
 
 .hero__in {
@@ -689,13 +690,31 @@ ul, ol { margin: 0 0 1.1em; padding-left: 1.2em; }
   border-radius: var(--r-sm);
 }
 
+/* Klubový nápis: displejové písmo Anton, zelenobílá jako dresy */
 .hero__title {
-  font-size: clamp(52px, 8.4vw, 118px);
-  font-weight: 900;
-  line-height: 0.9;
-  letter-spacing: -0.02em;
+  font-family: 'Anton', 'Barlow Condensed', sans-serif;
+  font-size: clamp(56px, 9vw, 130px);
+  font-weight: 400;
+  line-height: 0.86;
+  letter-spacing: 0.008em;
+  text-transform: uppercase;
   color: #fff;
-  margin: 0 0 14px;
+  margin: 0 0 18px;
+  text-shadow: 0 10px 34px rgba(3, 20, 10, 0.55);
+  /* Lehký náklon dopředu, jako čísla na dresech */
+  display: inline-block;
+  transform: skewX(-8deg);
+  transform-origin: left bottom;
+}
+
+/* Zkratka FC v klubové zeleni, zbytek bílý jako dresy */
+.hero__title .fc {
+  background: linear-gradient(180deg, #62E195 0%, var(--green-light) 50%, #22A552 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 8px 26px rgba(3, 20, 10, 0.5));
 }
 
 .hero__title em { font-style: normal; color: var(--green-light); }
@@ -703,22 +722,21 @@ ul, ol { margin: 0 0 1.1em; padding-left: 1.2em; }
 .hero__sub {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: clamp(12px, 1.2vw, 18px);
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: clamp(16px, 1.5vw, 20px);
-  font-weight: 600;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.8);
+  font-size: clamp(18px, 1.7vw, 24px);
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  color: rgba(255, 255, 255, 0.88);
   margin: 0 0 32px;
 }
 
-.hero__sub::before {
-  content: '';
-  width: 40px;
-  height: 2px;
-  background: var(--green-light);
+/* Míč místo úvodního "od roku" */
+.hero__ball {
+  width: clamp(24px, 2.3vw, 32px);
+  height: auto;
   flex: none;
+  filter: drop-shadow(0 8px 18px rgba(3, 20, 10, 0.45));
 }
 
 /* --------------------------------------------------------------------------
@@ -1430,6 +1448,24 @@ table.tbl .t-name {
 
 .panel__h { font-size: clamp(20px, 1.9vw, 25px); margin: 0 0 16px; }
 
+/* Dvojice panelů vedle sebe drží stejnou výšku, tabulka se roztáhne
+   do zbylého místa a tlačítka sedí u spodní hrany obou karet */
+.grid--panels { align-items: stretch; }
+
+.grid--panels > .panel { display: flex; flex-direction: column; }
+
+.grid--panels > .panel > .dl,
+.grid--panels > .panel > .ticks { flex: 1 1 auto; }
+
+.grid--panels > .panel > .dl { grid-auto-rows: minmax(min-content, 1fr); }
+
+.grid--panels > .panel > .btn-row,
+.grid--panels > .panel > .link-arrow { margin-top: auto; padding-top: 20px; }
+
+.grid--panels > .panel > .link-arrow { align-self: flex-start; }
+
+.grid--panels > .panel > .dl > div { align-items: center; }
+
 .dl { display: grid; margin: 0; }
 
 .dl > div {
@@ -1590,9 +1626,9 @@ table.tbl .t-name {
   /* Na mobilu nejdřív text, fotka až pod ním, stejně jako u bloku áčka */
   .media-split > .media-figure,
   .media-split > .teamphoto { order: 2; }
-  .hero { min-height: 0; padding: clamp(44px, 8vw, 72px) 0 clamp(52px, 9vw, 84px); }
-  .hero__in { grid-template-columns: 1fr; gap: 26px; }
-  .hero__crest { order: -1; width: clamp(112px, 26vw, 160px); }
+  .hero { padding: clamp(36px, 7vw, 64px) 0 clamp(44px, 8vw, 76px); }
+  .hero__in { grid-template-columns: 1fr; gap: clamp(20px, 4vw, 30px); }
+  .hero__crest { order: -1; width: clamp(112px, 26vw, 160px); margin-inline: auto; }
 }
 
 @media (max-width: 780px) {
@@ -2027,7 +2063,8 @@ table.tbl tr.is-us td { border-color: var(--green-tint-2); }
 @media (max-width: 620px) {
   .table-wrap { overflow-x: visible; }
 
-  table.tbl { min-width: 0; }
+  table.tbl,
+  table.tbl.tbl--sm { min-width: 0; }
 
   table.tbl caption {
     padding: 16px 18px 6px;
@@ -2094,7 +2131,7 @@ table.tbl tr.is-us td { border-color: var(--green-tint-2); }
 .mascot {
   position: absolute;
   z-index: 3;
-  display: none;
+  display: block;
   width: auto;
   pointer-events: none;
   user-select: none;
@@ -2122,8 +2159,6 @@ table.tbl tr.is-us td { border-color: var(--green-tint-2); }
 }
 
 @media (min-width: 1080px) {
-  .mascot { display: block; }
-
   /* Uvolní místo, aby tlačítka nekolidovala s postavou */
   .cta-band--mascot .cta-band__in { padding-right: 200px; }
 }
@@ -2137,9 +2172,33 @@ table.tbl tr.is-us td { border-color: var(--green-tint-2); }
   height: clamp(225px, 24vw, 305px);
 }
 
-@media (min-width: 1080px) {
+@media (min-width: 981px) {
   /* Text si drží odstup, aby do něj postavy nezasahovaly */
   .media-split--mascot .media-split__text { padding-right: 205px; }
+}
+
+/* Na mobilu se obsah skládá pod sebe, postava si tedy stoupne pod něj */
+@media (max-width: 780px) {
+  .mascot--band { right: 0; height: clamp(148px, 33vw, 225px); }
+  .cta-band--mascot .cta-band__in { padding-bottom: clamp(152px, 34vw, 230px); }
+
+  .mascot--hero { right: 0; height: clamp(168px, 37vw, 255px); }
+  .page-hero--mascot .wrap { padding-bottom: clamp(172px, 38vw, 260px); }
+}
+
+/* Tablet: obsah je zase vedle sebe, postava tedy zpátky k pravému okraji */
+@media (min-width: 781px) and (max-width: 1079px) {
+  .mascot--band { height: clamp(215px, 26vw, 268px); }
+  .cta-band--mascot .cta-band__in { padding-right: 170px; }
+
+  .mascot--hero { height: clamp(240px, 30vw, 305px); }
+  .page-hero--mascot .wrap { padding-right: 190px; }
+}
+
+/* Dvojice u náboru: do 980 px je blok v jednom sloupci, postava jde pod fotku */
+@media (max-width: 980px) {
+  .mascot--split { right: 0; height: clamp(148px, 30vw, 235px); }
+  .media-split--mascot { padding-bottom: clamp(170px, 34vw, 258px); }
 }
 
 /* --------------------------------------------------------------------------
