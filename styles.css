@@ -2233,3 +2233,855 @@ table.tbl tr.is-us td { border-color: var(--green-tint-2); }
 }
 
 .prose p:last-child { margin-bottom: 0; }
+
+/* --------------------------------------------------------------------------
+   32. POMOCNÉ TŘÍDY
+   -------------------------------------------------------------------------- */
+.sr-only {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* --------------------------------------------------------------------------
+   33. HERO: ZÁPASOVÝ PRUH
+   Pruh přes celou šířku na spodní hraně hera, nad sekaným trávníkem.
+   Vlevo poslední zápas, vpravo příští, mezi nimi půlicí čára se středovým
+   kruhem. Data počítá script.js z pole ZAPASY.
+   -------------------------------------------------------------------------- */
+
+/* Hero je sloupec: nápis a znak uprostřed volného místa, pruh dole */
+.hero { flex-direction: column; align-items: stretch; padding-bottom: 10px; }
+.hero__in { flex: 1 1 auto; align-content: center; padding-bottom: clamp(36px, 4.4vw, 64px); }
+
+.hero__bar {
+  position: relative;
+  z-index: 2;
+  background: rgba(4, 24, 13, 0.84);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.hbar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 1px minmax(0, 1fr);
+  gap: clamp(24px, 3.4vw, 52px);
+  align-items: stretch;
+}
+
+.hbar.is-single { grid-template-columns: minmax(0, 700px); }
+
+/* Půlicí čára se středovým kruhem */
+.hbar__line { position: relative; background: rgba(255, 255, 255, 0.14); }
+
+.hbar__line::before,
+.hbar__line::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.hbar__line::before {
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgb(6, 30, 17);
+}
+
+.hbar__line::after { width: 6px; height: 6px; background: var(--green-light); }
+
+.hm {
+  display: grid;
+  grid-template-columns: minmax(118px, auto) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(16px, 2vw, 30px);
+  padding: 20px 0 22px;
+  color: #fff;
+}
+
+.hm__head { display: flex; flex-direction: column; gap: 7px; min-width: 0; }
+
+.hm__label {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 13.5px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--green-light);
+  white-space: nowrap;
+}
+
+.hm__label::before { content: ''; width: 20px; height: 2px; background: currentColor; flex: none; }
+.hm--next .hm__label { color: var(--gold); }
+
+.hm__meta {
+  max-width: 17ch;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 1.35;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.58);
+}
+
+.hm__match {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 14px;
+}
+
+.hm__team { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.hm__team--dom { justify-content: flex-end; text-align: right; }
+.hm__team--hos { justify-content: flex-start; text-align: left; }
+
+.hm__name {
+  min-width: 0;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 1.05;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.76);
+  overflow-wrap: anywhere;
+}
+
+.hm__team.is-us .hm__name { color: #fff; font-weight: 800; }
+
+.hm__center { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+
+/* Skóre a čas nakloněné jako nápis FC Hlinsko */
+.hm__score {
+  font-family: 'Anton', 'Barlow Condensed', sans-serif;
+  font-size: clamp(38px, 3.4vw, 50px);
+  line-height: 0.92;
+  color: #fff;
+  transform: skewX(-8deg);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  transition: color var(--t);
+}
+
+.hm__score i { font-style: normal; color: var(--green-light); margin: 0 3px; }
+
+.hm__res,
+.hm__date,
+.hm__when {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 12.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.hm__res--v { color: var(--green-light); }
+.hm__res--r { color: rgba(255, 255, 255, 0.7); }
+.hm__res--p { color: #FF7A70; }
+.hm__date { color: rgba(255, 255, 255, 0.7); }
+.hm__when { color: var(--gold); }
+
+.hm:hover .hm__score { color: var(--green-light); }
+.hm--next:hover .hm__score { color: var(--gold); }
+
+/* Soupeř bez znaku: čtvereček se zkratkou jako u osobností */
+.tlogo {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  flex: none;
+  border-radius: var(--r-sm);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 13px;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.tlogo--nas { background: none; border: 0; }
+.tlogo--nas img { width: auto; height: 42px; filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.35)); }
+
+@media (max-width: 1160px) {
+  /* Užší obrazovka: údaje nad zápasem místo vedle */
+  .hm { grid-template-columns: 1fr; gap: 12px; }
+  .hm__head { flex-direction: row; align-items: center; justify-content: space-between; gap: 14px; }
+  .hm__meta { max-width: none; text-align: right; }
+}
+
+@media (max-width: 980px) {
+  .hero__in { padding-bottom: clamp(28px, 6vw, 44px); }
+  .hbar { grid-template-columns: 1fr; gap: 0; }
+  .hbar.is-single { grid-template-columns: 1fr; }
+  .hbar__line { height: 1px; }
+  .hm { padding: 16px 0 18px; }
+}
+
+@media (max-width: 560px) {
+  .hm__head { flex-direction: column; align-items: flex-start; gap: 4px; }
+  .hm__meta { text-align: left; }
+  .hm__match { gap: 10px; }
+  .hm__name { font-size: 15.5px; }
+  .hm__team { gap: 8px; }
+  .tlogo { width: 32px; height: 32px; font-size: 11.5px; }
+  .tlogo--nas img { height: 36px; }
+}
+
+/* --------------------------------------------------------------------------
+   34. BLOK ÁČKA: VÝSLEDKY A TABULKA
+   -------------------------------------------------------------------------- */
+.ateam__data {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: minmax(0, 0.94fr) minmax(0, 1.06fr);
+  gap: clamp(16px, 2vw, 24px);
+  align-items: stretch;
+  padding-bottom: clamp(48px, 5vw, 72px);
+}
+
+.apanel {
+  display: flex;
+  flex-direction: column;
+  padding: clamp(18px, 2.2vw, 26px);
+  background: #fff;
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  box-shadow: var(--sh-md);
+}
+
+.ateam .apanel { border-color: transparent; box-shadow: var(--sh-lg); }
+
+.apanel__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  padding-bottom: 14px;
+  margin-bottom: 4px;
+  border-bottom: 2px solid var(--green);
+}
+
+.apanel__h { font-size: clamp(21px, 1.9vw, 26px); margin: 0; }
+.apanel__h em { font-style: normal; color: var(--green); }
+
+.apanel__tag {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 12.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+
+.apanel__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  margin-top: auto;
+  padding-top: 14px;
+}
+
+.apanel__note { font-size: 13.5px; color: var(--text-mute); }
+.apanel__empty { margin: 16px 0; color: var(--text-soft); }
+
+/* Forma: čtverečky V / R / P */
+.forma { display: flex; align-items: center; gap: 5px; }
+
+.forma__k {
+  margin-right: 6px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 12.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+
+.fm {
+  display: inline-grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  flex: none;
+  border-radius: var(--r-sm);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 14px;
+  line-height: 1;
+  color: #fff;
+}
+
+.fm--v { background: var(--green); }
+.fm--r { background: #8A9E91; }
+.fm--p { background: var(--red); }
+
+/* Seznam výsledků */
+.results { list-style: none; margin: 0; padding: 0; }
+
+.rrow {
+  display: grid;
+  grid-template-columns: 50px minmax(0, 1fr) auto minmax(0, 1fr) 26px;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.rrow:last-child { border-bottom: 0; }
+
+.rrow__date {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 600;
+  font-size: 12.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+
+.rrow__date b { font-size: 17px; font-weight: 800; letter-spacing: 0; color: var(--text); }
+
+.rrow__team {
+  min-width: 0;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 16.5px;
+  line-height: 1.15;
+  text-transform: uppercase;
+  color: var(--text-soft);
+  overflow-wrap: anywhere;
+}
+
+.rrow__team--dom { text-align: right; }
+.rrow__team.is-us { color: var(--green-dk); font-weight: 900; }
+
+.rrow__score {
+  min-width: 54px;
+  padding: 6px 8px;
+  border-radius: var(--r-sm);
+  background: var(--green-deep);
+  color: #fff;
+  text-align: center;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 18px;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Tabulka soutěže, na mobilu zůstává tabulkou a jen schová sloupce */
+.ltable { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+
+.ltable th,
+.ltable td {
+  padding: 8px 6px;
+  border-bottom: 1px solid var(--border);
+  text-align: center;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-soft);
+}
+
+.ltable thead th {
+  padding-top: 8px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 12.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  white-space: nowrap;
+}
+
+.ltable abbr { text-decoration: none; cursor: help; }
+
+.ltable td { min-width: 30px; padding-inline: 8px; }
+.ltable .c-pos { width: 38px; padding-left: 10px; text-align: left; font-weight: 700; color: var(--text-mute); }
+
+.ltable tbody .c-team {
+  width: 100%;
+  max-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: left;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.ltable thead .c-team { text-align: left; }
+.ltable .c-score { white-space: nowrap; }
+
+.ltable tbody .c-pts {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 17px;
+  color: var(--text);
+}
+
+.ltable tbody tr { transition: background-color var(--t); }
+.ltable tbody tr:hover { background: var(--bg-alt); }
+.ltable tbody tr:last-child > * { border-bottom: 0; }
+
+.ltable tr.is-us,
+.ltable tr.is-us:hover { background: var(--green-tint); }
+.ltable tr.is-us > * { color: var(--green-dk); font-weight: 800; border-color: var(--green-tint-2); }
+.ltable tr.is-us .c-pos { box-shadow: inset 3px 0 0 var(--green); }
+
+.ltable.is-collapsed tr.is-extra { display: none; }
+
+.ltable-toggle svg { transition: transform var(--t); }
+.ltable-toggle[aria-expanded="true"] svg { transform: rotate(180deg); }
+
+/* Stejná dvojice panelů na stránce mužstva */
+.data-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.94fr) minmax(0, 1.06fr);
+  gap: clamp(16px, 2vw, 24px);
+  align-items: stretch;
+}
+
+/* Oba panely jsou stejně vysoké, řádky výsledků se rozloží do výšky
+   tabulky. Po rozbalení celé tabulky se výsledky vrátí na svou výšku. */
+.apanel [data-vysledky],
+.apanel .results { flex: 1 1 auto; display: flex; flex-direction: column; }
+.results > .rrow { flex: 1 1 auto; }
+
+.ateam__data.is-open,
+.data-grid.is-open { align-items: start; }
+
+@media (max-width: 980px) {
+  .ateam__data,
+  .data-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 560px) {
+  .ltable .c-opt { display: none; }
+  .rrow { grid-template-columns: 42px minmax(0, 1fr) auto minmax(0, 1fr) 24px; gap: 8px; }
+  .rrow__team { font-size: 15px; }
+  .rrow__score { min-width: 46px; font-size: 16px; padding: 6px; }
+  .fm { width: 24px; height: 24px; font-size: 13px; }
+}
+
+@media (max-width: 380px) {
+  .ltable .c-score { display: none; }
+}
+
+/* --------------------------------------------------------------------------
+   35. NAROZENINY
+   -------------------------------------------------------------------------- */
+.bday-ico { width: clamp(56px, 6vw, 74px); height: auto; flex: none; color: var(--border-hi); }
+
+.bdays {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(262px, 1fr));
+  gap: 12px;
+}
+
+.bday {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr);
+  align-items: center;
+  gap: 14px;
+  padding: 13px 16px 13px 13px;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  box-shadow: var(--sh-xs);
+  transition: box-shadow var(--t), border-color var(--t);
+}
+
+.bday:hover { box-shadow: var(--sh-sm); border-color: var(--border-hi); }
+
+.bday__date {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 64px;
+  border-radius: var(--r-md);
+  background: var(--green-tint);
+  color: var(--green-dk);
+  line-height: 1;
+}
+
+.bday__day { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 27px; }
+
+.bday__mon {
+  margin-top: 4px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.bday__body { min-width: 0; }
+
+.bday__when {
+  display: block;
+  margin-bottom: 3px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 12.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--green);
+}
+
+.bday__name { font-size: 19px; line-height: 1.1; margin: 0 0 4px; }
+.bday__meta { margin: 0; font-size: 14.5px; line-height: 1.35; color: var(--text-mute); }
+.bday__meta b { font-weight: 600; color: var(--text-soft); }
+
+/* Kdo slaví dnes, dostane zlatou */
+.bday.is-today {
+  border-color: var(--gold);
+  background: linear-gradient(120deg, #fff 55%, var(--gold-tint));
+  box-shadow: 0 0 0 1px var(--gold), var(--sh-sm);
+}
+
+.bday.is-today .bday__date { background: var(--gold); color: #1A1403; }
+.bday.is-today .bday__when { color: var(--gold-dk); }
+
+.bday.is-past .bday__date { background: var(--bg-alt); color: var(--text-mute); }
+.bday.is-past .bday__when { color: var(--text-mute); }
+
+@media (max-width: 620px) {
+  .bday-ico { display: none; }
+}
+
+/* --------------------------------------------------------------------------
+   36. PARTNEŘI PODLE ÚROVNĚ
+   -------------------------------------------------------------------------- */
+.ptiers { display: grid; grid-template-columns: minmax(0, 1fr); gap: clamp(28px, 3.2vw, 42px); }
+
+.ptier__h {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin: 0 0 18px;
+  font-size: 14.5px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  color: var(--text-mute);
+}
+
+.ptier__h::before,
+.ptier__h::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+.ptier__grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; }
+
+.ptier--generalni .ptier__h { color: var(--gold-dk); }
+.ptier--generalni .ptier__h::before { background: linear-gradient(90deg, transparent, #E6D08A); }
+.ptier--generalni .ptier__h::after { background: linear-gradient(270deg, transparent, #E6D08A); }
+
+.ptier--generalni .plogo {
+  width: min(420px, 100%);
+  height: 148px;
+  padding: 24px 40px;
+  border: 1px solid #E6D08A;
+  border-top: 3px solid var(--gold);
+  box-shadow: var(--sh-sm);
+}
+
+.ptier--hlavni .plogo { width: 222px; height: 116px; padding: 20px 26px; }
+.ptier--partner .plogo { width: 164px; height: 86px; padding: 14px 18px; }
+
+.ptier-note {
+  margin: clamp(26px, 3vw, 36px) auto 0;
+  text-align: center;
+  font-size: 15.5px;
+  color: var(--text-mute);
+}
+
+.ptier-note b { font-weight: 600; color: var(--text-soft); }
+
+/* Karusel: každá úroveň je nekonečný pás, řady jezdí střídavě doleva
+   a doprava. Místo gap je margin, aby posun o polovinu pásu seděl na pixel. */
+.ptier__pas { padding: 4px 0 14px; }
+.ptier__pas .marquee__track { gap: 0; }
+.ptier__pas .plogo { margin-right: 16px; }
+.ptier--generalni .ptier__pas .plogo { width: 400px; }
+.ptier__pas.marquee--rev .marquee__track { animation-direction: reverse; }
+.ptier__pas .plogo:focus-visible { outline-offset: -3px; }
+
+/* Pás se zastaví i při ovládání klávesnicí */
+.ptier__pas:focus-within .marquee__track { animation-play-state: paused; }
+
+@media (max-width: 620px) {
+  .ptier__h { gap: 12px; font-size: 13.5px; letter-spacing: 0.18em; }
+  .ptier__grid { gap: 10px; }
+  .ptier--generalni .plogo { height: 124px; }
+  .ptier--hlavni .ptier__grid .plogo { width: calc(50% - 5px); height: 96px; padding: 16px 18px; }
+  .ptier--partner .ptier__grid .plogo { width: calc(50% - 5px); height: 76px; padding: 12px 16px; }
+
+  .ptier__pas .plogo { margin-right: 10px; }
+  .ptier--generalni .ptier__pas .plogo { width: 280px; height: 110px; padding: 20px 30px; }
+  .ptier--hlavni .ptier__pas .plogo { width: 170px; height: 92px; padding: 14px 18px; }
+  .ptier--partner .ptier__pas .plogo { width: 136px; height: 72px; padding: 10px 14px; }
+}
+
+/* --------------------------------------------------------------------------
+   37. SOCIÁLNÍ SÍTĚ
+   -------------------------------------------------------------------------- */
+/* Sítě v mobilním menu */
+.drawer__social {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.drawer__social a {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 46px;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: var(--r-sm);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 15.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #fff;
+  transition: background-color var(--t), border-color var(--t);
+}
+
+.drawer__social a:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.4); }
+.drawer__social svg { width: 18px; height: 18px; }
+
+/* --------------------------------------------------------------------------
+   38. PATIČKA: PRÁVNÍ ODKAZY
+   -------------------------------------------------------------------------- */
+.foot-legal { display: flex; flex-wrap: wrap; gap: 6px 20px; }
+.foot-legal a { color: rgba(255, 255, 255, 0.62); transition: color var(--t); }
+.foot-legal a:hover { color: var(--green-light); }
+
+@media (max-width: 780px) {
+  .foot-legal { gap: 0 20px; }
+  .foot-legal a { display: inline-block; padding: 9px 0; }
+}
+
+/* --------------------------------------------------------------------------
+   39. COOKIES: LIŠTA A BLOKOVANÁ MAPA
+   -------------------------------------------------------------------------- */
+.cookiebar {
+  position: fixed;
+  left: 22px;
+  bottom: 22px;
+  z-index: 35;
+  display: grid;
+  gap: 14px;
+  width: min(560px, calc(100% - 44px));
+  padding: 18px 20px;
+  background: var(--green-deep);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-top: 3px solid var(--green-light);
+  border-radius: var(--r-lg);
+  box-shadow: 0 24px 60px rgba(3, 20, 10, 0.4);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(24px);
+  transition: opacity var(--t), transform var(--t-slow), visibility var(--t);
+}
+
+.cookiebar.is-on { opacity: 1; visibility: visible; transform: none; }
+
+.cookiebar__txt p { margin: 0; font-size: 14.5px; line-height: 1.55; color: rgba(255, 255, 255, 0.8); }
+
+.cookiebar .cookiebar__h {
+  margin-bottom: 4px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 19px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.cookiebar a { color: #7BE8A3; text-decoration: underline; text-underline-offset: 2px; }
+.cookiebar__btns { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px; }
+.cookiebar .btn--ghost { --btn-fg: #fff; border-color: rgba(255, 255, 255, 0.35); }
+.cookiebar .btn--ghost:hover { border-color: #fff; color: #fff; }
+.cookiebar :focus-visible { outline-color: #7BE8A3; }
+
+@media (max-width: 620px) {
+  .cookiebar { left: 12px; bottom: 12px; width: calc(100% - 24px); padding: 16px; }
+  .cookiebar__btns .btn { flex: 1 1 0; }
+  body.has-cookiebar .to-top { opacity: 0; visibility: hidden; }
+}
+
+/* Mapa čeká na souhlas */
+.map-frame[data-mapa] {
+  display: grid;
+  place-items: center;
+  background:
+    linear-gradient(rgba(245, 248, 245, 0.9), rgba(245, 248, 245, 0.9)),
+    repeating-linear-gradient(0deg, transparent 0 38px, var(--border) 38px 39px),
+    repeating-linear-gradient(90deg, transparent 0 38px, var(--border) 38px 39px);
+}
+
+.map-frame[data-mapa].is-loaded { display: block; background: #fff; }
+
+.map-consent {
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  max-width: 440px;
+  padding: 32px 24px;
+  text-align: center;
+}
+
+.map-consent svg { width: 44px; height: 44px; color: var(--green); }
+.map-consent p { margin: 0; font-size: 15.5px; color: var(--text-soft); }
+.map-consent .btn-row { justify-content: center; }
+
+/* --------------------------------------------------------------------------
+   40. PRÁVNÍ TEXTY
+   -------------------------------------------------------------------------- */
+.legal-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: clamp(30px, 5vw, 72px);
+  align-items: start;
+}
+
+.legal { max-width: 780px; }
+
+.legal h2 {
+  font-size: clamp(23px, 2.2vw, 29px);
+  margin: 40px 0 12px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+
+.legal h2:first-child { margin-top: 0; padding-top: 0; border-top: 0; }
+.legal h3 { font-size: 19px; margin: 24px 0 8px; }
+
+.legal p,
+.legal li { font-size: 16.5px; line-height: 1.72; color: var(--text-soft); }
+
+.legal p { margin: 0 0 14px; }
+.legal ul, .legal ol { margin: 0 0 16px; padding-left: 1.3em; }
+.legal li { margin-bottom: 6px; }
+.legal li::marker { color: var(--green); }
+.legal a { color: var(--green); text-decoration: underline; text-underline-offset: 2px; }
+.legal a:hover { color: var(--green-dk); }
+.legal strong { color: var(--text); font-weight: 600; }
+
+.legal .table-wrap { margin: 6px 0 18px; }
+.legal table.tbl { min-width: 0; }
+.legal table.tbl .t-name { white-space: nowrap; }
+
+.legal-aside { position: sticky; top: calc(var(--head-h-sm) + 24px); display: grid; gap: 14px; }
+
+.legal-nav { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+
+.legal-nav a {
+  display: block;
+  padding: 10px 14px;
+  border-left: 2px solid var(--border);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+  transition: border-color var(--t), color var(--t), background-color var(--t);
+}
+
+.legal-nav a:hover { border-color: var(--green); color: var(--green); background: var(--green-tint); }
+.legal-nav a[aria-current] { border-color: var(--green); color: var(--green-dk); }
+
+.legal-aside .panel { padding: 20px 22px; }
+.legal-aside .panel__h { font-size: 19px; margin-bottom: 10px; }
+.legal-aside .panel p { margin: 0 0 6px; font-size: 15px; color: var(--text-soft); }
+.legal-aside .panel a { color: var(--green); }
+
+@media (max-width: 980px) {
+  .legal-layout { grid-template-columns: 1fr; }
+  .legal-aside { position: static; }
+}
+
+/* --------------------------------------------------------------------------
+   41. STRÁNKA ZÁPASY: NADCHÁZEJÍCÍ A ODEHRANÉ
+   -------------------------------------------------------------------------- */
+.fixgroup + .fixgroup { margin-top: clamp(30px, 3.4vw, 44px); }
+
+.fixgroup__h {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 14px;
+  font-size: clamp(20px, 1.8vw, 24px);
+}
+
+.fixgroup__h span {
+  display: inline-grid;
+  place-items: center;
+  min-width: 28px;
+  height: 26px;
+  padding: 0 8px;
+  border-radius: var(--r-full);
+  background: var(--green-tint);
+  color: var(--green-dk);
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0;
+}
+
+/* Odehrané už nejsou šedé, dávají smysl jako výsledky */
+.fixgroup .fixture.is-done { opacity: 1; }
+
+.fixture__time--na { color: var(--text-mute); }
+
+.fixture__info .fixture__tym { font-weight: 600; color: var(--text-soft); }
+.fixture__info .fixture__tym svg { color: var(--green); }
+.fixture__ucast { flex-basis: 100%; }
+
+.fixgroup__vice { margin-top: 10px; }
+.fixgroup__btn { margin-top: 14px; }
+.fixgroup__btn svg { transition: transform var(--t); }
+.fixgroup__btn[aria-expanded="true"] svg { transform: rotate(180deg); }
+.fixture__time--v { color: var(--green); }
+.fixture__time--p { color: var(--red); }
+.fixgroup__vice[hidden] { display: none; }
+
+/* Počet zápasů v záložce mužstva */
+.tab__n { display: inline-block; min-width: 22px; margin-left: 4px; padding: 1px 6px; border-radius: var(--r-full); background: var(--bg-alt); color: var(--text-mute); font-size: 12.5px; letter-spacing: 0; text-align: center; }
+.tab.is-active .tab__n { background: rgba(255, 255, 255, 0.22); color: #fff; }
+.ateam__facts:last-child { margin-bottom: 0; }

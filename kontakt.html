@@ -157,6 +157,16 @@
       <a class="btn btn--block" href="nabor.html">Přidej se k nám</a>
       <a class="btn btn--ghost btn--block" href="tel:+420774424648">774 424 648</a>
     </div>
+    <div class="drawer__social">
+      <a href="https://www.facebook.com/FcHlinsko" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0 0 22 12z"/></svg>
+        Facebook
+      </a>
+      <a href="https://www.instagram.com/fchlinsko/" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg>
+        Instagram
+      </a>
+    </div>
   </div>
 </aside>
 
@@ -164,7 +174,7 @@
 
 <!-- ================= HERO STRÁNKY ================= -->
 <section class="page-hero on-dark">
-  <img class="page-hero__img" src="images/olsinky-panorama.jpg" alt="" width="1600" height="900">
+  <img class="page-hero__img" src="images/kontakt-olsinky.jpg" alt="" width="1920" height="1080">
   <span class="page-hero__veil" aria-hidden="true"></span>
   <div class="wrap">
     <ol class="crumbs">
@@ -309,7 +319,7 @@
         <div class="field field--check">
           <input type="checkbox" id="k-souhlas" name="souhlas" required>
           <label for="k-souhlas">
-            Souhlasím se zpracováním osobních údajů za účelem vyřízení mého dotazu.
+            Souhlasím se <a href="ochrana-osobnich-udaju.html">zpracováním osobních údajů</a> za účelem vyřízení mého dotazu.
             <span class="req" aria-hidden="true">*</span>
           </label>
         </div>
@@ -367,12 +377,18 @@
       </a>
     </div>
 
-    <div class="map-frame reveal">
-      <iframe
-        src="https://www.google.com/maps?q=Ol%C5%A1inky%201063%2C%20539%2001%20Hlinsko&hl=cs&z=15&output=embed"
-        title="Mapa s umístěním areálu Olšinky, Hlinsko"
-        loading="lazy"
-        referrerpolicy="no-referrer-when-downgrade"></iframe>
+    <!-- Mapa Googlu může ukládat cookies, načte se až po souhlasu (script.js, část 9e) -->
+    <div class="map-frame reveal"
+         data-mapa="https://www.google.com/maps?q=Ol%C5%A1inky%201063%2C%20539%2001%20Hlinsko&hl=cs&z=15&output=embed"
+         data-mapa-titulek="Mapa s umístěním areálu Olšinky, Hlinsko">
+      <div class="map-consent">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2z"/><path d="M9 4v14M15 6v14"/></svg>
+        <p>Mapa se načítá ze služby Google Maps, která může ukládat vlastní cookies. Zobrazíme ji, až to povolíte.</p>
+        <div class="btn-row">
+          <button class="btn btn--sm" type="button" data-mapa-nacist>Zobrazit mapu</button>
+          <a class="btn btn--sm btn--ghost" href="https://mapy.cz/zakladni?q=Ol%C5%A1inky%201063%20Hlinsko" target="_blank" rel="noopener">Otevřít v Mapy.cz</a>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -472,6 +488,12 @@
 
     <div class="foot-bottom">
       <span>© <span data-year>2026</span> FC Hlinsko, z.s. Všechna práva vyhrazena.</span>
+      <nav class="foot-legal" aria-label="Právní informace">
+        <a href="ochrana-osobnich-udaju.html">Ochrana osobních údajů</a>
+        <a href="cookies.html">Cookies</a>
+        <a href="obchodni-podminky.html">Obchodní podmínky</a>
+        <a href="reklamacni-rad.html">Reklamační řád</a>
+      </nav>
       <a class="webo" href="https://www.webostudio.cz/" target="_blank" rel="noopener">Web vytvořilo <b>Webo Studio</b></a>
     </div>
   </div>

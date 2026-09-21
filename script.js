@@ -19,21 +19,85 @@
              Podle toho se zapas objevi na stránce daného mužstva. Stačí
              i hrubší 'dorost', 'zaci' nebo 'pripravka', pak se ukáže
              u všech mužstev dané kategorie.
-     typ:    'liga' | 'pohar' | 'priprava'
-     skore:  null dokud se nehraje, po zápase např. '3:1'
+     typ:    'liga' | 'pohar' | 'priprava' | 'turnaj'
+     skore:  null dokud se nehraje, po zápase např. '3:1'. Vždy ve tvaru
+             domácí:hosté, tedy u venkovního zápasu je naše skóre vpravo.
+             Odehraný zápas bez skóre se ukáže jako –:– (výsledek chybí).
+     kolo:   číslo kola u mistrovských zápasů (nepovinné)
+     soutez: vlastní název soutěže, např. 'Pohár starších žáků' (nepovinné)
+     nazev:  jen u turnajů, název místo dvojice týmů; do souper
+             se pak píší účastníci (nepovinné)
+
+     Z vyplněných skóre se samo počítá: poslední a příští zápas v heru
+     úvodní stránky, poslední výsledky a forma u bloku áčka.
      ---------------------------------------------------------------------- */
   var ZAPASY = [
+    /* Muži A, letní příprava */
     { datum: '2026-07-11T10:00', domaci: false, souper: 'Čáslav',          tym: 'A', typ: 'priprava', misto: 'Hřiště Chotusice',              skore: null },
     { datum: '2026-07-15T18:00', domaci: true,  souper: 'Žďár n/S.',       tym: 'A', typ: 'priprava', misto: 'Olšinky, hřiště č. 2',          skore: null },
     { datum: '2026-07-18T10:30', domaci: false, souper: 'Ždírec n/D.',     tym: 'A', typ: 'priprava', misto: 'Ždírec nad Doubravou',          skore: null },
     { datum: '2026-07-22T18:00', domaci: true,  souper: 'Chotěboř',        tym: 'A', typ: 'priprava', misto: 'Olšinky, hřiště č. 1',          skore: null },
-    { datum: '2026-07-25T10:30', domaci: true,  souper: 'Ústí n/O.',       tym: 'A', typ: 'priprava', misto: 'Olšinky, hřiště č. 1',          skore: null },
+    { datum: '2026-07-25T10:30', domaci: true,  souper: 'Ústí n/O.',       tym: 'A', typ: 'priprava', misto: 'Olšinky, hřiště č. 1',          skore: '2:4' },
     { datum: '2026-07-29T18:00', domaci: true,  souper: 'Velká Bíteš',     tym: 'A', typ: 'priprava', misto: 'Olšinky, hřiště č. 1',          skore: null },
-    { datum: '2026-08-01T17:00', domaci: false, souper: 'Heřmanův Městec', tym: 'A', typ: 'pohar',    misto: 'Heřmanův Městec, předkolo MOL Cup', skore: null },
-    { datum: '2026-08-08T10:30', domaci: true,  souper: 'Kolín',           tym: 'A', typ: 'liga',     misto: 'Olšinky, hřiště č. 1',          skore: null }
+    { datum: '2026-08-01T17:00', domaci: false, souper: 'Heřmanův Městec', tym: 'A', typ: 'pohar',    misto: 'Heřmanův Městec, předkolo MOL Cup', skore: '3:0' },
+
+    /* Muži A, Divize C 2026/2027, podzim */
+    { datum: '2026-08-08T10:30', domaci: true,  souper: 'Kolín',           tym: 'A', typ: 'liga', kolo: 1,  misto: 'Olšinky, hřiště č. 1', skore: '1:1' },
+    { datum: '2026-08-15T10:30', domaci: true,  souper: 'Dvůr Králové',    tym: 'A', typ: 'liga', kolo: 2,  misto: 'Olšinky, hřiště č. 1', skore: '3:2' },
+    { datum: '2026-08-23T17:00', domaci: false, souper: 'Svitavy',         tym: 'A', typ: 'liga', kolo: 3,  misto: 'Svitavy',              skore: '0:6' },
+    { datum: '2026-08-29T10:30', domaci: true,  souper: 'Vykáň',           tym: 'A', typ: 'liga', kolo: 4,  misto: 'Olšinky, hřiště č. 1', skore: '2:1' },
+    { datum: '2026-09-05T17:00', domaci: false, souper: 'Ústí n/O.',       tym: 'A', typ: 'liga', kolo: 5,  misto: 'Ústí nad Orlicí',      skore: '2:1' },
+    { datum: '2026-09-12T10:30', domaci: true,  souper: 'Trutnov',         tym: 'A', typ: 'liga', kolo: 6,  misto: 'Olšinky, hřiště č. 1', skore: '1:0' },
+    { datum: '2026-09-19T10:30', domaci: false, souper: 'Přepeře',         tym: 'A', typ: 'liga', kolo: 7,  misto: 'Přepeře',              skore: '5:0' },
+    { datum: '2026-09-26T10:30', domaci: true,  souper: 'Vysoké Mýto',     tym: 'A', typ: 'liga', kolo: 8,  misto: 'Olšinky, hřiště č. 1', skore: null },
+    { datum: '2026-10-04T10:15', domaci: false, souper: 'Chlumec n/C.',    tym: 'A', typ: 'liga', kolo: 9,  misto: 'Chlumec nad Cidlinou', skore: null },
+    { datum: '2026-10-10T10:30', domaci: true,  souper: 'Kosmonosy',       tym: 'A', typ: 'liga', kolo: 10, misto: 'Olšinky, hřiště č. 1', skore: null },
+    { datum: '2026-10-18T15:30', domaci: false, souper: 'Police n/M.',     tym: 'A', typ: 'liga', kolo: 11, misto: 'Police nad Metují',    skore: null },
+    { datum: '2026-10-24T10:30', domaci: true,  souper: 'Turnov',          tym: 'A', typ: 'liga', kolo: 12, misto: 'Olšinky, hřiště č. 1', skore: null },
+    { datum: '2026-10-31T14:00', domaci: false, souper: 'Chrudim B',       tym: 'A', typ: 'liga', kolo: 13, misto: 'Chrudim',              skore: null },
+    { datum: '2026-11-07T10:30', domaci: true,  souper: 'Letohrad',        tym: 'A', typ: 'liga', kolo: 14, misto: 'Olšinky, hřiště č. 1', skore: null },
+    { datum: '2026-11-14T10:15', domaci: false, souper: 'Slavia HK',       tym: 'A', typ: 'liga', kolo: 15, misto: 'Hradec Králové',       skore: null },
+
+    /* Muži B, 1.B třída skupina A 2026/2027, podzim */
+    { datum: '2026-08-16T17:00', domaci: false, souper: 'Sezemice',        tym: 'B', typ: 'liga', kolo: 2,  misto: 'Sezemice',             skore: '3:2' },
+    { datum: '2026-08-19T18:00', domaci: false, souper: 'Jehnědí',         tym: 'B', typ: 'liga', kolo: 1,  misto: 'Jehnědí',              skore: '0:5' },
+    { datum: '2026-08-22T17:00', domaci: true,  souper: 'Heřmanův Městec B', tym: 'B', typ: 'liga', kolo: 3, misto: 'Olšinky, Hlinsko',   skore: '0:6' },
+    { datum: '2026-08-29T17:00', domaci: false, souper: 'Pardubičky B',    tym: 'B', typ: 'liga', kolo: 4,  misto: 'Pardubice',            skore: '5:0' },
+    { datum: '2026-09-06T17:00', domaci: true,  souper: 'Dolní Újezd B',   tym: 'B', typ: 'liga', kolo: 5,  misto: 'Olšinky, Hlinsko',     skore: '3:0' },
+    { datum: '2026-09-12T14:30', domaci: false, souper: 'Chroustovice',    tym: 'B', typ: 'liga', kolo: 6,  misto: 'Chroustovice',         skore: '0:0' },
+    { datum: '2026-09-20T16:30', domaci: true,  souper: 'Moravany',        tym: 'B', typ: 'liga', kolo: 7,  misto: 'Olšinky, Hlinsko',     skore: '0:3' },
+    { datum: '2026-09-26T16:00', domaci: false, souper: 'Dříteč',          tym: 'B', typ: 'liga', kolo: 8,  misto: 'Dříteč',               skore: null },
+    { datum: '2026-10-03T16:00', domaci: true,  souper: 'Býšť',            tym: 'B', typ: 'liga', kolo: 9,  misto: 'Olšinky, Hlinsko',     skore: null },
+    { datum: '2026-10-10T15:30', domaci: false, souper: 'Rosice',          tym: 'B', typ: 'liga', kolo: 10, misto: 'Rosice',               skore: null },
+    { datum: '2026-10-17T15:30', domaci: true,  souper: 'Načešice',        tym: 'B', typ: 'liga', kolo: 11, misto: 'Olšinky, Hlinsko',     skore: null },
+    { datum: '2026-10-25T14:30', domaci: false, souper: 'Miřetice',        tym: 'B', typ: 'liga', kolo: 12, misto: 'Miřetice',             skore: null },
+    { datum: '2026-11-01T14:00', domaci: true,  souper: 'Morašice',        tym: 'B', typ: 'liga', kolo: 13, misto: 'Olšinky, Hlinsko',     skore: null },
+
+    /* Mládež, podle programu utkání na fchlinsko.cz. Výsledky doplnit z Fotbal.cz. */
+    { datum: '2026-09-16T17:00', domaci: true,  souper: 'Slatiňany',       tym: 'zaci-u15', typ: 'pohar', soutez: 'Pohár starších žáků', misto: 'Olšinky, Hlinsko', skore: null },
+    { datum: '2026-09-19T09:00', domaci: true,  souper: 'Litomyšl, Česká Třebová, Chrudim', tym: 'pripravka', typ: 'turnaj', nazev: 'Turnaj starších a mladších přípravek', misto: 'Olšinky, Hlinsko', skore: null },
+    { datum: '2026-09-19T09:30', domaci: false, souper: 'Přelouč',         tym: 'zaci-u15', typ: 'liga', misto: 'Přelouč', skore: null },
+    { datum: '2026-09-19T11:30', domaci: false, souper: 'Přelouč',         tym: 'zaci-u13', typ: 'liga', misto: 'Přelouč', skore: null },
+    { datum: '2026-09-23T12:00', domaci: true,  souper: 'Svitavy, Orlicko, Česká Třebová, Humpolec, Žďár n/S.', tym: 'pripravka-u11', typ: 'turnaj', nazev: 'Planeo CUP U11 (ročník 2016)', misto: 'Olšinky, Hlinsko', skore: null }
   ];
 
-  var TYP_NAZEV = { liga: 'Mistrovské utkání', pohar: 'MOL Cup', priprava: 'Přípravné utkání' };
+  /* Popisek mužstva u zápasu na stránce Zápasy */
+  var TYM_NAZEV = {
+    'A': 'Muži A', 'B': 'Muži B',
+    'dorost-u19': 'Dorost U19', 'dorost-u17': 'Dorost U17', 'dorost': 'Dorost',
+    'zaci-u15': 'Starší žáci U15', 'zaci-u13': 'Mladší žáci U13', 'zaci': 'Žáci',
+    'pripravka-u11': 'Přípravka U11', 'pripravka-u10': 'Přípravka U10',
+    'pripravka-u9': 'Přípravka U9', 'pripravka-u8': 'Přípravka U8', 'pripravka': 'Přípravky'
+  };
+
+  /* Název soutěže podle mužstva, ukazuje se u mistrovských zápasů */
+  var SOUTEZE = {
+    'A': 'Divize C', 'B': '1.B třída, sk. A',
+    'dorost-u19': '4. liga dorostu U19', 'dorost-u17': '4. liga dorostu U17',
+    'zaci-u15': '3. liga starších žáků', 'zaci-u13': '3. liga mladších žáků'
+  };
+
+  var TYP_NAZEV = { liga: 'Mistrovské utkání', pohar: 'MOL Cup', priprava: 'Přípravné utkání', turnaj: 'Turnaj' };
   var MESICE = ['led', 'úno', 'bře', 'dub', 'kvě', 'čvn', 'čvc', 'srp', 'zář', 'říj', 'lis', 'pro'];
   var MESICE_DLOUHE = ['ledna', 'února', 'března', 'dubna', 'května', 'června',
                       'července', 'srpna', 'září', 'října', 'listopadu', 'prosince'];
@@ -80,8 +144,8 @@
       id: 'slavnostni-otevreni-arealu-olsinky',
       datum: '2026-07-18',
       stitek: 'Areál', stitekZlaty: true,
-      obrazek: 'images/olsinky-panorama.jpg', sirka: 1600, vyska: 900,
-      popisObrazku: 'Hlavní hrací plocha areálu Olšinky s tribunou',
+      obrazek: 'images/areal-otevreni.jpg', sirka: 1600, vyska: 1000,
+      popisObrazku: 'Nová tribuna a hlavní hrací plocha areálu Olšinky od branky',
       nadpis: 'Slavnostní otevření areálu Olšinky',
       perex: 'Utkání přípravek, exhibiční zápas staré gardy, soutěže, hudba a občerstvení. '
            + 'Přijďte si prohlédnout nový areál.',
@@ -93,6 +157,62 @@
       ],
       odkaz: 'klub.html#stadion', odkazText: 'Náš stadion'
     }
+  ];
+
+  /* ------------------------------------------------------------------------
+     NAROZENINY
+     ------------------------------------------------------------------------
+     Na úvodní stránce se samy ukážou ti, kdo slavili za posledních pár dní
+     nebo budou slavit v nejbližším měsíci (rozsah řídí atributy
+     data-dni-zpet a data-dni-dopredu v index.html). Když nikdo neslaví,
+     celá sekce se schová.
+
+     jmeno:  jméno a příjmení
+     datum:  datum narození 'RRRR-MM-DD', z roku se počítá věk
+     tym:    mužstvo nebo funkce, např. 'Muži A', 'Trenér U11'
+
+     POZOR: zatím UKÁZKOVÁ JMÉNA, před spuštěním nahradit skutečnými.
+     U nezletilých hráčů je ke zveřejnění potřeba souhlas rodičů.
+     ---------------------------------------------------------------------- */
+  var NAROZENINY = [
+    { jmeno: 'Tomáš Dvořák',     datum: '1994-09-17', tym: 'Muži A' },
+    { jmeno: 'Adam Kučera',      datum: '2010-09-21', tym: 'Dorost U17' },
+    { jmeno: 'Matěj Horák',      datum: '2012-09-23', tym: 'Žáci U15' },
+    { jmeno: 'Petr Šimek',       datum: '1990-09-26', tym: 'Muži B' },
+    { jmeno: 'Ema Svobodová',    datum: '2016-09-29', tym: 'Přípravka U10' },
+    { jmeno: 'Jakub Marek',      datum: '2008-10-02', tym: 'Dorost U19' },
+    { jmeno: 'Martin Krejčí',    datum: '1987-10-08', tym: 'Trenér U9' },
+    { jmeno: 'Ondřej Pospíšil',  datum: '2014-10-12', tym: 'Žáci U13' },
+    { jmeno: 'Lukáš Veselý',     datum: '1999-11-03', tym: 'Muži A' }
+  ];
+
+  /* ------------------------------------------------------------------------
+     PARTNEŘI
+     ------------------------------------------------------------------------
+     Vykreslí se na úvodní stránce i na stránce Partneři, rozdělení podle
+     úrovně. Pořadí v poli = pořadí na webu.
+
+     uroven: 'generalni' | 'hlavni' | 'partner'
+     web:    odkaz na stránky partnera (nepovinné)
+     ---------------------------------------------------------------------- */
+  var PARTNERI = [
+    { nazev: 'Tatra mléko',          logo: 'images/partneri/tatra.png',         web: 'https://www.tatramleko.cz',             uroven: 'generalni' },
+    { nazev: 'Pivovar Rychtář',      logo: 'images/partneri/rychtar.png',       web: 'https://pivo-rychtar.cz',               uroven: 'hlavni' },
+    { nazev: 'MIAS OC',              logo: 'images/partneri/mias.png',          web: 'https://miasoc.cz',                     uroven: 'hlavni' },
+    { nazev: 'Instav',               logo: 'images/partneri/instav.png',        web: 'https://www.instav.cz',                 uroven: 'hlavni' },
+    { nazev: 'Renos',                logo: 'images/partneri/renos.png',         web: 'https://www.renos.cz',                  uroven: 'hlavni' },
+    { nazev: 'Linea Art',            logo: 'images/partneri/lineaart.png',      web: 'https://lineaart.cz',                   uroven: 'partner' },
+    { nazev: 'Euro Wellness',        logo: 'images/partneri/euro-wellness.png', web: 'https://www.spa-virivky.cz',            uroven: 'partner' },
+    { nazev: 'Steak Bar Bison',      logo: 'images/partneri/bison.png',         web: 'http://www.bisonsteak.cz',              uroven: 'partner' },
+    { nazev: 'Edera',                logo: 'images/partneri/edera.png',         web: 'https://www.edera.cz',                  uroven: 'partner' },
+    { nazev: 'Trigi',                logo: 'images/partneri/trigi.png',         web: 'https://trigi.cz',                      uroven: 'partner' },
+    { nazev: 'Huky elektromontáže',  logo: 'images/partneri/huky.png',          web: 'https://www.elektro-montaze-prodej.com', uroven: 'partner' }
+  ];
+
+  var UROVNE_PARTNERU = [
+    { klic: 'generalni', jeden: 'Generální partner', vice: 'Generální partneři' },
+    { klic: 'hlavni',    jeden: 'Hlavní partner',    vice: 'Hlavní partneři' },
+    { klic: 'partner',   jeden: 'Partner',           vice: 'Partneři' }
   ];
 
 
@@ -255,29 +375,50 @@
     return tym === klic || tym.indexOf(klic + '-') === 0;
   }
 
-  function fixtureHtml(z, now) {
+  var IKONA_DRES = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M8 3 3 6l2 4 2-1v12h10V9l2 1 2-4-5-3a4 4 0 0 1-8 0z"/></svg>';
+  var IKONA_CAS = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>';
+  var IKONA_MISTO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>';
+
+  /* ukazTym: na stránce Zápasy je u každého zápasu i popisek mužstva */
+  function fixtureHtml(z, now, ukazTym) {
     var d = parseDatum(z.datum);
     var odehrano = d.getTime() < now;
+    var turnaj = z.typ === 'turnaj';
 
     var cls = ['fixture'];
     if (z.domaci) cls.push('is-home');
     if (z.typ === 'pohar') cls.push('is-cup');
     if (odehrano) cls.push('is-done');
 
-    var domaciTym = z.domaci ? 'FC Hlinsko' : z.souper;
-    var hosteTym = z.domaci ? z.souper : 'FC Hlinsko';
     var zvyrazni = function (n) {
       return n === 'FC Hlinsko' ? '<b>' + esc(n) + '</b>' : esc(n);
     };
+    var tymy = turnaj
+      ? '<b>' + esc(z.nazev || TYP_NAZEV.turnaj) + '</b>'
+      : zvyrazni(z.domaci ? 'FC Hlinsko' : z.souper) + '<i>vs</i>' + zvyrazni(z.domaci ? z.souper : 'FC Hlinsko');
 
-    var badge = z.typ === 'pohar'
-      ? '<span class="fixture__badge fixture__badge--cup">Pohár</span>'
-      : (z.domaci ? '<span class="fixture__badge fixture__badge--home">Doma</span>'
-                  : '<span class="fixture__badge">Venku</span>');
+    var badge = turnaj
+      ? '<span class="fixture__badge fixture__badge--home">Turnaj</span>'
+      : z.typ === 'pohar'
+        ? '<span class="fixture__badge fixture__badge--cup">Pohár</span>'
+        : (z.domaci ? '<span class="fixture__badge fixture__badge--home">Doma</span>'
+                    : '<span class="fixture__badge">Venku</span>');
 
-    var pravy = z.skore
-      ? '<div class="fixture__time">' + esc(z.skore) + '</div>' + badge
-      : '<div class="fixture__time">' + pad(d.getHours()) + ':' + pad(d.getMinutes()) + '</div>' + badge;
+    /* Odehraný zápas bez výsledku: raději –:– než čas výkopu */
+    var vpravo;
+    var v = vysledek(z);
+    if (z.skore) {
+      vpravo = '<div class="fixture__time' + (v ? ' fixture__time--' + v : '') + '"'
+        + (v ? ' title="' + VYSLEDEK[v].nazev + '"' : '') + '>' + esc(z.skore) + '</div>';
+    }
+    else if (odehrano && !turnaj) vpravo = '<div class="fixture__time fixture__time--na" title="Výsledek zatím nemáme">–:–</div>';
+    else vpravo = '<div class="fixture__time">' + pad(d.getHours()) + ':' + pad(d.getMinutes()) + '</div>';
+
+    var info = [];
+    if (ukazTym && TYM_NAZEV[z.tym]) info.push('<span class="fixture__tym">' + IKONA_DRES + esc(TYM_NAZEV[z.tym]) + '</span>');
+    info.push('<span>' + IKONA_CAS + esc(turnaj ? TYP_NAZEV.turnaj : soutezZapasu(z)) + '</span>');
+    info.push('<span>' + IKONA_MISTO + esc(z.misto) + '</span>');
+    if (turnaj && z.souper) info.push('<span class="fixture__ucast">Hrají: ' + esc(z.souper) + '</span>');
 
     return '<article class="' + cls.join(' ') + '">' +
       '<div class="fixture__date">' +
@@ -285,55 +426,111 @@
         '<span class="fixture__mon">' + MESICE[d.getMonth()] + ' ' + d.getFullYear() + '</span>' +
       '</div>' +
       '<div class="fixture__main">' +
-        '<div class="fixture__teams">' + zvyrazni(domaciTym) + '<i>vs</i>' + zvyrazni(hosteTym) + '</div>' +
-        '<div class="fixture__info">' +
-          '<span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>' + esc(TYP_NAZEV[z.typ] || '') + '</span>' +
-          '<span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>' + esc(z.misto) + '</span>' +
-        '</div>' +
+        '<div class="fixture__teams">' + tymy + '</div>' +
+        '<div class="fixture__info">' + info.join('') + '</div>' +
       '</div>' +
-      '<div class="fixture__right">' + pravy + '</div>' +
+      '<div class="fixture__right">' + vpravo + badge + '</div>' +
     '</article>';
   }
 
+  /* Filtr na stránce Zápasy: mužstvo (včetně podkategorií, 'zaci' bere
+     i 'zaci-u15'), případně typ zápasu */
+  function sediFiltr(z, filtr) {
+    if (!filtr || filtr === 'vse') return true;
+    return z.typ === filtr || tymSedi(z.tym, filtr);
+  }
+
+  /* Rozpis na stránce Zápasy: nahoře nadcházející (od nejbližšího),
+     pod nimi odehrané (od posledního) */
   function initFixtureList() {
     var host = $('#fixture-list');
     if (!host) return;
 
+    /* Skupina ukáže prvních pár zápasů, zbytek schová za tlačítko */
+    function skupina(nadpis, polozky, limit) {
+      var vice = polozky.length > limit + 2 ? polozky.slice(limit) : [];
+      var hlavni = vice.length ? polozky.slice(0, limit) : polozky;
+      return '<div class="fixgroup">' +
+        '<h3 class="fixgroup__h">' + nadpis + ' <span>' + polozky.length + '</span></h3>' +
+        '<div class="fixtures">' + hlavni.join('') + '</div>' +
+        (vice.length
+          ? '<div class="fixtures fixgroup__vice" hidden>' + vice.join('') + '</div>' +
+            '<button class="link-arrow fixgroup__btn" type="button" aria-expanded="false">' +
+              '<span>Zobrazit všechny (' + polozky.length + ')</span>' + IKONA_DOLU + '</button>'
+          : '') +
+      '</div>';
+    }
+
+    host.addEventListener('click', function (e) {
+      var btn = e.target.closest('.fixgroup__btn');
+      if (!btn) return;
+      var box = btn.previousElementSibling;
+      var otevrit = box.hidden;
+      box.hidden = !otevrit;
+      btn.setAttribute('aria-expanded', otevrit ? 'true' : 'false');
+      btn.querySelector('span').textContent = otevrit
+        ? 'Zobrazit méně'
+        : 'Zobrazit všechny (' + btn.closest('.fixgroup').querySelectorAll('.fixture').length + ')';
+    });
+
     function render(filtr) {
       var now = Date.now();
-      var data = ZAPASY.slice().sort(function (a, b) {
-        return parseDatum(a.datum) - parseDatum(b.datum);
-      });
-
-      if (filtr && filtr !== 'vse') {
-        data = data.filter(function (z) {
-          return z.typ === filtr || tymSedi(z.tym, filtr);
-        });
-      }
+      var data = ZAPASY.filter(function (z) { return sediFiltr(z, filtr); });
+      /* Zápas je "nadcházející" ještě dvě hodiny po výkopu, pokud nemá skóre */
+      var jeBudouci = function (z) {
+        return !z.skore && parseDatum(z.datum).getTime() > now - 2 * 3600 * 1000;
+      };
+      var budouci = data.filter(jeBudouci)
+        .sort(function (a, b) { return parseDatum(a.datum) - parseDatum(b.datum); });
+      var odehrane = data.filter(function (z) { return !jeBudouci(z); })
+        .sort(function (a, b) { return parseDatum(b.datum) - parseDatum(a.datum); });
 
       if (!data.length) {
-        host.innerHTML = '<p class="sec-lead">Pro tento výběr zatím nemáme žádné zápasy.</p>';
+        host.innerHTML = '<p class="sec-lead">Rozpis tohoto mužstva zatím nemáme. Kompletní '
+          + 'rozlosování najdete v tabulkách na Fotbal.cz níže.</p>';
         return;
       }
 
-      host.innerHTML = data.map(function (z) {
-        return fixtureHtml(z, now);
-      }).join('');
+      /* Popisek mužstva jen tam, kde záložka zahrnuje víc kategorií */
+      var vicTymu = filtr !== 'A' && filtr !== 'B';
+      var html = function (z) { return fixtureHtml(z, now, vicTymu); };
+      host.innerHTML =
+        (budouci.length ? skupina('Nadcházející', budouci.map(html), 6) : '') +
+        (odehrane.length ? skupina('Odehrané výsledky', odehrane.map(html), 8) : '');
     }
 
-    render('vse');
+    var tlacitka = $$('[data-filter]');
 
-    $$('[data-filter]').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        $$('[data-filter]').forEach(function (b) {
-          b.classList.remove('is-active');
-          b.setAttribute('aria-pressed', 'false');
-        });
-        btn.classList.add('is-active');
-        btn.setAttribute('aria-pressed', 'true');
-        render(btn.getAttribute('data-filter'));
-      });
+    /* Počet zápasů v záložce */
+    tlacitka.forEach(function (btn) {
+      var klic = btn.getAttribute('data-filter');
+      var n = ZAPASY.filter(function (z) { return sediFiltr(z, klic); }).length;
+      btn.insertAdjacentHTML('beforeend', ' <span class="tab__n">' + n + '</span>');
     });
+
+    function vyber(btn, zapsat) {
+      tlacitka.forEach(function (b) {
+        b.classList.toggle('is-active', b === btn);
+        b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
+      });
+      render(btn.getAttribute('data-filter'));
+      var kotva = btn.getAttribute('data-kotva');
+      if (zapsat && kotva && window.history && history.replaceState) {
+        history.replaceState(null, '', '#' + kotva);
+      }
+    }
+
+    tlacitka.forEach(function (btn) {
+      btn.addEventListener('click', function () { vyber(btn, true); });
+    });
+
+    /* zapasy.html#muzi-b rovnou otevře béčko */
+    var zAdresy = location.hash.slice(1);
+    var start = tlacitka.filter(function (b) { return b.getAttribute('data-kotva') === zAdresy; })[0]
+      || tlacitka.filter(function (b) { return b.classList.contains('is-active'); })[0]
+      || tlacitka[0];
+    if (start) vyber(start, false);
+    else render('vse');
   }
 
   /* ------------------------------------------------------------------------
@@ -466,51 +663,506 @@
   }
 
   /* ------------------------------------------------------------------------
-     9. TABULKA SOUTĚŽE, VOLITELNÁ
+     9. TABULKA SOUTĚŽE MUŽŮ A
      ------------------------------------------------------------------------
-     Zůstane-li pole prázdné, blok s tabulkou se vůbec nezobrazí a na stránce
-     je jen odkaz na Fotbal.cz. Chcete-li pořadí zobrazit přímo na webu,
-     doplňte řádky podle tabulky na Fotbal.cz, například:
-
-       { poradi: 1, tym: 'FC Hlinsko', z: 6, v: 4, r: 1, p: 1, skore: '12:6', b: 13 },
+     Opisuje se ručně z Fotbal.cz nebo fotbalunas.cz po každém kole.
+     Řádek s tym: 'FC Hlinsko' se sám zvýrazní. Zůstane-li pole prázdné,
+     panel s tabulkou se vůbec nezobrazí.
 
      Nezapomeňte pak aktualizovat i datum v TABULKA_AKTUALIZOVANO.
      ---------------------------------------------------------------------- */
-  var TABULKA = [];
-  var TABULKA_AKTUALIZOVANO = '';
+  var TABULKA = [
+    { poradi: 1,  tym: 'FK Přepeře',                z: 7, v: 6, r: 0, p: 1, skore: '24:8',  b: 18 },
+    { poradi: 2,  tym: 'SK Vysoké Mýto',            z: 7, v: 5, r: 2, p: 0, skore: '24:12', b: 17 },
+    { poradi: 3,  tym: 'SK Kosmonosy',              z: 7, v: 5, r: 1, p: 1, skore: '23:10', b: 16 },
+    { poradi: 4,  tym: 'TJ Jiskra Ústí nad Orlicí', z: 7, v: 4, r: 2, p: 1, skore: '16:7',  b: 14 },
+    { poradi: 5,  tym: 'FC Hlinsko',                z: 7, v: 4, r: 1, p: 2, skore: '14:11', b: 13 },
+    { poradi: 6,  tym: 'SK Sparta Kolín',           z: 7, v: 3, r: 3, p: 1, skore: '13:12', b: 12 },
+    { poradi: 7,  tym: 'FK Čechie Vykáň',           z: 6, v: 3, r: 1, p: 2, skore: '16:9',  b: 10 },
+    { poradi: 8,  tym: 'FK Turnov',                 z: 7, v: 3, r: 1, p: 3, skore: '17:14', b: 10 },
+    { poradi: 9,  tym: 'MFK Trutnov',               z: 7, v: 3, r: 1, p: 3, skore: '12:10', b: 10 },
+    { poradi: 10, tym: 'FK Chlumec nad Cidlinou',   z: 7, v: 3, r: 1, p: 3, skore: '12:13', b: 10 },
+    { poradi: 11, tym: 'TJ Dvůr Králové nad Labem', z: 7, v: 2, r: 1, p: 4, skore: '8:11',  b: 7 },
+    { poradi: 12, tym: 'FC Slavia Hradec Králové',  z: 6, v: 2, r: 1, p: 3, skore: '11:15', b: 7 },
+    { poradi: 13, tym: 'Spartak Police nad Metují', z: 7, v: 2, r: 0, p: 5, skore: '10:17', b: 6 },
+    { poradi: 14, tym: 'TJ Svitavy',                z: 7, v: 1, r: 2, p: 4, skore: '6:14',  b: 5 },
+    { poradi: 15, tym: 'MFK Chrudim B',             z: 7, v: 0, r: 1, p: 6, skore: '10:33', b: 1 },
+    { poradi: 16, tym: 'FK Letohrad',               z: 7, v: 0, r: 0, p: 7, skore: '8:28',  b: 0 }
+  ];
+  var TABULKA_AKTUALIZOVANO = '21. 9. 2026';
+
+  var IKONA_SIPKA = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" '
+    + 'aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+  var IKONA_DOLU = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" '
+    + 'aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
 
   function initTable() {
-    var host = $('#tabulka-a');
+    $$('[data-tabulka]').forEach(function (host) {
+      if (!TABULKA.length) {
+        var panel = host.closest('.apanel');
+        (panel || host).remove();
+        return;
+      }
+
+      /* Ve sbaleném stavu je vidět jen okno řádků kolem Hlinska */
+      var okno = parseInt(host.getAttribute('data-okno'), 10) || 0;
+      var nas = 0;
+      TABULKA.forEach(function (t, i) { if (t.tym === 'FC Hlinsko') nas = i; });
+      var od = 0;
+      var sbalit = okno > 0 && okno < TABULKA.length;
+      if (sbalit) {
+        od = Math.max(0, Math.min(nas - Math.floor(okno / 2), TABULKA.length - okno));
+      }
+
+      var radky = TABULKA.map(function (t, i) {
+        var cls = [];
+        if (t.tym === 'FC Hlinsko') cls.push('is-us');
+        if (sbalit && (i < od || i >= od + okno)) cls.push('is-extra');
+        return '<tr' + (cls.length ? ' class="' + cls.join(' ') + '"' : '') + '>' +
+          '<td class="c-pos">' + esc(t.poradi) + '.</td>' +
+          '<th class="c-team" scope="row">' + esc(t.tym) + '</th>' +
+          '<td>' + esc(t.z) + '</td>' +
+          '<td class="c-opt">' + esc(t.v) + '</td>' +
+          '<td class="c-opt">' + esc(t.r) + '</td>' +
+          '<td class="c-opt">' + esc(t.p) + '</td>' +
+          '<td class="c-score">' + esc(t.skore) + '</td>' +
+          '<td class="c-pts">' + esc(t.b) + '</td>' +
+        '</tr>';
+      }).join('');
+
+      host.innerHTML =
+        '<div class="ltable-wrap">' +
+          '<table class="ltable' + (sbalit ? ' is-collapsed' : '') + '">' +
+            '<caption class="sr-only">Průběžná tabulka soutěže, stav k ' + esc(TABULKA_AKTUALIZOVANO) + '</caption>' +
+            '<thead><tr>' +
+              '<th scope="col" class="c-pos"><abbr title="Pořadí">#</abbr></th>' +
+              '<th scope="col" class="c-team">Tým</th>' +
+              '<th scope="col"><abbr title="Zápasy">Z</abbr></th>' +
+              '<th scope="col" class="c-opt"><abbr title="Výhry">V</abbr></th>' +
+              '<th scope="col" class="c-opt"><abbr title="Remízy">R</abbr></th>' +
+              '<th scope="col" class="c-opt"><abbr title="Prohry">P</abbr></th>' +
+              '<th scope="col" class="c-score">Skóre</th>' +
+              '<th scope="col" class="c-pts"><abbr title="Body">B</abbr></th>' +
+            '</tr></thead>' +
+            '<tbody>' + radky + '</tbody>' +
+          '</table>' +
+        '</div>' +
+        '<div class="apanel__foot">' +
+          (sbalit
+            ? '<button class="link-arrow ltable-toggle" type="button" aria-expanded="false">'
+              + '<span>Celá tabulka</span>' + IKONA_DOLU + '</button>'
+            : '') +
+          (TABULKA_AKTUALIZOVANO ? '<span class="apanel__note">Stav k ' + esc(TABULKA_AKTUALIZOVANO) + '</span>' : '') +
+        '</div>';
+
+      var btn = $('.ltable-toggle', host);
+      var tbl = $('.ltable', host);
+      /* Panely vedle sebe drží stejnou výšku jen ve sbaleném stavu */
+      var mrizka = host.closest('.ateam__data, .data-grid');
+      if (btn && tbl) {
+        btn.addEventListener('click', function () {
+          var zavreno = tbl.classList.toggle('is-collapsed');
+          btn.setAttribute('aria-expanded', zavreno ? 'false' : 'true');
+          btn.querySelector('span').textContent = zavreno ? 'Celá tabulka' : 'Sbalit tabulku';
+          if (mrizka) mrizka.classList.toggle('is-open', !zavreno);
+        });
+      }
+    });
+  }
+
+  /* ------------------------------------------------------------------------
+     9b. VÝSLEDKY, FORMA A ZÁPASY V HERU
+     ---------------------------------------------------------------------- */
+  var DNY = ['Ne', 'Po', 'Út', 'St', 'Čt', 'Pá', 'So'];
+  var VYSLEDEK = {
+    v: { nazev: 'Výhra', zkratka: 'V' },
+    r: { nazev: 'Remíza', zkratka: 'R' },
+    p: { nazev: 'Prohra', zkratka: 'P' }
+  };
+
+  /* Výsledek z pohledu Hlinska: 'v', 'r', 'p', nebo null když se nehrálo */
+  function vysledek(z) {
+    var m = /^\s*(\d+)\s*:\s*(\d+)\s*$/.exec(String(z.skore || ''));
+    if (!m) return null;
+    var nase = z.domaci ? +m[1] : +m[2];
+    var jejich = z.domaci ? +m[2] : +m[1];
+    return nase > jejich ? 'v' : (nase < jejich ? 'p' : 'r');
+  }
+
+  function zapasyTymu(klic) {
+    return ZAPASY
+      .filter(function (z) { return tymSedi(z.tym, klic); })
+      .sort(function (a, b) { return parseDatum(a.datum) - parseDatum(b.datum); });
+  }
+
+  function datumKratce(d) {
+    return DNY[d.getDay()] + ' ' + d.getDate() + '. ' + (d.getMonth() + 1) + '.';
+  }
+
+  function cas(d) { return pad(d.getHours()) + ':' + pad(d.getMinutes()); }
+
+  /* Kolik dní zbývá do zápasu, česky */
+  function zaKolik(d, now) {
+    if (d.getTime() <= now) return 'Právě se hraje';
+    var dnes = new Date(now); dnes.setHours(0, 0, 0, 0);
+    var den = new Date(d.getTime()); den.setHours(0, 0, 0, 0);
+    var n = Math.round((den - dnes) / 86400000);
+    if (n <= 0) return 'Dnes';
+    if (n === 1) return 'Zítra';
+    return 'Za ' + n + (n <= 4 ? ' dny' : ' dní');
+  }
+
+  /* Soupeř bez znaku dostane kolečko se zkratkou */
+  function zkratka(nazev) {
+    var slovo = String(nazev).replace(/[^A-Za-zÀ-ž]+/g, ' ').trim().split(' ')[0] || '?';
+    return slovo.slice(0, 3).toUpperCase();
+  }
+
+  function tymLogo(nazev) {
+    if (nazev === 'FC Hlinsko') {
+      return '<span class="tlogo tlogo--nas"><img src="images/znak-fchlinsko.png" alt="" width="220" height="290"></span>';
+    }
+    return '<span class="tlogo" aria-hidden="true">' + esc(zkratka(nazev)) + '</span>';
+  }
+
+  function soutezZapasu(z) {
+    var nazev = z.soutez
+      || (z.typ === 'liga' ? (SOUTEZE[z.tym] || TYP_NAZEV.liga) : (TYP_NAZEV[z.typ] || ''));
+    return nazev + (z.kolo ? ' · ' + z.kolo + '. kolo' : '');
+  }
+
+  /* Polovina zápasového pruhu v heru: nadpis s údaji vlevo, zápas vpravo */
+  function heroKarta(z, posledni, now) {
+    var d = parseDatum(z.datum);
+    var dom = z.domaci ? 'FC Hlinsko' : z.souper;
+    var hos = z.domaci ? z.souper : 'FC Hlinsko';
+    var v = posledni ? vysledek(z) : null;
+    var skore = v ? String(z.skore).replace(/\s/g, '').split(':') : null;
+
+    var stred = v
+      ? '<span class="hm__score"><span class="sr-only">Skóre </span>' + esc(skore[0])
+        + '<i aria-hidden="true">:</i><span class="sr-only"> : </span>' + esc(skore[1]) + '</span>'
+        + '<span class="hm__res hm__res--' + v + '">' + VYSLEDEK[v].nazev + '</span>'
+      : '<span class="hm__date">' + datumKratce(d) + '</span>'
+        + '<span class="hm__score">' + cas(d) + '</span>'
+        + '<span class="hm__when">' + esc(zaKolik(d, now)) + '</span>';
+
+    var meta = posledni
+      ? soutezZapasu(z) + ' · ' + datumKratce(d)
+      : soutezZapasu(z) + ' · ' + z.misto;
+
+    /* Domácí: znak a jméno k výsledku, hosté: jméno a znak od výsledku */
+    var tym = function (n, strana) {
+      var jmeno = '<span class="hm__name">' + esc(n) + '</span>';
+      return '<span class="hm__team hm__team--' + strana + (n === 'FC Hlinsko' ? ' is-us' : '') + '">' +
+        (strana === 'dom' ? tymLogo(n) + jmeno : jmeno + tymLogo(n)) + '</span>';
+    };
+
+    return '<a class="hm' + (posledni ? ' hm--last' : ' hm--next') + '" href="'
+      + (posledni ? '#vysledky' : 'zapasy.html#muzi-a') + '">' +
+      '<span class="hm__head">' +
+        '<span class="hm__label">' + (posledni ? 'Poslední zápas' : 'Příští zápas') + '</span>' +
+        '<span class="hm__meta">' + esc(meta) + '</span>' +
+      '</span>' +
+      '<span class="hm__match">' + tym(dom, 'dom') + '<span class="hm__center">' + stred + '</span>' + tym(hos, 'hos') + '</span>' +
+    '</a>';
+  }
+
+  function initHeroZapasy() {
+    var host = $('[data-hero-zapasy]');
     if (!host) return;
+    var klic = host.getAttribute('data-hero-zapasy') || 'A';
+    var now = Date.now();
+    var vse = zapasyTymu(klic);
 
-    if (!TABULKA.length) { host.remove(); return; }
+    var odehrane = vse.filter(function (z) { return vysledek(z); });
+    var posledni = odehrane[odehrane.length - 1];
+    /* Příští = první bez skóre, který nezačal před víc než dvěma hodinami */
+    var dalsi = vse.filter(function (z) {
+      return !z.skore && parseDatum(z.datum).getTime() > now - 2 * 3600 * 1000;
+    })[0];
 
-    var radky = TABULKA.map(function (t) {
-      var nas = t.tym === 'FC Hlinsko';
-      return '<tr' + (nas ? ' class="is-us"' : '') + '>' +
-        '<td>' + esc(t.poradi) + '.</td>' +
-        '<td class="t-name">' + esc(t.tym) + '</td>' +
-        '<td>' + esc(t.z) + '</td>' +
-        '<td>' + esc(t.v) + '</td>' +
-        '<td>' + esc(t.r) + '</td>' +
-        '<td>' + esc(t.p) + '</td>' +
-        '<td>' + esc(t.skore) + '</td>' +
-        '<td><strong>' + esc(t.b) + '</strong></td>' +
-      '</tr>';
-    }).join('');
+    if (!posledni && !dalsi) {
+      var pruh = host.closest('.hero__bar');
+      (pruh || host).remove();
+      return;
+    }
 
-    host.innerHTML =
-      '<div class="table-wrap">' +
-        '<table class="tbl">' +
-          (TABULKA_AKTUALIZOVANO ? '<caption>Průběžné pořadí k ' + esc(TABULKA_AKTUALIZOVANO) + '</caption>' : '') +
-          '<thead><tr>' +
-            '<th scope="col">#</th><th scope="col">Tým</th><th scope="col">Z</th>' +
-            '<th scope="col">V</th><th scope="col">R</th><th scope="col">P</th>' +
-            '<th scope="col">Skóre</th><th scope="col">B</th>' +
-          '</tr></thead>' +
-          '<tbody>' + radky + '</tbody>' +
-        '</table>' +
-      '</div>';
+    /* Mezi oběma zápasy půlicí čára se středovým kruhem */
+    host.innerHTML = (posledni ? heroKarta(posledni, true, now) : '') +
+      (posledni && dalsi ? '<span class="hbar__line" aria-hidden="true"></span>' : '') +
+      (dalsi ? heroKarta(dalsi, false, now) : '');
+    if (!(posledni && dalsi)) host.classList.add('is-single');
+  }
+
+  function initVysledky() {
+    $$('[data-vysledky]').forEach(function (host) {
+      var klic = host.getAttribute('data-vysledky');
+      var limit = parseInt(host.getAttribute('data-limit'), 10) || 5;
+      var data = zapasyTymu(klic).filter(function (z) { return vysledek(z); }).slice(-limit);
+
+      /* Forma z posledních pěti: nejstarší vlevo, poslední zápas vpravo */
+      var forma = $('[data-forma="' + klic + '"]', host.closest('.apanel') || document);
+      if (forma) {
+        forma.innerHTML = data.length
+          ? '<span class="forma__k">Forma</span>' + data.slice(-5).map(function (z) {
+              var v = vysledek(z);
+              return '<span class="fm fm--' + v + '" title="' + VYSLEDEK[v].nazev + ', ' + esc(z.souper) + '">'
+                + VYSLEDEK[v].zkratka + '</span>';
+            }).join('')
+          : '';
+      }
+
+      if (!data.length) {
+        host.innerHTML = '<p class="apanel__empty">Výsledky se tu objeví po prvním odehraném zápase.</p>';
+        return;
+      }
+
+      host.innerHTML = '<ol class="results">' + data.reverse().map(function (z) {
+        var d = parseDatum(z.datum);
+        var v = vysledek(z);
+        var dom = z.domaci ? 'FC Hlinsko' : z.souper;
+        var hos = z.domaci ? z.souper : 'FC Hlinsko';
+        var jmeno = function (n, strana) {
+          return '<span class="rrow__team rrow__team--' + strana + (n === 'FC Hlinsko' ? ' is-us' : '') + '">' + esc(n) + '</span>';
+        };
+        return '<li class="rrow">' +
+          '<span class="rrow__date"><b>' + d.getDate() + '. ' + (d.getMonth() + 1) + '.</b>' + DNY[d.getDay()] + '</span>' +
+          jmeno(dom, 'dom') +
+          '<span class="rrow__score">' + esc(String(z.skore).replace(/\s/g, '')) + '</span>' +
+          jmeno(hos, 'hos') +
+          '<span class="fm fm--' + v + '" title="' + VYSLEDEK[v].nazev + '">' + VYSLEDEK[v].zkratka + '</span>' +
+        '</li>';
+      }).join('') + '</ol>';
+    });
+  }
+
+  /* ------------------------------------------------------------------------
+     9c. NAROZENINY
+     ---------------------------------------------------------------------- */
+  function slovoRok(n) { return n === 1 ? 'rok' : (n >= 2 && n <= 4 ? 'roky' : 'let'); }
+
+  function initNarozeniny() {
+    $$('[data-narozeniny]').forEach(function (host) {
+      var zpet = parseInt(host.getAttribute('data-dni-zpet'), 10);
+      var dopredu = parseInt(host.getAttribute('data-dni-dopredu'), 10);
+      var limit = parseInt(host.getAttribute('data-limit'), 10) || 8;
+      if (isNaN(zpet)) zpet = 7;
+      if (isNaN(dopredu)) dopredu = 30;
+
+      var dnes = new Date(); dnes.setHours(0, 0, 0, 0);
+      var vyber = [];
+
+      NAROZENINY.forEach(function (n) {
+        var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(n.datum);
+        if (!m) return;
+        /* Letošní, loňské i příští narozeniny, kvůli přelomu roku */
+        [-1, 0, 1].forEach(function (posun) {
+          var rok = dnes.getFullYear() + posun;
+          var d = new Date(rok, +m[2] - 1, +m[3]);
+          var rozdil = Math.round((d - dnes) / 86400000);
+          if (rozdil >= -zpet && rozdil <= dopredu) {
+            vyber.push({ n: n, d: d, rozdil: rozdil, vek: rok - (+m[1]) });
+          }
+        });
+      });
+
+      vyber.sort(function (a, b) { return a.rozdil - b.rozdil; });
+      /* Když je jich moc, jako první odpadnou ti, kdo už slavili */
+      while (vyber.length > limit && vyber[0].rozdil < 0) vyber.shift();
+      vyber = vyber.slice(0, limit);
+
+      if (!vyber.length) {
+        var sekce = host.closest('section');
+        if (sekce) sekce.hidden = true;
+        return;
+      }
+
+      host.innerHTML = vyber.map(function (x, i) {
+        var r = x.rozdil;
+        var kdy = r === 0 ? 'Dnes slaví'
+          : r === 1 ? 'Zítra'
+          : r === -1 ? 'Včera'
+          : r > 0 ? 'Za ' + r + (r <= 4 ? ' dny' : ' dní')
+          : 'Před ' + (-r) + ' dny';
+        var cls = 'bday reveal' + (r === 0 ? ' is-today' : '') + (r < 0 ? ' is-past' : '');
+        return '<article class="' + cls + '" data-d="' + ((i % 4) + 1) + '">' +
+          '<div class="bday__date"><span class="bday__day">' + x.d.getDate() + '.</span>' +
+            '<span class="bday__mon">' + MESICE_DLOUHE[x.d.getMonth()] + '</span></div>' +
+          '<div class="bday__body">' +
+            '<span class="bday__when">' + kdy + '</span>' +
+            '<h3 class="bday__name">' + esc(x.n.jmeno) + '</h3>' +
+            '<p class="bday__meta">' + esc(x.n.tym) +
+              (x.vek > 0 ? '<span aria-hidden="true"> · </span><b>' + x.vek + ' ' + slovoRok(x.vek) + '</b>' : '') +
+            '</p>' +
+          '</div>' +
+        '</article>';
+      }).join('');
+    });
+  }
+
+  /* ------------------------------------------------------------------------
+     9d. PARTNEŘI PODLE ÚROVNĚ
+     ---------------------------------------------------------------------- */
+  /* Kopie loga v karuselu jsou jen na oko, čtečky a Tab je přeskočí */
+  function logoPartnera(p, kopie, lina) {
+    var img = '<img src="' + esc(p.logo) + '" alt="' + (kopie ? '' : esc(p.nazev)) + '"'
+      + (lina ? ' loading="lazy"' : '') + ' decoding="async">';
+    var skryt = kopie ? ' aria-hidden="true" tabindex="-1"' : '';
+    return p.web
+      ? '<a class="plogo" href="' + esc(p.web) + '" target="_blank" rel="noopener"' + skryt + '>' + img + '</a>'
+      : '<span class="plogo"' + (kopie ? ' aria-hidden="true"' : '') + '>' + img + '</span>';
+  }
+
+  /* data-partneri="karusel": každá úroveň je nekonečný běžící pás.
+     Sada log se opakuje, dokud je jich aspoň MIN, aby i jediný generální
+     partner vyplnil celou šířku a jezdil dokola. */
+  var KARUSEL_MIN = { generalni: 4, hlavni: 8, partner: 12 };
+  var KARUSEL_RYCHLOST = { generalni: 28, hlavni: 38, partner: 42 };   /* px za sekundu */
+
+  function initPartneri() {
+    $$('[data-partneri]').forEach(function (host) {
+      var karusel = host.getAttribute('data-partneri') === 'karusel' && !reduceMotion;
+
+      host.innerHTML = UROVNE_PARTNERU.map(function (u, i) {
+        var seznam = PARTNERI.filter(function (p) { return p.uroven === u.klic; });
+        if (!seznam.length) return '';
+        var hlava = '<h3 class="ptier__h"><span>' + (seznam.length > 1 ? u.vice : u.jeden) + '</span></h3>';
+
+        if (!karusel) {
+          return '<div class="ptier ptier--' + u.klic + ' reveal" data-d="' + (i + 1) + '">' + hlava +
+            '<div class="ptier__grid">' + seznam.map(function (p) {
+              return logoPartnera(p, false, true);
+            }).join('') + '</div></div>';
+        }
+
+        var sada = [];
+        while (sada.length < (KARUSEL_MIN[u.klic] || 10)) sada = sada.concat(seznam);
+        /* Dvě stejné poloviny, animace posouvá pás přesně o jednu z nich */
+        var polozky = sada.concat(sada).map(function (p, j) {
+          return logoPartnera(p, j >= seznam.length, false);
+        }).join('');
+
+        return '<div class="ptier ptier--' + u.klic + ' reveal" data-d="' + (i + 1) + '">' + hlava +
+          '<div class="marquee ptier__pas' + (i % 2 ? ' marquee--rev' : '') + '">' +
+            '<div class="marquee__track" data-cloned="1" data-rychlost="' + (KARUSEL_RYCHLOST[u.klic] || 40) + '">' +
+              polozky +
+            '</div>' +
+          '</div></div>';
+      }).join('');
+
+      /* Stejná rychlost pohybu bez ohledu na počet log */
+      $$('.ptier__pas .marquee__track', host).forEach(function (track) {
+        var pul = track.scrollWidth / 2;
+        var rychlost = parseFloat(track.getAttribute('data-rychlost')) || 40;
+        if (pul > 0) track.style.animationDuration = Math.round(pul / rychlost) + 's';
+      });
+    });
+  }
+
+  /* ------------------------------------------------------------------------
+     9e. COOKIES A OBSAH TŘETÍCH STRAN
+     ------------------------------------------------------------------------
+     Web sám žádné cookies nepotřebuje. Jediný obsah třetí strany, který je
+     může ukládat, je mapa Googlu na stránce Kontakt, ta se proto načte až
+     se souhlasem. Volba se pamatuje v localStorage prohlížeče.
+     ---------------------------------------------------------------------- */
+  var SOUHLAS_KLIC = 'fch-souhlas';
+
+  function nactiSouhlas() {
+    try {
+      var s = JSON.parse(window.localStorage.getItem(SOUHLAS_KLIC) || 'null');
+      return s && typeof s.externi === 'boolean' ? s : null;
+    } catch (e) { return null; }
+  }
+
+  function ulozSouhlas(externi) {
+    try {
+      window.localStorage.setItem(SOUHLAS_KLIC, JSON.stringify({ externi: externi, datum: new Date().toISOString() }));
+    } catch (e) { /* bez úložiště se lišta ukáže znovu, nic horšího se nestane */ }
+  }
+
+  function nactiMapy() {
+    $$('[data-mapa]').forEach(function (box) {
+      if (box.querySelector('iframe')) return;
+      var f = document.createElement('iframe');
+      f.src = box.getAttribute('data-mapa');
+      f.title = box.getAttribute('data-mapa-titulek') || 'Mapa';
+      f.loading = 'lazy';
+      f.referrerPolicy = 'no-referrer-when-downgrade';
+      box.innerHTML = '';
+      box.appendChild(f);
+      box.classList.add('is-loaded');
+    });
+  }
+
+  function initCookies() {
+    var souhlas = nactiSouhlas();
+    var lista = null;
+
+    function stav() {
+      var s = nactiSouhlas();
+      $$('[data-cookies-stav]').forEach(function (el) {
+        el.textContent = !s ? 'Zatím jste nevybrali.'
+          : s.externi ? 'Povoleno vše, včetně obsahu třetích stran.'
+          : 'Jen nezbytné, obsah třetích stran je blokovaný.';
+      });
+    }
+
+    function zavri() {
+      if (!lista) return;
+      lista.classList.remove('is-on');
+      document.body.classList.remove('has-cookiebar');
+    }
+
+    function zvol(externi) {
+      ulozSouhlas(externi);
+      if (externi) nactiMapy();
+      stav();
+      zavri();
+    }
+
+    function otevri() {
+      if (!lista) {
+        lista = document.createElement('div');
+        lista.className = 'cookiebar';
+        lista.setAttribute('role', 'region');
+        lista.setAttribute('aria-label', 'Souhlas s cookies');
+        lista.innerHTML =
+          '<div class="cookiebar__txt">' +
+            '<p class="cookiebar__h">Cookies a obsah třetích stran</p>' +
+            '<p>Náš web sám žádné sledovací cookies nepoužívá. Mapa na stránce Kontakt se načítá od Googlu, ' +
+            'který může ukládat vlastní cookies, proto ji zobrazíme jen s vaším souhlasem. ' +
+            '<a href="cookies.html">Více o cookies</a></p>' +
+          '</div>' +
+          '<div class="cookiebar__btns">' +
+            '<button class="btn btn--sm btn--ghost" type="button" data-souhlas="ne">Jen nezbytné</button>' +
+            '<button class="btn btn--sm" type="button" data-souhlas="ano">Povolit vše</button>' +
+          '</div>';
+        document.body.appendChild(lista);
+        $$('[data-souhlas]', lista).forEach(function (b) {
+          b.addEventListener('click', function () { zvol(b.getAttribute('data-souhlas') === 'ano'); });
+        });
+      }
+      /* Vyjetí až v dalším snímku, aby proběhla animace */
+      window.requestAnimationFrame(function () {
+        lista.classList.add('is-on');
+        document.body.classList.add('has-cookiebar');
+      });
+    }
+
+    if (!souhlas) otevri();
+    else if (souhlas.externi) nactiMapy();
+
+    $$('[data-mapa-nacist]').forEach(function (b) {
+      b.addEventListener('click', nactiMapy);
+    });
+
+    $$('[data-cookies-nastaveni]').forEach(function (b) {
+      b.addEventListener('click', function (e) { e.preventDefault(); otevri(); });
+    });
+
+    stav();
   }
 
   /* ------------------------------------------------------------------------
@@ -657,13 +1309,19 @@
     initActiveNav();
     initNews();
     initArticle();
+    /* Vše, co vkládá prvky s třídou .reveal, musí proběhnout před initReveal */
+    initHeroZapasy();
+    initVysledky();
+    initTable();
+    initNarozeniny();
+    initPartneri();
     initReveal();
     initFixtureList();
     initTeamFixtures();
     initMarquee();
     initForms();
     initLightbox();
-    initTable();
+    initCookies();
     initYear();
   }
 

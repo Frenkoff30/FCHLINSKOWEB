@@ -157,6 +157,16 @@
       <a class="btn btn--block" href="nabor.html">Přidej se k nám</a>
       <a class="btn btn--ghost btn--block" href="tel:+420774424648">774 424 648</a>
     </div>
+    <div class="drawer__social">
+      <a href="https://www.facebook.com/FcHlinsko" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0 0 22 12z"/></svg>
+        Facebook
+      </a>
+      <a href="https://www.instagram.com/fchlinsko/" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg>
+        Instagram
+      </a>
+    </div>
   </div>
 </aside>
 
@@ -187,22 +197,24 @@
         <span class="kicker">Sezóna 2026/2027</span>
         <h2 class="sec-title">Kdy <em>hrajeme</em></h2>
         <p class="sec-lead">
-          Zelený pruh označuje domácí zápas v Olšinkách, zlatý pohárové utkání.
-          Odehrané zápasy jsou zobrazeny světleji.
+          Vyberte mužstvo. Nahoře jsou nejbližší zápasy, pod nimi odehrané výsledky
+          od nejnovějšího. Zelený pruh označuje domácí zápas v Olšinkách, zlatý pohár.
         </p>
       </div>
     </div>
 
-    <div class="tabs reveal" role="group" aria-label="Filtr zápasů">
-      <button class="tab is-active" type="button" data-filter="vse" aria-pressed="true">Vše</button>
-      <button class="tab" type="button" data-filter="liga" aria-pressed="false">Mistrovská</button>
-      <button class="tab" type="button" data-filter="pohar" aria-pressed="false">Pohár</button>
-      <button class="tab" type="button" data-filter="priprava" aria-pressed="false">Přípravné</button>
-      <button class="tab" type="button" data-filter="A" aria-pressed="false">Muži A</button>
-      <button class="tab" type="button" data-filter="B" aria-pressed="false">Muži B</button>
+    <!-- Záložka = mužstvo. data-filter je klíč z pole ZAPASY (tym),
+         data-kotva je adresa, např. zapasy.html#muzi-b otevře béčko -->
+    <div class="tabs reveal" role="group" aria-label="Mužstvo">
+      <button class="tab is-active" type="button" data-filter="A" data-kotva="muzi-a" aria-pressed="true">Muži A</button>
+      <button class="tab" type="button" data-filter="B" data-kotva="muzi-b" aria-pressed="false">Muži B</button>
+      <button class="tab" type="button" data-filter="dorost" data-kotva="dorost" aria-pressed="false">Dorost</button>
+      <button class="tab" type="button" data-filter="zaci" data-kotva="zaci" aria-pressed="false">Žáci</button>
+      <button class="tab" type="button" data-filter="pripravka" data-kotva="pripravky" aria-pressed="false">Přípravky</button>
     </div>
 
-    <div class="fixtures reveal" id="fixture-list"></div>
+    <!-- Zápasy se píší do pole ZAPASY ve script.js, sem se rozdělí samy -->
+    <div class="reveal" id="fixture-list"></div>
   </div>
 </section>
 
@@ -211,18 +223,42 @@
   <div class="wrap">
     <div class="sec-head reveal">
       <div>
-        <span class="kicker">Oficiální zdroj</span>
+        <span class="kicker">Muži A, sezóna 2026/2027</span>
         <h2 class="sec-title">Tabulky <em>a výsledky</em></h2>
         <p class="sec-lead">
-          Průběžné pořadí, statistiky střelců i kompletní rozlosování najdete
-          v informačním systému FAČR.
+          Průběžné pořadí áčka v divizi, skupině C. Tabulky všech ostatních mužstev,
+          statistiky střelců a kompletní rozlosování vede FAČR na Fotbal.cz.
         </p>
+      </div>
+    </div>
+
+    <!-- Výsledky se počítají z pole ZAPASY, tabulka je v poli TABULKA (script.js) -->
+    <div class="data-grid" style="margin-bottom:22px">
+      <div class="apanel reveal">
+        <div class="apanel__head">
+          <h3 class="apanel__h">Poslední <em>výsledky</em></h3>
+          <div class="forma" data-forma="A"></div>
+        </div>
+        <div data-vysledky="A" data-limit="6"></div>
+        <div class="apanel__foot">
+          <a class="link-arrow" href="tym-muzi-a.html">Stránka mužů A
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="apanel reveal" data-d="2">
+        <div class="apanel__head">
+          <h3 class="apanel__h">Tabulka <em>Divize C</em></h3>
+          <span class="apanel__tag">Sezóna 2026/2027</span>
+        </div>
+        <div data-tabulka data-okno="8"></div>
       </div>
     </div>
 
     <div class="table-wrap reveal">
       <table class="tbl">
-        <caption>Soutěže mužstev FC Hlinsko v sezóně 2025/2026</caption>
+        <caption>Soutěže všech mužstev FC Hlinsko, tabulky na Fotbal.cz</caption>
         <thead>
           <tr>
             <th scope="col">Tým</th>
@@ -233,12 +269,12 @@
         <tbody>
           <tr>
             <td class="t-name">Muži A</td>
-            <td>Divize, skupina C</td>
+            <td>4. česká fotbalová liga (divize), skupina C</td>
             <td><a class="link-arrow" href="https://www.fotbal.cz/souteze/turnaje/table/0782e247-3b72-4ead-af8b-d538a3dd11e0" target="_blank" rel="noopener">Tabulka</a></td>
           </tr>
           <tr>
             <td class="t-name">Muži B</td>
-            <td>8. liga mužů</td>
+            <td>8. liga mužů, 1.B třída Pardubického kraje, skupina A</td>
             <td><a class="link-arrow" href="https://www.fotbal.cz/souteze/turnaje/table/8d0c4f7a-fbc3-4002-ad9e-dc5e96fcb728" target="_blank" rel="noopener">Tabulka</a></td>
           </tr>
           <tr>
@@ -269,10 +305,11 @@
       <div class="panel">
         <h3 class="panel__h">Pohár FAČR</h3>
         <p style="color:var(--text-soft);margin-bottom:16px">
-          Národní pohár, ve kterém se okresní a krajské kluby mohou utkat s ligovými týmy.
+          V předkole MOL Cupu 2026/2027 prohrálo áčko 1. srpna v Heřmanově Městci 0:3
+          a letos v poháru končí.
         </p>
-        <a class="link-arrow" href="https://www.fotbal.cz/souteze/zapasy/zapas/e35caf65-a9a9-4a33-a065-447c004f2934" target="_blank" rel="noopener">
-          MOL Cup
+        <a class="link-arrow" href="https://www.molcup.cz/vysledky" target="_blank" rel="noopener">
+          Výsledky MOL Cupu
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </a>
       </div>
@@ -385,6 +422,12 @@
 
     <div class="foot-bottom">
       <span>© <span data-year>2026</span> FC Hlinsko, z.s. Všechna práva vyhrazena.</span>
+      <nav class="foot-legal" aria-label="Právní informace">
+        <a href="ochrana-osobnich-udaju.html">Ochrana osobních údajů</a>
+        <a href="cookies.html">Cookies</a>
+        <a href="obchodni-podminky.html">Obchodní podmínky</a>
+        <a href="reklamacni-rad.html">Reklamační řád</a>
+      </nav>
       <a class="webo" href="https://www.webostudio.cz/" target="_blank" rel="noopener">Web vytvořilo <b>Webo Studio</b></a>
     </div>
   </div>
