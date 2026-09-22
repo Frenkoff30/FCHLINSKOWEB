@@ -87,8 +87,50 @@
     'dorost-u19': 'Dorost U19', 'dorost-u17': 'Dorost U17', 'dorost': 'Dorost',
     'zaci-u15': 'Starší žáci U15', 'zaci-u13': 'Mladší žáci U13', 'zaci': 'Žáci',
     'pripravka-u11': 'Přípravka U11', 'pripravka-u10': 'Přípravka U10',
-    'pripravka-u9': 'Přípravka U9', 'pripravka-u8': 'Přípravka U8', 'pripravka': 'Přípravky'
+    'pripravka-u9': 'Přípravka U9', 'pripravka-u8': 'Přípravka U8', 'pripravka': 'Přípravky',
+    'skolicka': 'Fotbalová školička'
   };
+
+  /* Krátký popisek mužstva do políček kalendáře */
+  var TYM_ZKR = {
+    'A': 'A', 'B': 'B', 'dorost-u19': 'U19', 'dorost-u17': 'U17', 'dorost': 'Dorost',
+    'zaci-u15': 'U15', 'zaci-u13': 'U13', 'zaci': 'Žáci',
+    'pripravka-u11': 'U11', 'pripravka-u10': 'U10', 'pripravka-u9': 'U9', 'pripravka-u8': 'U8',
+    'pripravka': 'Přípravky', 'skolicka': 'Školička'
+  };
+
+  /* ------------------------------------------------------------------------
+     TRÉNINKY, PRAVIDELNÝ TÝDENNÍ ROZVRH PRO KALENDÁŘ
+     ------------------------------------------------------------------------
+     tym:    klíč mužstva jako v ZAPASY ('A', 'zaci-u15', 'skolicka' ...)
+     dny:    dny v týdnu, 1 = pondělí ... 7 = neděle
+     od, do: čas 'HH:MM'
+     misto:  kde se trénuje
+
+     Tréninky se v kalendáři ukážou jen v období TRENINKY_OBDOBI a ne ve
+     dnech uvedených ve VOLNO (svátky, zrušené tréninky).
+
+     POZOR: skutečný je zatím jen čas školičky (web klubu: úterý a čtvrtek
+     od 16:30). Ostatní časy jsou UKÁZKOVÉ, musí je potvrdit trenéři.
+     ---------------------------------------------------------------------- */
+  var TRENINKY = [
+    { tym: 'A',             dny: [2, 4], od: '18:00', do: '19:30', misto: 'Olšinky, hřiště č. 1' },
+    { tym: 'B',             dny: [1, 3], od: '18:00', do: '19:30', misto: 'Olšinky, hřiště č. 2' },
+    { tym: 'dorost-u19',    dny: [1, 3], od: '16:30', do: '18:00', misto: 'Olšinky, hřiště č. 1' },
+    { tym: 'dorost-u17',    dny: [2, 4], od: '16:30', do: '18:00', misto: 'Olšinky, hřiště č. 2' },
+    { tym: 'zaci-u15',      dny: [1, 3], od: '16:00', do: '17:30', misto: 'Olšinky, hřiště č. 2' },
+    { tym: 'zaci-u13',      dny: [2, 4], od: '16:00', do: '17:30', misto: 'Olšinky, hřiště č. 1' },
+    { tym: 'pripravka-u11', dny: [1, 3], od: '16:00', do: '17:15', misto: 'Olšinky, hřiště č. 2' },
+    { tym: 'pripravka-u10', dny: [2, 4], od: '16:00', do: '17:15', misto: 'Olšinky, hřiště č. 2' },
+    { tym: 'pripravka-u9',  dny: [1, 3], od: '16:30', do: '17:30', misto: 'Olšinky, hřiště č. 2' },
+    { tym: 'pripravka-u8',  dny: [2, 5], od: '16:30', do: '17:30', misto: 'Olšinky, hřiště č. 2' },
+    { tym: 'skolicka',      dny: [2, 4], od: '16:30', do: '17:30', misto: 'Olšinky, zadní travnaté hřiště' }
+  ];
+
+  var TRENINKY_OBDOBI = { od: '2026-08-03', do: '2026-11-22' };
+
+  /* Dny bez tréninků: 28. 9., 28. 10. a 17. 11. jsou státní svátky */
+  var VOLNO = ['2026-09-28', '2026-10-28', '2026-11-17'];
 
   /* Název soutěže podle mužstva, ukazuje se u mistrovských zápasů */
   var SOUTEZE = {
@@ -235,6 +277,40 @@
   function pad(n) { return (n < 10 ? '0' : '') + n; }
 
   /* ------------------------------------------------------------------------
+     TLAČÍTKO NAHORU JAKO ZELENOBÍLÝ MÍČ
+     Prostřední pětiúhelník míří nahoru a nese šipku. Vzor míče se při najetí
+     pootočí o pětinu otáčky (vypadá pak stejně), po kliknutí se zakutálí.
+     ---------------------------------------------------------------------- */
+  var MIC_NAHORU = '<svg class="mic" viewBox="0 0 100 100" aria-hidden="true">'
+    + '<defs>'
+      + '<radialGradient id="mic-kuze" cx="36%" cy="30%" r="78%"><stop offset="0" stop-color="#fff"/>'
+      + '<stop offset=".62" stop-color="#F2F5F3"/><stop offset="1" stop-color="#C7D2CB"/></radialGradient>'
+      + '<radialGradient id="mic-stin" cx="36%" cy="30%" r="80%"><stop offset=".58" stop-color="#04180D" stop-opacity="0"/>'
+      + '<stop offset="1" stop-color="#04180D" stop-opacity=".42"/></radialGradient>'
+      + '<radialGradient id="mic-lesk"><stop offset="0" stop-color="#fff" stop-opacity=".75"/>'
+      + '<stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>'
+      + '<clipPath id="mic-orez"><circle cx="50" cy="50" r="47"/></clipPath>'
+    + '</defs>'
+    + '<circle cx="50" cy="50" r="47" fill="url(#mic-kuze)"/>'
+    + '<g class="mic__vzor" clip-path="url(#mic-orez)">'
+      + '<path fill="none" stroke="#00602B" stroke-width="2.4" stroke-linecap="round" d="M50.00 29.50L50.00 18.00M63.31 8.33L85.52 24.46M69.50 43.67L80.43 40.11M93.75 49.79L85.27 75.89M62.05 66.58L68.81 75.89M63.72 91.54L36.28 91.54M37.95 66.58L31.19 75.89M14.73 75.89L6.25 49.79M30.50 43.67L19.57 40.11M14.48 24.46L36.69 8.33"/>'
+      + '<g fill="#00843C" stroke="#00602B" stroke-width="2.2" stroke-linejoin="round">'
+      + '<polygon points="50,18 36.69,8.33 41.77,-7.33 58.23,-7.33 63.31,8.33"/>'
+      + '<polygon points="80.43,40.11 85.52,24.46 101.98,24.46 107.06,40.11 93.75,49.79"/>'
+      + '<polygon points="68.81,75.89 85.27,75.89 90.35,91.54 77.04,101.21 63.72,91.54"/>'
+      + '<polygon points="31.19,75.89 36.28,91.54 22.96,101.21 9.65,91.54 14.73,75.89"/>'
+      + '<polygon points="19.57,40.11 6.25,49.79 -7.06,40.11 -1.98,24.46 14.48,24.46"/>'
+      + '<polygon points="50,29.50 69.50,43.67 62.05,66.58 37.95,66.58 30.50,43.67"/>'
+      + '</g>'
+    + '</g>'
+    + '<circle cx="50" cy="50" r="47" fill="url(#mic-stin)"/>'
+    + '<ellipse cx="32" cy="24" rx="17" ry="10" fill="url(#mic-lesk)" transform="rotate(-30 32 24)"/>'
+    + '<path d="M50 59V41.5M42.8 48.7L50 41.5L57.2 48.7" fill="none" stroke="#fff" stroke-width="5" '
+    + 'stroke-linecap="round" stroke-linejoin="round"/>'
+    + '<circle cx="50" cy="50" r="47" fill="none" stroke="rgba(4,30,17,.28)" stroke-width="1.6"/>'
+  + '</svg>';
+
+  /* ------------------------------------------------------------------------
      1. HLAVIČKA A TLAČÍTKO NAHORU
      ---------------------------------------------------------------------- */
   function initHeader() {
@@ -257,7 +333,13 @@
     onScroll();
 
     if (toTop) {
+      toTop.innerHTML = MIC_NAHORU;
       toTop.addEventListener('click', function () {
+        /* Míč se při výkopu nahoru zakutálí */
+        toTop.classList.remove('is-kop');
+        void toTop.offsetWidth;
+        toTop.classList.add('is-kop');
+        window.setTimeout(function () { toTop.classList.remove('is-kop'); }, 800);
         window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
       });
     }
@@ -338,7 +420,9 @@
       var href = a.getAttribute('href');
       if (!href || href.charAt(0) === '#' || href.indexOf('http') === 0) return;
       var file = href.split('#')[0].split('/').pop() || 'index.html';
-      if (file === here) {
+      /* data-stranky: položka svítí i na dalších stránkách, např. Zápasy v Kalendáři */
+      var stranky = (a.getAttribute('data-stranky') || file).split(' ');
+      if (stranky.indexOf(here) >= 0) {
         a.classList.add('is-active');
         a.setAttribute('aria-current', 'page');
       }
@@ -847,9 +931,10 @@
         + '<span class="hm__score">' + cas(d) + '</span>'
         + '<span class="hm__when">' + esc(zaKolik(d, now)) + '</span>';
 
+    /* Místo se na mobilu schová, aby se údaje vešly na jeden řádek */
     var meta = posledni
-      ? soutezZapasu(z) + ' · ' + datumKratce(d)
-      : soutezZapasu(z) + ' · ' + z.misto;
+      ? esc(soutezZapasu(z) + ' · ' + datumKratce(d))
+      : esc(soutezZapasu(z)) + '<span class="hm__misto"> · ' + esc(z.misto) + '</span>';
 
     /* Domácí: znak a jméno k výsledku, hosté: jméno a znak od výsledku */
     var tym = function (n, strana) {
@@ -862,7 +947,7 @@
       + (posledni ? '#vysledky' : 'zapasy.html#muzi-a') + '">' +
       '<span class="hm__head">' +
         '<span class="hm__label">' + (posledni ? 'Poslední zápas' : 'Příští zápas') + '</span>' +
-        '<span class="hm__meta">' + esc(meta) + '</span>' +
+        '<span class="hm__meta">' + meta + '</span>' +
       '</span>' +
       '<span class="hm__match">' + tym(dom, 'dom') + '<span class="hm__center">' + stred + '</span>' + tym(hos, 'hos') + '</span>' +
     '</a>';
@@ -1058,6 +1143,261 @@
         if (pul > 0) track.style.animationDuration = Math.round(pul / rychlost) + 's';
       });
     });
+  }
+
+  /* ------------------------------------------------------------------------
+     9f. KALENDÁŘ (kalendar.html)
+     ------------------------------------------------------------------------
+     Měsíc s tréninky (TRENINKY) a zápasy (ZAPASY). Na počítači mřížka
+     s popisky a vedle program vybraného dne, na mobilu mřížka s tečkami
+     a program dne pod ní.
+     ---------------------------------------------------------------------- */
+  var MESICE_NOM = ['Leden', 'Únor', 'Březen', 'Duben', 'Květen', 'Červen',
+                    'Červenec', 'Srpen', 'Září', 'Říjen', 'Listopad', 'Prosinec'];
+  var DNY_DLOUHE = ['Neděle', 'Pondělí', 'Úterý', 'Středa', 'Čtvrtek', 'Pátek', 'Sobota'];
+
+  function ymd(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
+  function denTydne(d) { return (d.getDay() + 6) % 7 + 1; }   /* 1 = pondělí */
+  function slovoAkce(n) { return n === 1 ? 'událost' : (n >= 2 && n <= 4 ? 'události' : 'událostí'); }
+
+  /* Všechny události v rozsahu dnů, rozdělené podle data 'RRRR-MM-DD' */
+  function kalAkce(od, doDne, filtr, typy) {
+    var mapa = {};
+    var pridej = function (k, a) { (mapa[k] = mapa[k] || []).push(a); };
+    var sedi = function (tym) { return filtr === 'vse' || tymSedi(tym, filtr); };
+
+    if (typy.zapasy) {
+      ZAPASY.forEach(function (z) {
+        var d = parseDatum(z.datum);
+        if (d < od || d > doDne || !sedi(z.tym)) return;
+        var turnaj = z.typ === 'turnaj';
+        var dom = z.domaci ? 'FC Hlinsko' : z.souper;
+        var hos = z.domaci ? z.souper : 'FC Hlinsko';
+        pridej(ymd(d), {
+          cas: cas(d),
+          trida: (z.typ === 'pohar' || turnaj) ? 'pohar' : (z.domaci ? 'doma' : 'venku'),
+          kratce: (TYM_ZKR[z.tym] || '') + ' · ' + (turnaj ? (z.nazev || 'Turnaj') : z.souper),
+          typ: (turnaj ? 'Turnaj' : 'Zápas') + ' · ' + (TYM_NAZEV[z.tym] || '')
+            + (turnaj ? '' : ' · ' + soutezZapasu(z)),
+          nazev: turnaj ? (z.nazev || 'Turnaj') : dom + ' – ' + hos,
+          misto: z.misto + (turnaj && z.souper ? ' · hrají ' + z.souper : ''),
+          stav: z.skore || (turnaj ? '' : (z.domaci ? 'Doma' : 'Venku'))
+        });
+      });
+    }
+
+    if (typy.treninky) {
+      var obdOd = parseDatum(TRENINKY_OBDOBI.od + 'T00:00');
+      var obdDo = parseDatum(TRENINKY_OBDOBI.do + 'T23:59');
+      for (var d = new Date(od.getTime()); d <= doDne; d.setDate(d.getDate() + 1)) {
+        var k = ymd(d);
+        if (d < obdOd || d > obdDo || VOLNO.indexOf(k) >= 0) continue;
+        var dt = denTydne(d);
+        TRENINKY.forEach(function (t) {
+          if (t.dny.indexOf(dt) < 0 || !sedi(t.tym)) return;
+          pridej(k, {
+            cas: t.od, konec: t.do, trida: 'trenink',
+            kratce: 'Trénink ' + (TYM_ZKR[t.tym] || ''),
+            typ: 'Trénink',
+            nazev: TYM_NAZEV[t.tym] || t.tym,
+            misto: t.misto, stav: ''
+          });
+        });
+      }
+    }
+
+    Object.keys(mapa).forEach(function (k) {
+      mapa[k].sort(function (a, b) { return a.cas < b.cas ? -1 : (a.cas > b.cas ? 1 : 0); });
+    });
+    return mapa;
+  }
+
+  function initKalendar() {
+    var box = $('[data-kalendar]');
+    if (!box) return;
+
+    var mrizka = $('[data-kal-mrizka]', box);
+    var panel = $('[data-kal-den]', box);
+    var nadpis = $('[data-kal-mesic]', box);
+    var dnes = new Date(); dnes.setHours(0, 0, 0, 0);
+    var dnesKlic = ymd(dnes);
+
+    var rok = dnes.getFullYear();
+    var mesic = dnes.getMonth();
+    var filtr = 'vse';
+    var typy = { zapasy: true, treninky: true };
+    var vybrany = null;
+    var akce = {};
+
+    function vychoziDen() {
+      if (dnes.getFullYear() === rok && dnes.getMonth() === mesic) return dnesKlic;
+      var posl = new Date(rok, mesic + 1, 0).getDate();
+      for (var i = 1; i <= posl; i++) {
+        var k = ymd(new Date(rok, mesic, i));
+        if (akce[k]) return k;
+      }
+      return ymd(new Date(rok, mesic, 1));
+    }
+
+    function chipy(seznam) {
+      var zapasy = seznam.filter(function (a) { return a.trida !== 'trenink'; });
+      var treninky = seznam.filter(function (a) { return a.trida === 'trenink'; });
+      var polozky = zapasy.map(function (a) {
+        return '<span class="kchip kchip--' + a.trida + '"><b>' + esc(a.cas) + '</b>' + esc(a.kratce) + '</span>';
+      });
+      /* Víc než dva tréninky za den se sloučí do jednoho řádku */
+      if (treninky.length > 2) {
+        polozky.push('<span class="kchip kchip--trenink"><b>' + esc(treninky[0].cas) + '</b>Tréninky (' + treninky.length + ')</span>');
+      } else {
+        treninky.forEach(function (a) {
+          polozky.push('<span class="kchip kchip--trenink"><b>' + esc(a.cas) + '</b>' + esc(a.kratce) + '</span>');
+        });
+      }
+      if (polozky.length > 3) {
+        var zbytek = polozky.length - 2;
+        polozky = polozky.slice(0, 2).concat('<span class="kchip kchip--vic">+ ' + zbytek + ' další</span>');
+      }
+      return polozky.join('');
+    }
+
+    function tecky(seznam) {
+      var tridy = [];
+      seznam.forEach(function (a) { if (tridy.indexOf(a.trida) < 0) tridy.push(a.trida); });
+      return tridy.map(function (t) { return '<i class="kdot kdot--' + t + '"></i>'; }).join('');
+    }
+
+    function renderDen() {
+      var c = vybrany.split('-');
+      var d = new Date(+c[0], +c[1] - 1, +c[2]);
+      var seznam = akce[vybrany] || [];
+      var jeDnes = vybrany === dnesKlic;
+
+      var obsah = seznam.length
+        ? '<ul class="kal__list">' + seznam.map(function (a) {
+            return '<li class="kitem kitem--' + a.trida + '">' +
+              '<span class="kitem__cas">' + esc(a.cas) + (a.konec ? '<small>do ' + esc(a.konec) + '</small>' : '') + '</span>' +
+              '<span class="kitem__txt">' +
+                '<span class="kitem__typ">' + esc(a.typ) + '</span>' +
+                '<strong class="kitem__nazev">' + esc(a.nazev) + '</strong>' +
+                '<span class="kitem__misto">' + esc(a.misto) + '</span>' +
+              '</span>' +
+              (a.stav ? '<span class="kitem__stav">' + esc(a.stav) + '</span>' : '') +
+            '</li>';
+          }).join('') + '</ul>'
+        : '<p class="kal__prazdno">Na tento den není nic naplánováno.</p>';
+
+      panel.innerHTML =
+        '<span class="kal__den-sub">' + (jeDnes ? 'Dnes' : 'Program dne') +
+          (seznam.length ? ' · ' + seznam.length + ' ' + slovoAkce(seznam.length) : '') + '</span>' +
+        '<h3 class="kal__den-h">' + DNY_DLOUHE[d.getDay()] + ' ' + d.getDate() + '. ' + MESICE_DLOUHE[d.getMonth()] + '</h3>' +
+        obsah;
+    }
+
+    function render() {
+      var prvni = new Date(rok, mesic, 1);
+      var start = new Date(rok, mesic, 1 - (denTydne(prvni) - 1));
+      var posledni = new Date(rok, mesic + 1, 0);
+      var konec = new Date(rok, mesic, posledni.getDate() + (7 - denTydne(posledni)), 23, 59);
+
+      akce = kalAkce(start, konec, filtr, typy);
+      nadpis.textContent = MESICE_NOM[mesic] + ' ' + rok;
+      if (!vybrany || +vybrany.split('-')[1] - 1 !== mesic || +vybrany.split('-')[0] !== rok) {
+        vybrany = vychoziDen();
+      }
+
+      var html = '';
+      for (var d = new Date(start.getTime()); d <= konec; d.setDate(d.getDate() + 1)) {
+        var k = ymd(d);
+        var seznam = akce[k] || [];
+        var cls = ['kal__cell'];
+        if (d.getMonth() !== mesic) cls.push('is-out');
+        if (k === dnesKlic) cls.push('is-today');
+        if (k === vybrany) cls.push('is-sel');
+        if (denTydne(d) >= 6) cls.push('is-vikend');
+        var popis = DNY_DLOUHE[d.getDay()] + ' ' + d.getDate() + '. ' + MESICE_DLOUHE[d.getMonth()] +
+          (seznam.length ? ', ' + seznam.length + ' ' + slovoAkce(seznam.length) : ', bez programu');
+        html += '<button class="' + cls.join(' ') + '" type="button" data-den="' + k + '"' +
+          ' aria-label="' + popis + '"' + (k === vybrany ? ' aria-pressed="true"' : ' aria-pressed="false"') + '>' +
+          '<span class="kal__num">' + d.getDate() + '</span>' +
+          (seznam.length ? '<span class="kal__chips" aria-hidden="true">' + chipy(seznam) + '</span>' +
+                           '<span class="kal__dots" aria-hidden="true">' + tecky(seznam) + '</span>' : '') +
+        '</button>';
+      }
+      mrizka.innerHTML = html;
+      renderDen();
+    }
+
+    function vyberDen(k) {
+      var c = k.split('-');
+      if (+c[0] !== rok || +c[1] - 1 !== mesic) {
+        rok = +c[0]; mesic = +c[1] - 1; vybrany = k; render();
+      } else {
+        vybrany = k;
+        $$('.kal__cell', mrizka).forEach(function (b) {
+          var ano = b.getAttribute('data-den') === k;
+          b.classList.toggle('is-sel', ano);
+          b.setAttribute('aria-pressed', ano ? 'true' : 'false');
+        });
+        renderDen();
+      }
+      /* Na mobilu je program pod mřížkou, posuneme se k němu */
+      if (window.innerWidth < 1200 && panel.getBoundingClientRect().top > window.innerHeight - 120) {
+        panel.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'nearest' });
+      }
+    }
+
+    mrizka.addEventListener('click', function (e) {
+      var b = e.target.closest('[data-den]');
+      if (b) vyberDen(b.getAttribute('data-den'));
+    });
+
+    $$('[data-kal]', box).forEach(function (b) {
+      b.addEventListener('click', function () {
+        var co = b.getAttribute('data-kal');
+        if (co === 'dnes') { rok = dnes.getFullYear(); mesic = dnes.getMonth(); vybrany = dnesKlic; }
+        else {
+          mesic += co === 'next' ? 1 : -1;
+          if (mesic < 0) { mesic = 11; rok--; }
+          if (mesic > 11) { mesic = 0; rok++; }
+          vybrany = null;
+        }
+        render();
+      });
+    });
+
+    /* Zápasy / Tréninky, aspoň jedno musí zůstat zapnuté */
+    $$('[data-kal-typ]', box).forEach(function (b) {
+      b.addEventListener('click', function () {
+        var klic = b.getAttribute('data-kal-typ');
+        var jiny = klic === 'zapasy' ? 'treninky' : 'zapasy';
+        if (typy[klic] && !typy[jiny]) return;
+        typy[klic] = !typy[klic];
+        b.classList.toggle('is-active', typy[klic]);
+        b.setAttribute('aria-pressed', typy[klic] ? 'true' : 'false');
+        render();
+      });
+    });
+
+    /* Mužstvo, kalendar.html#muzi-a rovnou vyfiltruje áčko */
+    var tymy = $$('[data-kal-tym]', box);
+    function vyberTym(btn, zapsat) {
+      tymy.forEach(function (x) {
+        x.classList.toggle('is-active', x === btn);
+        x.setAttribute('aria-pressed', x === btn ? 'true' : 'false');
+      });
+      filtr = btn.getAttribute('data-kal-tym');
+      render();
+      if (zapsat && window.history && history.replaceState) {
+        var kotva = btn.getAttribute('data-kotva');
+        history.replaceState(null, '', kotva ? '#' + kotva : location.pathname + location.search);
+      }
+    }
+    tymy.forEach(function (b) { b.addEventListener('click', function () { vyberTym(b, true); }); });
+
+    var zAdresy = location.hash.slice(1);
+    var start = zAdresy && tymy.filter(function (b) { return b.getAttribute('data-kotva') === zAdresy; })[0];
+    if (start) vyberTym(start, false);
+    else render();
   }
 
   /* ------------------------------------------------------------------------
@@ -1315,6 +1655,7 @@
     initTable();
     initNarozeniny();
     initPartneri();
+    initKalendar();
     initReveal();
     initFixtureList();
     initTeamFixtures();

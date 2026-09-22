@@ -3085,3 +3085,418 @@ table.tbl tr.is-us td { border-color: var(--green-tint-2); }
 .tab__n { display: inline-block; min-width: 22px; margin-left: 4px; padding: 1px 6px; border-radius: var(--r-full); background: var(--bg-alt); color: var(--text-mute); font-size: 12.5px; letter-spacing: 0; text-align: center; }
 .tab.is-active .tab__n { background: rgba(255, 255, 255, 0.22); color: #fff; }
 .ateam__facts:last-child { margin-bottom: 0; }
+
+/* --------------------------------------------------------------------------
+   42. HERO NA MOBILU
+   Znak nad nápisem, vše na střed, hero jen tak vysoké, jak je potřeba.
+   Fotka je vyšší než hero, aby tribuna vykoukla mezi nápisem a pruhem.
+   -------------------------------------------------------------------------- */
+@media (max-width: 980px) {
+  .hero { min-height: 0; padding-top: clamp(30px, 7vw, 56px); }
+
+  .hero__img {
+    top: auto;
+    bottom: 0;
+    height: 128%;
+    object-position: 26% 50%;
+  }
+
+  .hero__veil {
+    background: linear-gradient(180deg,
+      rgba(4, 24, 13, 0.55) 0%,
+      rgba(4, 24, 13, 0.28) 42%,
+      rgba(4, 24, 13, 0.55) 100%);
+  }
+
+  .hero__in { justify-items: center; text-align: center; gap: 14px; }
+  .hero__crest { order: 0; width: clamp(96px, 24vw, 140px); margin: 0 auto 4px; }
+  .hero__title { order: 1; margin: 0; transform-origin: center bottom; }
+  .hero__sub { order: 2; justify-content: center; margin: 0; }
+}
+
+@media (max-width: 560px) {
+  /* Údaje o zápase na jeden řádek: nadpis vlevo, soutěž vpravo */
+  .hm__head { flex-direction: row; align-items: center; justify-content: space-between; gap: 10px; }
+  .hm__meta { text-align: right; font-size: 12px; letter-spacing: 0.06em; }
+  .hm__misto { display: none; }
+  .hm { padding: 14px 0 16px; gap: 10px; }
+  .hm__score { font-size: 40px; }
+}
+
+/* --------------------------------------------------------------------------
+   43. KALENDÁŘ (kalendar.html)
+   -------------------------------------------------------------------------- */
+.kal { display: grid; gap: 18px; }
+
+.kal__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px 24px;
+}
+
+.kal__nav { display: flex; align-items: center; gap: 8px; }
+
+.kal__btn,
+.kal__dnes {
+  display: inline-grid;
+  place-items: center;
+  height: 44px;
+  border: 1px solid var(--border-hi);
+  border-radius: var(--r-sm);
+  background: #fff;
+  color: var(--text);
+  cursor: pointer;
+  transition: border-color var(--t), color var(--t), background-color var(--t);
+}
+
+.kal__btn { width: 44px; }
+.kal__btn svg { width: 18px; height: 18px; }
+
+.kal__dnes {
+  margin-left: 6px;
+  padding: 0 16px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.kal__btn:hover,
+.kal__dnes:hover { border-color: var(--green); color: var(--green); background: var(--green-tint); }
+
+.kal__mesic {
+  min-width: 8.5ch;
+  margin: 0 6px;
+  text-align: center;
+  font-size: clamp(26px, 2.6vw, 34px);
+}
+
+.kal__typy { display: flex; gap: 8px; }
+.kal__typy .tab,
+.kal__tymy .tab { display: inline-flex; align-items: center; gap: 8px; }
+
+.kal__tymy { margin: 0; }
+
+/* Barevné tečky: stejné barvy jako štítky v kalendáři */
+.kdot { display: inline-block; width: 9px; height: 9px; flex: none; border-radius: 50%; }
+.kdot--doma { background: var(--green); }
+.kdot--venku { background: var(--green-deep); }
+.kdot--pohar { background: var(--gold); }
+.kdot--trenink { background: var(--green-light); }
+.tab.is-active .kdot { box-shadow: 0 0 0 2px #fff; }
+
+.kal__body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 330px;
+  gap: 22px;
+  align-items: start;
+}
+
+.kal__grid {
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  box-shadow: var(--sh-xs);
+}
+
+.kal__head { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); background: var(--green-deep); }
+
+.kal__head span {
+  padding: 11px 0;
+  text-align: center;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 13.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.kal__head span:nth-child(n+6) { color: var(--green-light); }
+
+.kal__cells { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); }
+
+.kal__cell {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 5px;
+  min-width: 0;
+  min-height: 116px;
+  padding: 7px 6px 8px;
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: #fff;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color var(--t);
+}
+
+.kal__cell:nth-child(7n) { border-right: 0; }
+.kal__cell:nth-last-child(-n+7) { border-bottom: 0; }
+.kal__cell:hover { background: var(--green-tint); }
+.kal__cell.is-vikend { background: #FAFCFA; }
+.kal__cell.is-vikend:hover { background: var(--green-tint); }
+
+/* Dny sousedních měsíců jako šrafovaná plocha */
+.kal__cell.is-out {
+  background: repeating-linear-gradient(135deg, var(--bg-alt) 0 8px, #fff 8px 16px);
+}
+.kal__cell.is-out .kal__num { color: var(--text-mute); opacity: 0.6; }
+.kal__cell.is-out .kal__chips { opacity: 0.55; }
+
+.kal__cell.is-sel { box-shadow: inset 0 0 0 2px var(--green); z-index: 1; }
+
+.kal__num {
+  display: inline-grid;
+  place-items: center;
+  align-self: flex-start;
+  min-width: 28px;
+  height: 28px;
+  padding: 0 4px;
+  border-radius: var(--r-full);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 16px;
+  color: var(--text);
+}
+
+.kal__cell.is-today .kal__num { background: var(--green); color: #fff; }
+
+.kal__chips { display: grid; gap: 3px; min-width: 0; }
+
+.kchip {
+  display: block;
+  min-width: 0;
+  padding: 3px 6px;
+  overflow: hidden;
+  border-radius: 3px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 1.3;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.kchip b { margin-right: 4px; font-weight: 800; }
+.kchip--doma { background: var(--green); color: #fff; }
+.kchip--venku { background: var(--green-deep); color: #fff; }
+.kchip--pohar { background: var(--gold); color: #1A1403; }
+.kchip--trenink { background: var(--green-tint); color: var(--green-dk); box-shadow: inset 3px 0 0 var(--green-light); }
+.kchip--vic { padding: 1px 6px; color: var(--text-mute); font-weight: 700; }
+
+.kal__dots { display: none; }
+
+/* Program vybraného dne */
+.kal__den {
+  position: sticky;
+  top: calc(var(--head-h-sm) + 20px);
+  padding: 20px 22px 22px;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--green);
+  border-radius: var(--r-lg);
+  box-shadow: var(--sh-sm);
+}
+
+.kal__den-sub {
+  display: block;
+  margin-bottom: 4px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--green);
+}
+
+.kal__den-h { margin: 0; font-size: clamp(24px, 2.2vw, 28px); }
+
+.kal__list { list-style: none; margin: 16px 0 0; padding: 0; display: grid; gap: 10px; }
+
+.kitem {
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 12px;
+  padding: 12px 12px 12px 12px;
+  background: var(--bg-alt);
+  border-left: 3px solid var(--green-light);
+  border-radius: var(--r-md);
+}
+
+.kitem--doma { border-left-color: var(--green); }
+.kitem--venku { border-left-color: var(--green-deep); }
+.kitem--pohar { border-left-color: var(--gold); }
+
+.kitem__cas {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 19px;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+
+.kitem__cas small {
+  display: block;
+  margin-top: 2px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-mute);
+}
+
+.kitem__txt { display: grid; gap: 2px; min-width: 0; }
+
+.kitem__typ {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 1.3;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+
+.kitem__nazev {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 18px;
+  line-height: 1.15;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.kitem__misto { font-size: 14px; line-height: 1.4; color: var(--text-mute); }
+
+.kitem__stav {
+  padding: 3px 9px;
+  border-radius: var(--r-sm);
+  background: #fff;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--green-dk);
+  white-space: nowrap;
+}
+
+.kal__prazdno { margin: 14px 0 0; color: var(--text-soft); }
+
+.kal__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 22px;
+  font-size: 14.5px;
+  color: var(--text-soft);
+}
+
+.kl { display: inline-flex; align-items: center; gap: 8px; }
+.kl::before { content: ''; width: 14px; height: 14px; border-radius: 3px; }
+.kl--doma::before { background: var(--green); }
+.kl--venku::before { background: var(--green-deep); }
+.kl--pohar::before { background: var(--gold); }
+.kl--trenink::before { background: var(--green-tint); box-shadow: inset 3px 0 0 var(--green-light); }
+
+.kal__pozn { margin: 0; font-size: 14.5px; color: var(--text-mute); }
+.kal__pozn a { color: var(--green); text-decoration: underline; text-underline-offset: 2px; }
+
+@media (max-width: 1199px) {
+  .kal__body { grid-template-columns: 1fr; }
+  .kal__den { position: static; }
+}
+
+/* Mobil: mřížka s tečkami, program dne pod ní */
+@media (max-width: 780px) {
+  .kal__bar { flex-direction: column; align-items: stretch; }
+  .kal__nav { justify-content: space-between; }
+  .kal__mesic { flex: 1; min-width: 0; font-size: 24px; }
+  .kal__dnes { margin-left: 0; padding: 0 12px; }
+  .kal__typy .tab { flex: 1; justify-content: center; }
+
+  /* Mužstva v jednom řádku s vodorovným posunem uvnitř lišty */
+  .kal__tymy {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    margin-inline: -16px;
+    padding: 2px 16px 6px;
+    scrollbar-width: none;
+  }
+  .kal__tymy::-webkit-scrollbar { display: none; }
+  .kal__tymy .tab { flex: none; }
+
+  .kal__head span { padding: 9px 0; font-size: 12px; letter-spacing: 0.08em; }
+  .kal__cell { min-height: 58px; align-items: center; gap: 4px; padding: 6px 2px 7px; }
+  .kal__num { align-self: center; min-width: 30px; height: 30px; font-size: 16px; }
+  .kal__chips { display: none; }
+  .kal__dots { display: flex; justify-content: center; flex-wrap: wrap; gap: 3px; max-width: 34px; }
+  .kal__dots .kdot { width: 7px; height: 7px; }
+  .kal__cell.is-sel { box-shadow: inset 0 0 0 2px var(--green); }
+
+  .kal__den { padding: 18px 16px 18px; }
+  .kitem { grid-template-columns: 48px minmax(0, 1fr); }
+  .kitem__stav { grid-column: 2; justify-self: start; }
+}
+
+/* Zelený pás s animovanou dvojicí vpravo (Kalendář), tlačítka blíž ke středu */
+.cta-band--pair .cta-band__in { position: relative; }
+.mascot--pair { right: 24px; bottom: 0; height: clamp(230px, 22vw, 300px); }
+
+@media (min-width: 1080px) {
+  .cta-band--pair .cta-band__in {
+    justify-content: flex-start;
+    gap: clamp(40px, 5vw, 88px);
+    padding-right: 230px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   44. TLAČÍTKO NAHORU JAKO MÍČ
+   -------------------------------------------------------------------------- */
+.to-top {
+  width: 58px;
+  height: 58px;
+  padding: 0;
+  border-radius: 50%;
+  background: none;
+  box-shadow: none;
+  transform: translateY(14px) scale(0.7);
+  transition: opacity var(--t), visibility var(--t), transform 460ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.to-top.is-on { transform: none; }
+.to-top:hover { background: none; }
+.to-top:focus-visible { outline-offset: 4px; border-radius: 50%; }
+
+.to-top .mic {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 8px 14px rgba(4, 30, 17, 0.35));
+  transition: filter var(--t);
+}
+
+.to-top:hover .mic { filter: drop-shadow(0 12px 18px rgba(4, 30, 17, 0.42)); }
+
+.to-top .mic__vzor {
+  transform-box: view-box;
+  transform-origin: 50% 50%;
+  transition: transform 650ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.to-top:hover .mic__vzor { transform: rotate(72deg); }
+.to-top.is-kop .mic__vzor { animation: mic-kop 760ms cubic-bezier(0.2, 0.8, 0.2, 1); }
+
+@keyframes mic-kop {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(-432deg); }
+}
+
+@media (max-width: 620px) {
+  .to-top { width: 52px; height: 52px; }
+}

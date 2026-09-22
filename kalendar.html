@@ -3,17 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Mladší přípravka U9 | FC Hlinsko</title>
-<meta name="description" content="Mladší přípravka U9 FC Hlinsko. Okresní soutěž mladších přípravek.">
+<title>Kalendář tréninků a zápasů | FC Hlinsko</title>
+<meta name="description" content="Kalendář FC Hlinsko: tréninky a zápasy všech mužstev od přípravek po muže A na jednom místě, s filtrem podle mužstva.">
 <meta name="theme-color" content="#040C07">
-<link rel="canonical" href="https://fchlinsko.cz/tym-pripravka-u9.html">
+<link rel="canonical" href="https://fchlinsko.cz/kalendar.html">
 <link rel="icon" type="image/png" href="images/znak-fchlinsko.png">
 <link rel="apple-touch-icon" href="images/znak-fchlinsko.png">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="cs_CZ">
 <meta property="og:site_name" content="FC Hlinsko">
-<meta property="og:title" content="Mladší přípravka U9 | FC Hlinsko">
-<meta property="og:description" content="Mladší přípravka U9 FC Hlinsko. Okresní soutěž mladších přípravek.">
+<meta property="og:title" content="Kalendář tréninků a zápasů | FC Hlinsko">
+<meta property="og:description" content="Kalendář FC Hlinsko: tréninky a zápasy všech mužstev od přípravek po muže A na jednom místě, s filtrem podle mužstva.">
 <meta property="og:image" content="images/znak-fchlinsko.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -195,75 +195,92 @@
 
 <!-- ================= HERO STRÁNKY ================= -->
 <section class="page-hero on-dark">
-  <img class="page-hero__img" src="images/tymy/pripravka-u9.jpg" alt="" width="1500" height="857">
+  <img class="page-hero__img" src="images/kalendar-olsinky.jpg" alt="" width="1920" height="1080">
   <span class="page-hero__veil" aria-hidden="true"></span>
   <div class="wrap">
     <ol class="crumbs">
       <li><a href="index.html">Úvod</a></li>
-      <li><a href="tymy.html">Týmy</a></li>
-      <li aria-current="page">Mladší přípravka U9</li>
+      <li><a href="zapasy.html">Zápasy</a></li>
+      <li aria-current="page">Kalendář</li>
     </ol>
-    <h1 class="page-hero__title">Mladší přípravka U9</h1>
-    <p class="page-hero__lead">Okresní soutěž mladších přípravek.</p>
+    <h1 class="page-hero__title">Kalendář <em>klubu</em></h1>
+    <p class="page-hero__lead">
+      Tréninky a zápasy všech mužstev na jednom místě. Vyberte mužstvo a klepněte
+      na den, ukáže se jeho program.
+    </p>
   </div>
 </section>
 
-<!-- ================= O TÝMU ================= -->
+<!-- ================= KALENDÁŘ =================
+     Zápasy bere z pole ZAPASY, tréninky z pole TRENINKY (script.js). -->
 <section class="section">
-  <div class="wrap media-split">
-    <figure class="media-figure reveal" style="margin:0">
-      <img src="images/tymy/pripravka-u9.jpg" alt="Mladší přípravka U9 FC Hlinsko" loading="lazy" width="1500" height="857">
-      <figcaption>Mladší přípravka U9</figcaption>
-    </figure>
-    <div class="reveal" data-d="2">
-      <span class="kicker">U9</span>
-      <h2 class="sec-title">O <em>týmu</em></h2>
-      <!-- SEM napiste par vet o tymu: kdo ho vede, jak se mu dari, cim zije. -->
-      <p class="sec-lead" style="margin-bottom:22px">
-        Popis týmu sem teprve doplníme.
-      </p>
-      <div class="btn-row">
-        <a class="btn btn--lg" href="nabor.html">Přidat se k týmu</a>
-        <a class="btn btn--ghost btn--lg" href="#rozpis">Rozpis zápasů</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ================= ROZPIS ZÁPASŮ =================
-     Zápasy se píší v script.js do pole ZAPASY. Sem se dostane každý,
-     který má tym: 'pripravka-u9'. -->
-<section class="section section--alt" id="rozpis">
   <div class="wrap">
-    <div class="sec-head reveal">
-      <div>
-        <span class="kicker">Kdy hrajeme</span>
-        <h2 class="sec-title">Rozpis <em>zápasů</em></h2>
+    <div class="kal" data-kalendar>
+      <div class="kal__bar reveal">
+        <div class="kal__nav">
+          <button class="kal__btn" type="button" data-kal="prev" aria-label="Předchozí měsíc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg></button>
+          <h2 class="kal__mesic" data-kal-mesic aria-live="polite">Kalendář</h2>
+          <button class="kal__btn" type="button" data-kal="next" aria-label="Další měsíc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg></button>
+          <button class="kal__dnes" type="button" data-kal="dnes">Dnes</button>
+        </div>
+        <div class="kal__typy" role="group" aria-label="Co zobrazit">
+          <button class="tab is-active" type="button" data-kal-typ="zapasy" aria-pressed="true"><i class="kdot kdot--doma"></i>Zápasy</button>
+          <button class="tab is-active" type="button" data-kal-typ="treninky" aria-pressed="true"><i class="kdot kdot--trenink"></i>Tréninky</button>
+        </div>
       </div>
-      <a class="link-arrow" href="zapasy.html">
-        Zápasy všech mužstev
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-      </a>
-    </div>
 
-    <div class="fixtures reveal" data-rozpis="pripravka-u9"></div>
+      <div class="tabs kal__tymy reveal" role="group" aria-label="Mužstvo">
+        <button class="tab is-active" type="button" data-kal-tym="vse" data-kotva="" aria-pressed="true">Celý klub</button>
+        <button class="tab" type="button" data-kal-tym="A" data-kotva="muzi-a" aria-pressed="false">Muži A</button>
+        <button class="tab" type="button" data-kal-tym="B" data-kotva="muzi-b" aria-pressed="false">Muži B</button>
+        <button class="tab" type="button" data-kal-tym="dorost" data-kotva="dorost" aria-pressed="false">Dorost</button>
+        <button class="tab" type="button" data-kal-tym="zaci" data-kotva="zaci" aria-pressed="false">Žáci</button>
+        <button class="tab" type="button" data-kal-tym="pripravka" data-kotva="pripravky" aria-pressed="false">Přípravky</button>
+        <button class="tab" type="button" data-kal-tym="skolicka" data-kotva="skolicka" aria-pressed="false">Školička</button>
+      </div>
+
+      <div class="kal__body reveal">
+        <div class="kal__grid">
+          <div class="kal__head" aria-hidden="true">
+            <span>Po</span><span>Út</span><span>St</span><span>Čt</span><span>Pá</span><span>So</span><span>Ne</span>
+          </div>
+          <div class="kal__cells" data-kal-mrizka></div>
+        </div>
+        <aside class="kal__den" data-kal-den aria-live="polite"></aside>
+      </div>
+
+      <div class="kal__legend">
+        <span class="kl kl--doma">Zápas doma</span>
+        <span class="kl kl--venku">Zápas venku</span>
+        <span class="kl kl--pohar">Pohár a turnaj</span>
+        <span class="kl kl--trenink">Trénink</span>
+      </div>
+      <p class="kal__pozn">
+        Časy tréninků se mohou měnit, změny hlásí trenéři svým mužstvům. Rozpis zápasů
+        s výsledky najdete na stránce <a href="zapasy.html">Zápasy</a>.
+      </p>
+    </div>
   </div>
 </section>
+
+<div class="stripe-band" aria-hidden="true"></div>
 
 <!-- ================= CTA ================= -->
-<section class="cta-band on-dark">
+<section class="cta-band cta-band--pair on-dark">
   <div class="wrap cta-band__in">
+    <img class="mascot mascot--pair" src="images/animovanepostavy/oba.webp"
+         alt="" aria-hidden="true" width="514" height="900" loading="lazy" decoding="async">
     <div class="reveal">
-      <span class="kicker">Nábor běží celý rok</span>
-      <h2 class="cta-band__title">Chceš hrát za Hlinsko?</h2>
+      <span class="kicker">První trénink zdarma</span>
+      <h2 class="cta-band__title">Přijď si zatrénovat</h2>
       <p class="cta-band__text">
-        Napište nám věk dítěte a poradíme, do kterého mužstva zapadne
-        a kdy chodí na trénink. První trénink je zdarma.
+        Bereme holky i kluky od pěti let. Stačí přijít na trénink svého ročníku,
+        trenér vás rád přivítá.
       </p>
     </div>
     <div class="btn-row reveal" data-d="2">
-      <a class="btn btn--white btn--lg" href="nabor.html">Přihlásit se</a>
-      <a class="btn btn--ghost btn--lg" href="tymy.html">Všechna mužstva</a>
+      <a class="btn btn--white btn--lg" href="nabor.html">Přihlásit dítě</a>
+      <a class="btn btn--ghost btn--lg" href="kontakt.html">Kontakt</a>
     </div>
   </div>
 </section>

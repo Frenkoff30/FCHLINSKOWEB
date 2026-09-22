@@ -10,6 +10,7 @@ index.html      Úvod
 klub.html       O klubu, historie, osobnosti, stadion, klubové oblečení
 tymy.html       Muži A a B, dorost, žáci, přípravky, tabulky
 zapasy.html     Rozpis zápasů a odkazy na tabulky
+kalendar.html   Kalendář tréninků a zápasů všech mužstev
 nabor.html      Nábor dětí, kategorie, přihláška
 partneri.html   Partneři a nabídka spolupráce
 kontakt.html    Kontakty, formulář, mapa
@@ -112,6 +113,24 @@ zkopírovat blok `<article class="catcard">`:
 ```
 
 Doporučené rozměry: velká fotka do 1500 px na delší straně, náhled 760 x 475 px.
+
+## Kalendář a tréninky
+
+Stránka kalendar.html (v menu Zápasy → Kalendář) skládá do měsíce zápasy
+z pole `ZAPASY` a tréninky z pole `TRENINKY` ve `script.js`. Na počítači je
+mřížka s popisky a vedle program vybraného dne, na mobilu mřížka s barevnými
+tečkami a program pod ní. Filtr mužstev funguje i přes adresu, např.
+kalendar.html#muzi-a nebo #skolicka.
+
+```js
+{ tym: 'A', dny: [2, 4], od: '18:00', do: '19:30', misto: 'Olšinky, hřiště č. 1' },
+```
+
+`dny` jsou dny v týdnu (1 = pondělí, 7 = neděle). Tréninky se ukazují jen v období
+`TRENINKY_OBDOBI` a ne ve dnech v poli `VOLNO` (svátky, zrušené tréninky).
+
+> **Pozor:** skutečný je zatím jen čas školičky (úterý a čtvrtek od 16:30).
+> Ostatní časy tréninků jsou ukázkové a musí je potvrdit trenéři.
 
 ## Tabulka soutěže
 

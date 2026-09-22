@@ -85,7 +85,16 @@
             <li><a href="nabor.html">Fotbalová školička</a></li>
           </ul>
         </li>
-        <li class="menu__li"><a class="menu__link" href="zapasy.html">Zápasy</a></li>
+        <li class="menu__li">
+          <a class="menu__link" href="zapasy.html" data-stranky="zapasy.html kalendar.html">Zápasy
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+          </a>
+          <ul class="submenu">
+            <li><a href="zapasy.html">Rozpis a výsledky</a></li>
+            <li><a href="zapasy.html#tabulky">Tabulky</a></li>
+            <li><a href="kalendar.html">Kalendář</a></li>
+          </ul>
+        </li>
         <li class="menu__li"><a class="menu__link" href="nabor.html">Nábor</a></li>
         <li class="menu__li"><a class="menu__link" href="novinky.html">Novinky</a></li>
         <li class="menu__li"><a class="menu__link" href="partneri.html">Partneři</a></li>
@@ -147,7 +156,19 @@
           <li><a href="tymy.html#pripravky">Přípravky U8 až U11</a></li>
         </ul>
       </li>
-      <li><div class="dnav__row"><a class="dnav__link" href="zapasy.html">Zápasy</a></div></li>
+      <li>
+        <div class="dnav__row">
+          <a class="dnav__link" href="zapasy.html" data-stranky="zapasy.html kalendar.html">Zápasy</a>
+          <button class="dnav__toggle" type="button" aria-label="Rozbalit podmenu Zápasy" aria-expanded="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+        </div>
+        <ul class="dnav__sub">
+          <li><a href="zapasy.html">Rozpis a výsledky</a></li>
+          <li><a href="zapasy.html#tabulky">Tabulky</a></li>
+          <li><a href="kalendar.html">Kalendář</a></li>
+        </ul>
+      </li>
       <li><div class="dnav__row"><a class="dnav__link" href="nabor.html">Nábor</a></div></li>
       <li><div class="dnav__row"><a class="dnav__link" href="novinky.html">Novinky</a></div></li>
       <li><div class="dnav__row"><a class="dnav__link" href="partneri.html">Partneři</a></div></li>
@@ -337,6 +358,7 @@
           <li><a href="tymy.html#zaci">Žáci</a></li>
           <li><a href="tymy.html#pripravky">Přípravky</a></li>
           <li><a href="zapasy.html">Zápasy a tabulky</a></li>
+          <li><a href="kalendar.html">Kalendář</a></li>
           <li><a href="nabor.html">Nábor dětí</a></li>
         </ul>
       </div>
