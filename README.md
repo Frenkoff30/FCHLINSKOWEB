@@ -12,6 +12,7 @@ tymy.html       Muži A a B, dorost, žáci, přípravky, tabulky
 zapasy.html     Rozpis zápasů a odkazy na tabulky
 kalendar.html   Kalendář tréninků a zápasů všech mužstev
 nabor.html      Nábor dětí, kategorie, přihláška
+cleny.html      Informace pro členy: příspěvky, platební údaje, termíny
 partneri.html   Partneři a nabídka spolupráce
 kontakt.html    Kontakty, formulář, mapa
 
@@ -23,6 +24,7 @@ reklamacni-rad.html           Reklamační řád
 styles.css      Kompletní styly (design systém v sekci 1: TOKENY)
 script.js       Navigace, rozpis zápasů, tabulka, lightbox, formuláře
 images/         Fotky, znak klubu, loga partnerů
+data/           Připravené místo pro automatická data z FAČR (viz data/README.md)
 favicon.*       Ikony webu
 ```
 
@@ -57,15 +59,35 @@ skóre se ukáže jako –:–, stačí pak doplnit `skore`.
 
 Z vyplněných skóre web sám počítá:
 
-- **Hero úvodní stránky**: poslední odehraný a příští zápas mužů A (s odpočtem „Za 5 dní“)
-- **Blok áčka**: posledních šest výsledků a formu z posledních pěti zápasů
-- **Stránku Muži A**: stejné výsledky a tabulku
+- **Hero úvodní stránky**: poslední odehraný a příští zápas mužů A (s odpočtem „Za 5 dní“).
+  Obě karty se dají rozkliknout, vedou na stránku Muži A a na rozpis.
+- **Stránku Muži A**: posledních šest výsledků, formu z posledních pěti zápasů a tabulku
+
+Výsledky ani tabulka už na úvodní stránce nejsou, patří na podstránky mužstev.
 
 Po zápase tedy stačí doplnit skóre a všechno se přepočítá. Název soutěže
 u mistrovských zápasů bere web z pole `SOUTEZE` (`A: 'Divize C'`).
 
 Odehrané zápasy web sám zobrazí světleji. Filtry nad rozpisem fungují
 podle polí `typ` a `tym`.
+
+### Zápasový pruh v heru
+
+Pruh na spodní hraně hera je kreslený jako kus hřiště: u obou krajů vápno
+s brankovištěm a puntíkem (`.hero__vapno`), uprostřed půlicí čára se
+středovým kruhem (`.hbar__line`). Na mobilu se vápna schovají, na úzkém
+pruhu by jen rušila.
+
+Obě karty se dají rozkliknout a mají to napsané na štítku se šipkou
+(`.hm__go`). Podsvícení při najetí se řídí výsledkem, třídu přidává
+`script.js` podle skóre:
+
+| Třída | Kdy | Barva |
+|-------|-----|-------|
+| `hm--v` | výhra | zelená |
+| `hm--p` | prohra | červená |
+| `hm--r` | remíza | neutrální bílá |
+| `hm--next` | nadcházející zápas | klubová zlatá |
 
 V `ZAPASY` je podzim 2026 mužů A (Divize C) a mužů B (1.B třída sk. A) včetně
 výsledků do 20. 9. 2026 (fotbalunas.cz, livesport.cz), předkolo MOL Cupu a přípravný
@@ -176,6 +198,14 @@ v `KARUSEL_RYCHLOST`. Při zapnutém omezení pohybu v systému se místo pásů
 ukáže mřížka.
 Rozdělení je zatím návrh, klub ho musí potvrdit.
 
+### Volná pozice generálního partnera
+
+Generálního partnera klub nemá. Dokud v poli `PARTNERI` nikdo s úrovní
+`'generalni'` není, web na jeho místo sám vykreslí nabídku z objektu
+`VOLNA_POZICE` ve `script.js` (co partner dostane a odkaz na stránku
+Partneři). Jakmile se přidá skutečný generální partner, nabídka zmizí
+a nic dalšího se nenastavuje.
+
 ## Cookies a právní stránky
 
 Web sám nepoužívá sledovací cookies. Jediný obsah třetí strany, který může
@@ -189,9 +219,57 @@ zkontrolovat**, hlavně kdo je prodávajícím klubového oblečení a jak se pl
 
 ## Aktuality
 
-Aktuality jsou dvě karty v `index.html` v sekci `<!-- AKTUALITY -->`.
-Nová aktualita = zkopírovat blok `<article class="card">` a přepsat
-obrázek, datum, nadpis a text.
+Všechny aktuality jsou v poli `NOVINKY` ve `script.js`, web je sám seřadí od
+nejnovější. Na úvodní stránce se skládají do vodorovného pásu (karusel), na
+stránce Novinky do mřížky.
+
+Nová aktualita = zkopírovat blok v poli `NOVINKY` a přepsat `id`, `datum`,
+`nadpis`, `perex`, `obsah` a obrázek. Pole `id` musí být unikátní, používá se
+v adrese článku (`novinka.html?id=...`).
+
+### Pás aktualit
+
+Pás se ovládá prstem, šipkami po stranách a tečkami pod ním. Počet karet
+neřeší, na počítači ukazuje dvě a na mobilu jednu. Když se všechny karty
+vejdou naráz, šipky i tečky se samy schovají.
+
+Kolik aktualit se na úvodu nabídne, řídí `data-limit` na pásu v `index.html`.
+
+## Přepínač mužstev na úvodu
+
+Sekce „Naše mužstva“ je řada štítků s kategoriemi a pod nimi fotka vybraného
+mužstva s odkazem na jeho podstránku. Podrobnosti (soupisky, rozpisy, tabulky)
+jsou schválně až na podstránkách.
+
+Obsah je v poli `TYMY_PREHLED` ve `script.js`:
+
+```js
+{ zkratka: 'U15', nazev: 'Starší žáci U15', soutez: '3. liga starších žáků, sk. A',
+  foto: 'images/tymy/zaci-u15.jpg', odkaz: 'tym-zaci-u15.html' },
+```
+
+Pořadí v poli = pořadí štítků, první mužstvo se ukáže po načtení stránky.
+
+## Vyskakovací upoutávka
+
+Okno s pozvánkou na akci, které se po načtení stránky samo otevře. Řídí ho
+objekt `UPOUTAVKA` ve `script.js`:
+
+```js
+var UPOUTAVKA = {
+  id: 'planeo-cup-u11-2026',      // změňte při nové akci, jinak se okno lidem neukáže znovu
+  od: '2026-09-16', do: '2026-09-23',   // období, kdy se okno ukazuje (do včetně)
+  stranky: ['index.html', ''],    // prázdné pole = na všech stránkách
+  ...
+};
+```
+
+Po datu `do` se okno samo přestane zobrazovat, nemusí se nic mazat. Každému
+návštěvníkovi se ukáže jednou, zavření si prohlížeč pamatuje pod klíčem
+`fch-upoutavka`. Upoutávku vypnete tak, že místo objektu napíšete `null`.
+
+Okno počká, dokud návštěvník nevyřeší lištu se souhlasem cookies, aby ji
+nepřekrylo.
 
 ## Design systém
 
@@ -212,6 +290,31 @@ takže stejné komponenty fungují na světlém i tmavém pozadí.
 
 Pruh `stripe-band` je motiv sekaného trávníku, používá se jako předěl sekcí.
 
+## Hlavička
+
+V liště je jen znak klubu, bez nápisu (`.brand--znak`). Znak je vyšší než
+lišta a kouskem přesahuje pod ni do hera. Při odrolování se spolu s lištou
+plynule zmenší a přesah se zkrátí (třída `is-stuck`).
+
+Velikost řídí jediná proměnná `--znak`, výška se dopočítá z poměru stran
+souboru, takže se znak nikdy nedeformuje:
+
+| Stav | `--znak` | Přesah pod lištu |
+|------|----------|------------------|
+| Nahoře stránky | 108 px | 69 px |
+| Po odrolování | 62 px | 24 px |
+| Mobil, nahoře | 72 px | — |
+| Mobil, odrolováno | 52 px | — |
+
+Výšky lišty jsou v proměnných `--head-h` a `--head-h-sm`.
+
+> **Pozor:** pravidla pro znak musí mít prefix `.site-head`, jinak je přebije
+> obecné `.site-head.is-stuck .brand__crest` výš v souboru.
+
+Odkazy na Facebook a Instagram jsou na počítači v horní liště. Ta se pod
+620 px skrývá, odkazy proto naskočí přímo do hlavičky vedle hamburgeru
+(`.nav__social`).
+
 ## Formuláře
 
 Formuláře na stránkách Nábor a Kontakt ověří vyplnění a pak otevřou
@@ -221,7 +324,7 @@ e-mailového klienta s předvyplněnou zprávou (`mailto:`). Nepotřebují
 Adresa se nastavuje atributem na formuláři:
 
 ```html
-<form data-mailto="fotbal-hlinsko@seznam.cz" data-subject="Předmět zprávy">
+<form data-mailto="info@fchlinsko.cz" data-subject="Předmět zprávy">
 ```
 
 Pokud bude klub chtít odesílání přímo z webu bez otevírání e-mailu,
@@ -229,7 +332,8 @@ je potřeba doplnit serverový skript nebo službu typu Formspree.
 
 ## Přístupnost a technické
 
-- Responzivní od 375 px výš, bez vodorovného posuvu
+- Responzivní od 320 px výš, bez vodorovného posuvu (ověřeno na 320, 360,
+  375, 414, 600, 768, 900 a 1024 px na všech stránkách)
 - Tabulky se pod 620 px skládají pod sebe místo vodorovného posouvání
 - Dotykové cíle na mobilu mají nejméně 40 px
 - Klávesová navigace včetně přeskočení na obsah a uzavřeného fokusu v mobilním menu
@@ -237,6 +341,39 @@ je potřeba doplnit serverový skript nebo službu typu Formspree.
 - Popisky `alt` u všech obrázků, `aria-label` u ikonových tlačítek
 - Strukturovaná data `SportsClub` na úvodní stránce
 - Bez sledovacích cookies a trackerů, bez externích skriptů (Google Fonts, mapa až po souhlasu)
+
+## Data z FAČR
+
+Zápasy a tabulka jdou místo ručního přepisování brát z JSON souborů, které
+někdo doplňuje automaticky. Vrstva je hotová a **vypnutá**, zapíná se
+v objektu `ZDROJ` na začátku `script.js`:
+
+```js
+var ZDROJ = {
+  zapnuto: false,          // true = web bere data ze souborů
+  zaklad: 'data/',         // složka s JSON soubory
+  cesty: { zapasy: 'zapasy.json', tabulka: 'tabulka.json' },
+  platnostMinut: 60,       // jak dlouho data platí, než se stáhnou znovu
+  cekaniMs: 6000           // po jaké době se stahování vzdá
+};
+```
+
+> **Pozor:** FAČR veřejné API nemá. Fotbal.cz data ven nepouští a neoficiální
+> Scortes skončil, protože ho is.fotbal.cz začal blokovat. Web se proto nedá
+> napojit přímo na fotbal.cz. Mezi web a FAČR musí přijít skript na hostingu
+> klubu, který data jednou za čas stáhne a uloží je do `data/` jako dva JSON
+> soubory. Podobu souborů i celý postup popisuje **`data/README.md`**, vzory
+> jsou v `data/*.priklad.json`.
+
+Jak to funguje, když je zdroj zapnutý:
+
+1. Stránka se hned vykreslí z dat uložených v prohlížeči z minule, na síť
+   se nečeká.
+2. Na pozadí se stáhne čerstvá verze a když se liší, web se překreslí.
+
+Špatná data web nerozbijí. Vadný řádek se zahodí, poškozený nebo chybějící
+soubor se ignoruje a platí ruční pole `ZAPASY` a `TABULKA` ve `script.js`.
+**Ta se proto nemažou ani po zapnutí zdroje**, jsou to zálohy.
 
 ## Publikace
 

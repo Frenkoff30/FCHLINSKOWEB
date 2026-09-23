@@ -1,0 +1,25 @@
+{
+  "aktualizovano": "2026-09-21T10:00:00Z",
+  "zapasy": [
+    {
+      "datum": "2026-09-26T10:30",
+      "domaci": true,
+      "souper": "Vysoké Mýto",
+      "tym": "A",
+      "typ": "liga",
+      "kolo": 8,
+      "misto": "Olšinky, hřiště č. 1",
+      "skore": null
+    },
+    {
+      "datum": "2026-09-19T10:30",
+      "domaci": false,
+      "souper": "Přepeře",
+      "tym": "A",
+      "typ": "liga",
+      "kolo": 7,
+      "misto": "Přepeře",
+      "skore": "5:0"
+    }
+  ]
+}

@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Nábor dětí a fotbalová školička | FC Hlinsko</title>
-<meta name="description" content="Nábor do FC Hlinsko je otevřený celý rok. Bereme holky i kluky od pěti let. První trénink je zdarma, stačí sportovní boty. Přihlaste dítě online.">
+<meta name="description" content="Nábor do FC Hlinsko je otevřený celý rok. Bereme holky i kluky od pěti let. První půlrok je zdarma a vybavení dostanete od klubu. Přihlaste dítě online.">
 <meta name="theme-color" content="#040C07">
 <link rel="canonical" href="https://fchlinsko.cz/nabor.html">
 <link rel="icon" type="image/png" href="images/znak-fchlinsko.png">
@@ -13,7 +13,7 @@
 <meta property="og:locale" content="cs_CZ">
 <meta property="og:site_name" content="FC Hlinsko">
 <meta property="og:title" content="Nábor dětí a fotbalová školička | FC Hlinsko">
-<meta property="og:description" content="Nábor do FC Hlinsko je otevřený celý rok. Bereme holky i kluky od pěti let. První trénink je zdarma, stačí sportovní boty. Přihlaste dítě online.">
+<meta property="og:description" content="Nábor do FC Hlinsko je otevřený celý rok. Bereme holky i kluky od pěti let. První půlrok je zdarma a vybavení dostanete od klubu. Přihlaste dítě online.">
 <meta property="og:image" content="images/znak-fchlinsko.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -49,12 +49,8 @@
 <!-- ================= HLAVIČKA ================= -->
 <header class="site-head">
   <div class="wrap nav">
-    <a class="brand" href="index.html" aria-label="FC Hlinsko, úvodní stránka">
+    <a class="brand brand--znak" href="index.html" aria-label="FC Hlinsko, úvodní stránka">
       <img class="brand__crest" src="images/znak-fchlinsko@3x.png" alt="Znak FC Hlinsko" width="660" height="870">
-      <span class="brand__txt">
-        <span class="brand__name">FC Hlinsko</span>
-        <span class="brand__sub">Od roku 1905</span>
-      </span>
     </a>
 
     <nav aria-label="Hlavní navigace">
@@ -71,6 +67,7 @@
             <li><a href="klub.html#vedeni">Vedení klubu</a></li>
             <li><a href="klub.html#stadion">Stadion Olšinky</a></li>
             <li><a href="klub.html#obleceni">Klubové oblečení</a></li>
+            <li><a href="cleny.html">Informace pro členy</a></li>
           </ul>
         </li>
         <li class="menu__li">
@@ -103,6 +100,14 @@
     </nav>
 
     <div class="nav__cta">
+      <div class="nav__social">
+        <a class="icon-btn" href="https://www.facebook.com/FcHlinsko" target="_blank" rel="noopener" aria-label="FC Hlinsko na Facebooku">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0 0 22 12z"/></svg>
+        </a>
+        <a class="icon-btn" href="https://www.instagram.com/fchlinsko/" target="_blank" rel="noopener" aria-label="FC Hlinsko na Instagramu">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg>
+        </a>
+      </div>
       <a class="btn btn--sm" href="nabor.html">Přidej se k nám</a>
       <button class="burger" type="button" aria-label="Otevřít menu" aria-expanded="false" aria-controls="drawer">
         <span class="burger__box"><span></span><span></span><span></span></span>
@@ -140,6 +145,7 @@
           <li><a href="klub.html#vedeni">Vedení klubu</a></li>
           <li><a href="klub.html#stadion">Stadion Olšinky</a></li>
           <li><a href="klub.html#obleceni">Klubové oblečení</a></li>
+          <li><a href="cleny.html">Informace pro členy</a></li>
         </ul>
       </li>
       <li>
@@ -206,8 +212,8 @@
     </ol>
     <h1 class="page-hero__title">Přidej se <em>k nám</em></h1>
     <p class="page-hero__lead">
-      Nábor běží celý rok a je otevřený pro holky i kluky od pěti let. První trénink
-      je zdarma a nezávazný. Stačí sportovní boty a chuť hýbat se.
+      Nábor běží celý rok a je otevřený pro holky i kluky od pěti let. Prvních šest měsíců
+      u nás trénujete zdarma a bez závazku. Stačí sportovní boty a chuť hýbat se.
     </p>
     <div class="btn-row" style="margin-top:26px">
       <a class="btn btn--lg btn--white" href="#prihlaska">Vyplnit přihlášku</a>
@@ -231,7 +237,23 @@
     </div>
 
     <div class="grid grid--3">
-      <article class="teamcard reveal" data-d="1">
+      <article class="teamcard teamcard--zvyrazneno reveal" data-d="1">
+        <span class="chip chip--gold">Půlrok zdarma</span>
+        <h3 class="teamcard__name">První půlrok neplatíte nic</h3>
+        <p class="teamcard__comp">
+          Prvních šest měsíců od nástupu se u nás trénuje bez členských příspěvků.
+          Dítě má čas v klidu zjistit, jestli ho fotbal baví, a rodiče nic neriskují.
+        </p>
+      </article>
+      <article class="teamcard teamcard--zvyrazneno reveal" data-d="2">
+        <span class="chip chip--green">Od klubu</span>
+        <h3 class="teamcard__name">Vybavení dostanete od nás</h3>
+        <p class="teamcard__comp">
+          Každý nový hráč dostane klubovou sadu, ve které trénuje i hraje zápasy.
+          Sami si tak pořídíte jen kopačky a chrániče holení.
+        </p>
+      </article>
+      <article class="teamcard reveal" data-d="3">
         <h3 class="teamcard__name">Kvalifikovaní trenéři</h3>
         <p class="teamcard__comp">
           V klubu působí šestnáct smluvních trenérů s licencí. U nejmenších kategorií
@@ -340,8 +362,8 @@
         <div class="teamcard__age">02</div>
         <h3 class="teamcard__name">Přijďte na trénink</h3>
         <p class="teamcard__comp">
-          Domluvíme termín, ve kterém trénuje odpovídající kategorie. První trénink
-          je zdarma a zcela nezávazný.
+          Domluvíme termín, ve kterém trénuje odpovídající kategorie. Prvních šest měsíců
+          je zdarma a zcela nezávazných.
         </p>
       </article>
       <article class="teamcard reveal" data-d="3">
@@ -369,10 +391,10 @@
         <h3 class="panel__h">Časté dotazy</h3>
         <dl class="dl">
           <div><dt>Musí dítě už umět hrát?</dt><dd>Ne</dd></div>
-          <div><dt>Je první trénink zdarma?</dt><dd>Ano</dd></div>
+          <div><dt>Je první půlrok zdarma?</dt><dd>Ano</dd></div>
+          <div><dt>Dostane dítě vybavení?</dt><dd>Ano, od klubu</dd></div>
           <div><dt>Berete i holky?</dt><dd>Ano</dd></div>
           <div><dt>Lze přijít v průběhu roku?</dt><dd>Ano</dd></div>
-          <div><dt>Zajistíte vybavení?</dt><dd>Poradíme</dd></div>
         </dl>
       </div>
     </div>
@@ -394,7 +416,7 @@
     </div>
 
     <div class="grid grid--2" style="gap:clamp(24px,3vw,40px);align-items:start">
-      <form class="form panel reveal" data-mailto="fotbal-hlinsko@seznam.cz" data-subject="Nábor, nová přihláška z webu" novalidate>
+      <form class="form panel reveal" data-mailto="info@fchlinsko.cz" data-subject="Nábor, nová přihláška z webu" novalidate>
         <div class="form-grid">
           <div class="field">
             <label for="n-dite">Jméno dítěte <span class="req" aria-hidden="true">*</span></label>
@@ -479,7 +501,7 @@
           </div>
           <div>
             <div class="contact-item__k">Nebo napsat</div>
-            <div class="contact-item__v"><a href="mailto:fotbal-hlinsko@seznam.cz">fotbal-hlinsko@seznam.cz</a></div>
+            <div class="contact-item__v"><a href="mailto:info@fchlinsko.cz">info@fchlinsko.cz</a></div>
           </div>
         </div>
 
@@ -513,7 +535,7 @@
   <div class="wrap cta-band__in">
     <div class="reveal">
       <span class="kicker">Uvidíme se na hřišti</span>
-      <h2 class="cta-band__title">První trénink máš zdarma</h2>
+      <h2 class="cta-band__title">První půlrok máš zdarma</h2>
       <p class="cta-band__text">
         Nemusíte nic řešit dopředu. Přijďte se podívat, seznámit se s trenéry
         a nechte dítě zkusit si to na vlastní kůži.
@@ -550,7 +572,7 @@
           <a href="https://www.instagram.com/fchlinsko/" target="_blank" rel="noopener" aria-label="Instagram">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg>
           </a>
-          <a href="mailto:fotbal-hlinsko@seznam.cz" aria-label="Napsat e-mail">
+          <a href="mailto:info@fchlinsko.cz" aria-label="Napsat e-mail">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/></svg>
           </a>
         </div>
@@ -566,6 +588,7 @@
           <li><a href="klub.html#vedeni">Vedení klubu</a></li>
           <li><a href="klub.html#stadion">Stadion Olšinky</a></li>
           <li><a href="klub.html#obleceni">Klubové oblečení</a></li>
+          <li><a href="cleny.html">Informace pro členy</a></li>
           <li><a href="partneri.html">Partneři</a></li>
         </ul>
       </div>
@@ -596,7 +619,7 @@
           </div>
           <div>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/></svg>
-            <span><a href="mailto:fotbal-hlinsko@seznam.cz">fotbal-hlinsko@seznam.cz</a></span>
+            <span><a href="mailto:info@fchlinsko.cz">info@fchlinsko.cz</a></span>
           </div>
         </div>
       </div>
