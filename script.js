@@ -743,6 +743,20 @@
   }
 
   /* ------------------------------------------------------------------------
+     5b. LOGA INSTITUCÍ
+     ------------------------------------------------------------------------
+     Karty dotačních programů čekají na loga v images/partneri/. Dokud
+     soubor chybí, místo rozbitého obrázku se ukáže zkratka instituce.
+     ---------------------------------------------------------------------- */
+  function initLoga() {
+    $$('img[data-logo]').forEach(function (img) {
+      function bezLoga() { if (img.parentNode) img.parentNode.classList.add('is-bez-loga'); }
+      if (img.complete) { if (!img.naturalWidth) bezLoga(); }
+      else img.addEventListener('error', bezLoga);
+    });
+  }
+
+  /* ------------------------------------------------------------------------
      6. MARQUEE PARTNERŮ
      ---------------------------------------------------------------------- */
   function initMarquee() {
@@ -1822,9 +1836,15 @@
         panel.classList.add('is-new');
       }
 
-      /* Vybraný štítek do viditelné části řady */
-      if (tabs[i].scrollIntoView) {
-        tabs[i].scrollIntoView({ block: 'nearest', inline: 'nearest' });
+      /* Vybraný štítek do viditelné části řady. Posouvá se jen řada štítků,
+         ne celá stránka: scrollIntoView by při prvním vykreslení strhl
+         okno z hera dolů na tuhle sekci. */
+      var rada = tabs[i].parentNode;
+      if (rada && rada.scrollWidth > rada.clientWidth) {
+        var l = tabs[i].offsetLeft;
+        var r = l + tabs[i].offsetWidth;
+        if (l < rada.scrollLeft) rada.scrollLeft = l - 16;
+        else if (r > rada.scrollLeft + rada.clientWidth) rada.scrollLeft = r - rada.clientWidth + 16;
       }
       if (presunFokus) tabs[i].focus();
     }
@@ -2371,6 +2391,7 @@
     initReveal();
     initFixtureList();
     initTeamFixtures();
+    initLoga();
     initMarquee();
     /* Až po vykreslení karet, počítá se ze skutečných šířek */
     initRails();

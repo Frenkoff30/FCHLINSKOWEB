@@ -111,6 +111,17 @@ a `nazev-nahled.jpg` (velká a náhled do karty). Výměna fotky = nahradit
 soubor stejným názvem. Doporučené šířky: hero 1920 px, ostatní 1400 až
 1600 px, JPEG kvalita kolem 80.
 
+`images/og-hero.jpg` (1200 × 630) je náhled, který se ukáže při sdílení
+odkazu na Facebooku a v chatech. Je to výřez z hero fotky, po výměně hera
+se musí přegenerovat.
+
+### Loga institucí
+
+Karty na stránce Partneři v sekci Institucionální podpora čekají na
+soubory `nsa.png`, `pardubicky-kraj.png` a `mesto-hlinsko.png` ve složce
+`images/partneri/`. Dokud tam nejsou, ukáže se místo loga název
+instituce. Nejlépe PNG s průhledným pozadím, výška kolem 160 px.
+
 ## Formuláře
 
 Formuláře na stránkách Nábor a Kontakt ověří vyplnění a otevřou e-mailového

@@ -1546,6 +1546,27 @@ table.tbl .t-name {
    do zbylého místa a tlačítka sedí u spodní hrany obou karet */
 .grid--panels { align-items: stretch; }
 
+/* Formulář a sloupec vedle něj končí ve stejné výšce. Volné místo si
+   rozeberou karty v pravém sloupci, ve formuláři odsune tlačítko dolů. */
+.split-even { align-items: stretch; }
+.split-even > * { min-width: 0; }
+
+.split-even > .form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.split-even > .form > [type="submit"],
+.split-even > .form > .btn { margin-top: auto; }
+
+@media (max-width: 980px) {
+  /* Pod sebou už nemá co dorovnávat */
+  .split-even { align-items: start; }
+  .split-even > .form > [type="submit"],
+  .split-even > .form > .btn { margin-top: 0; }
+}
+
 .grid--panels > .panel { display: flex; flex-direction: column; }
 
 .grid--panels > .panel > .dl,
@@ -1747,9 +1768,13 @@ table.tbl .t-name {
   .hero__sub { font-size: 15.5px; letter-spacing: 0.2em; }
   .hero__ball { width: 22px; }
 
-  /* Znak v liště na mobilu: menší, přesah drží, deformace žádná */
-  .site-head .brand--znak { --znak: 60px; }
-  .site-head.is-stuck .brand--znak { --znak: 46px; }
+  /* Nižší lišta, ať nesežere kus displeje. Znak z ní čouhá dolů zhruba
+     třetinou, stejně jako na počítači. */
+  :root { --head-h: 58px; --head-h-sm: 52px; }
+  .site-head .brand--znak { --znak: 64px; }
+  .site-head .brand--znak .brand__crest { top: 2px; }
+  .site-head.is-stuck .brand--znak { --znak: 56px; }
+  .site-head.is-stuck .brand--znak .brand__crest { top: 2px; }
 }
 
 @media (max-width: 420px) {
@@ -1963,22 +1988,27 @@ table.tbl .t-name {
 }
 
 /* Celá fotka je odkaz na podstránku */
+/* Nízký pruh, na velkém monitoru navíc zastropovaný, ať sekce
+   nezabere celou obrazovku */
 .teamsw__panel {
   position: relative;
   display: block;
   overflow: hidden;
   aspect-ratio: 16 / 6;
+  max-height: 440px;
   border-radius: var(--r-lg);
   background: var(--green-ink);
   box-shadow: var(--sh-lg);
 }
 
+/* Výřez posunutý nahoru: ukrajuje se trávník dole, ne hlavy nahoře */
 .teamsw__foto {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center 22%;
   transition: transform var(--t-slow);
 }
 
@@ -2068,7 +2098,8 @@ table.tbl .t-name {
   .teamsw__tabs::-webkit-scrollbar { display: none; }
   .teamsw__tab { padding: 9px 15px; font-size: 15px; }
 
-  .teamsw__panel { aspect-ratio: 5 / 4; }
+  .teamsw__panel { aspect-ratio: 5 / 4; max-height: none; }
+  .teamsw__foto { object-position: center center; }
 
   /* Název i tlačítko jsou nad sebou dole, závoj musí ztmavit celou
      spodní třetinu */
@@ -2248,25 +2279,36 @@ table.tbl tr.is-us td { border-color: var(--green-tint-2); }
 /* --------------------------------------------------------------------------
    28. KOMPAKTNÍ KARTA AKTUALITY
    -------------------------------------------------------------------------- */
-.card--sm .card__media { aspect-ratio: 21 / 9; }
-.card--sm .card__body { gap: 8px; padding: 16px 18px 18px; }
-.card--sm .card__date { font-size: 12px; letter-spacing: 0.16em; }
-.card--sm .card__title { font-size: clamp(18px, 1.5vw, 21px); }
-.card--sm .card__text { font-size: 14.5px; line-height: 1.6; }
-.card--sm .card__foot { padding-top: 11px; }
-.card--sm .card__foot .link-arrow { font-size: 14.5px; }
-.card--sm .card__tag { top: 10px; left: 10px; padding: 4px 10px; font-size: 11.5px; }
+.card--sm .card__media { aspect-ratio: 16 / 7; }
+.card--sm .card__body { gap: 7px; padding: 14px 16px 16px; }
+.card--sm .card__date { font-size: 11.5px; letter-spacing: 0.16em; }
+.card--sm .card__title { font-size: clamp(17px, 1.3vw, 19.5px); }
+.card--sm .card__text { font-size: 14px; line-height: 1.55; }
+.card--sm .card__foot { padding-top: 10px; }
+.card--sm .card__foot .link-arrow { font-size: 13.5px; }
+.card--sm .card__tag { top: 9px; left: 9px; padding: 4px 9px; font-size: 11px; }
 
 /* Užší, na střed zarovnaný blok aktualit, hlavička i karty ve stejné ose */
 #aktuality .sec-head,
 #aktuality .rail {
-  max-width: 1000px;
+  max-width: 860px;
   margin-inline: auto;
+}
+
+/* Nadpis o stupeň menší, ať blok nepřebije zbytek úvodní strany */
+#aktuality .sec-title { font-size: clamp(28px, 3.2vw, 40px); }
+
+/* Popisek na dva řádky, ať jsou karty nízké a stejně vysoké */
+#aktuality .card--sm .card__text {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 /* --------------------------------------------------------------------------
    28b. POSUVNÝ PÁS KARET
-/* Vodorovný pás se zarážkami, karty mají pevnou šířku. Když se všechny
+   Vodorovný pás se zarážkami, karty mají pevnou šířku. Když se všechny
    vejdou, script.js přidá is-static a ovládání zmizí.
    -------------------------------------------------------------------------- */
 .rail { position: relative; }
@@ -2752,13 +2794,17 @@ table.tbl tr.is-us td { border-color: var(--green-tint-2); }
 .hero { flex-direction: column; align-items: stretch; padding-bottom: 10px; }
 .hero__in { flex: 1 1 auto; align-content: center; padding-bottom: clamp(36px, 4.4vw, 64px); }
 
+/* Pruh nemá vlastní hranu ani rozostření, jen postupně ztmaví spodek
+   fotky. Díky tomu působí jako součást hera, ne jako nalepený pás. */
 .hero__bar {
   position: relative;
   z-index: 2;
-  background: rgba(4, 24, 13, 0.84);
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  padding-top: clamp(18px, 3vw, 38px);
+  background: linear-gradient(180deg,
+    rgba(4, 24, 13, 0) 0%,
+    rgba(4, 24, 13, 0.34) 22%,
+    rgba(4, 24, 13, 0.7) 52%,
+    rgba(4, 24, 13, 0.88) 100%);
 }
 
 /* Čáry hřiště v pozadí pruhu: vápna u krajů, půlicí čára uprostřed
@@ -2841,49 +2887,47 @@ table.tbl tr.is-us td { border-color: var(--green-tint-2); }
   width: 34px;
   height: 34px;
   border: 1px solid rgba(255, 255, 255, 0.22);
-  background: rgb(6, 30, 17);
+  background: rgba(4, 24, 13, 0.55);
 }
 
 .hbar__line::after { width: 6px; height: 6px; background: var(--green-light); }
 
+/* Bez rámečku a bez vlastního pozadí, aby to nebyla dlaždice položená
+   na fotku. Příslušnost k zápasu nese jen tenká svislá linka vlevo. */
 .hm {
   position: relative;
   display: grid;
   grid-template-columns: minmax(150px, auto) minmax(0, 1fr);
   align-items: center;
   gap: clamp(16px, 2vw, 26px);
-  padding: 18px clamp(14px, 1.4vw, 20px) 20px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: var(--r-sm);
+  padding: 14px clamp(14px, 1.4vw, 20px) 16px clamp(16px, 1.6vw, 24px);
   color: #fff;
-  transition: background-color var(--t), border-color var(--t), transform var(--t);
+  transition: background-color var(--t);
 }
 
+/* Linka vlevo, barvu bere podle výsledku */
+.hm::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 12%;
+  bottom: 12%;
+  width: 2px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.22);
+  transition: background-color var(--t);
+}
+
+.hm--v::before { background: var(--green-light); }
+.hm--p::before { background: #FF7A70; }
+.hm--next::before { background: var(--gold); }
+
+/* Při najetí se rozsvítí jen linka a drobný nádech pozadí, nic se
+   nezvedá a nevyskakuje ven z pruhu */
 .hm:hover,
-.hm:focus-visible {
-  background: rgba(255, 255, 255, 0.07);
-  border-color: rgba(255, 255, 255, 0.28);
-  transform: translateY(-2px);
-}
-
-/* Podsvícení podle výsledku, příští zápas zlatě */
-.hm--v:hover,
-.hm--v:focus-visible {
-  border-color: rgba(63, 191, 107, 0.6);
-  background: rgba(63, 191, 107, 0.11);
-}
-
-.hm--p:hover,
-.hm--p:focus-visible {
-  border-color: rgba(255, 122, 112, 0.6);
-  background: rgba(216, 36, 24, 0.14);
-}
-
-.hm--next:hover,
-.hm--next:focus-visible {
-  border-color: rgba(201, 162, 39, 0.6);
-  background: rgba(201, 162, 39, 0.11);
-}
+.hm:focus-visible { background: rgba(255, 255, 255, 0.05); }
+.hm:hover::before,
+.hm:focus-visible::before { width: 3px; }
 
 /* Štítek se šipkou na konci karty */
 .hm__go {
@@ -2893,9 +2937,9 @@ table.tbl tr.is-us td { border-color: var(--green-tint-2); }
   padding: 6px 12px;
   margin-top: 3px;
   flex: none;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.22);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.06);
+  background: none;
   font-family: 'Barlow Condensed', sans-serif;
   font-weight: 700;
   font-size: 13px;
@@ -3041,15 +3085,21 @@ table.tbl tr.is-us td { border-color: var(--green-tint-2); }
 }
 
 @media (max-width: 980px) {
-  .hero__in { padding-bottom: clamp(28px, 6vw, 44px); }
-  .hbar { grid-template-columns: 1fr; gap: 8px; }
+  .hero__in { padding-bottom: clamp(20px, 5vw, 36px); }
+
+  /* Oba zápasy pod sebou jako jeden celek, mezi nimi vlasová linka
+     místo mezery. Tak to nevypadá jako dvě dlaždice na fotce. */
+  .hbar { grid-template-columns: 1fr; gap: 0; }
   .hbar.is-single { grid-template-columns: 1fr; }
   .hbar__line { display: none; }
-  .hm { padding: 14px 14px 16px; gap: 10px; }
-  .hm__go { padding: 7px 12px; font-size: 12px; }
+  .hm { padding: 11px 12px 12px 14px; gap: 8px; }
+  .hm + .hm { border-top: 1px solid rgba(255, 255, 255, 0.12); }
+  .hm__go { padding: 6px 11px; font-size: 12px; }
 
   /* Na úzkém pruhu vápna jen ruší */
   .hero__vapno { display: none; }
+
+  .hero__bar { padding-top: clamp(14px, 4vw, 26px); }
 }
 
 @media (max-width: 560px) {
@@ -3410,6 +3460,61 @@ table.tbl tr.is-us td { border-color: var(--green-tint-2); }
 @media (max-width: 620px) {
   .bday-ico { display: none; }
 }
+
+/* --------------------------------------------------------------------------
+   35b. DOTAČNÍ PROGRAMY
+   Karta instituce: nahoře logo v poli pevné výšky, pod ním název a popis.
+   Když soubor s logem chybí, script.js na jeho místo dá zkratku.
+   -------------------------------------------------------------------------- */
+.dotace {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: clamp(20px, 2.4vw, 28px);
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  box-shadow: var(--sh-xs);
+  transition: box-shadow var(--t), border-color var(--t);
+}
+
+.dotace:hover { box-shadow: var(--sh-md); border-color: var(--border-hi); }
+
+/* Pevná výška pole, ať loga různých poměrů drží společnou linku */
+.dotace__logo {
+  display: grid;
+  place-items: center;
+  height: 88px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--border);
+}
+
+.dotace__logo img {
+  max-width: 82%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+/* Náhrada, dokud klub logo nedodá */
+.dotace__logo.is-bez-loga::before {
+  content: attr(data-zkratka);
+  max-width: 100%;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: clamp(20px, 2vw, 26px);
+  line-height: 1.1;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--green);
+}
+
+.dotace__logo.is-bez-loga img { display: none; }
+
+.dotace__nazev { font-size: clamp(19px, 1.7vw, 22px); margin: 0; }
+.dotace__text { font-size: 15.5px; line-height: 1.6; color: var(--text-soft); margin: 0; }
 
 /* --------------------------------------------------------------------------
    36. PARTNEŘI PODLE ÚROVNĚ
@@ -3827,10 +3932,12 @@ table.tbl tr.is-us td { border-color: var(--green-tint-2); }
    Fotka se nikam nenatahuje, drží poměr a jede přes celou plochu.
    -------------------------------------------------------------------------- */
 @media (max-width: 980px) {
+  /* Přesně zbytek displeje pod lištou, ať je hero na celou obrazovku
+     a pod ním hned začíná další sekce */
   .hero {
-    min-height: 100vh;
-    min-height: 100svh;
-    padding: clamp(40px, 12vw, 80px) 0 0;
+    min-height: calc(100vh - var(--head-h));
+    min-height: calc(100svh - var(--head-h));
+    padding: clamp(24px, 6vw, 48px) 0 0;
   }
 
   /* Na úzkém displeji by se vešla celá výška fotky, tedy hlavně obloha.
@@ -3852,6 +3959,16 @@ table.tbl tr.is-us td { border-color: var(--green-tint-2); }
       rgba(4, 24, 13, 0.18) 55%,
       rgba(4, 24, 13, 0.6) 82%,
       rgba(4, 24, 13, 0.82) 100%);
+  }
+
+  /* Na fotce byla zkratka FC potmě skoro nečitelná. Na mobilu jede ve
+     světlé zeleni a bez vlastního stínu: stín už má celý nápis a dva
+     přes sebe zkratku jen zašpinily. */
+  .hero__title .fc {
+    background: none;
+    -webkit-text-fill-color: #7CEDA8;
+    color: #7CEDA8;
+    filter: none;
   }
 
   /* Nápis dole nad pruhem, kde je klidný trávník */
@@ -3906,7 +4023,8 @@ table.tbl tr.is-us td { border-color: var(--green-tint-2); }
   .hm__go svg { width: 13px; height: 13px; }
   .hm__misto { display: none; }
 
-  .hm { padding: 10px 12px 12px; gap: 8px; }
+  .hm { padding: 9px 10px 10px 13px; gap: 7px; }
+  .hm::before { top: 9%; bottom: 9%; }
 
   /* Mužstva pod sebou jako na výsledkové tabuli, gól u pravého kraje.
      Vedle sebe se na šířku telefonu nevejdou. */

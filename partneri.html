@@ -14,7 +14,11 @@
 <meta property="og:site_name" content="FC Hlinsko">
 <meta property="og:title" content="Partneři klubu | FC Hlinsko">
 <meta property="og:description" content="Firmy a instituce, které podporují FC Hlinsko. Nabídka partnerství, reklama na stadionu Olšinky a podpora mládežnického fotbalu v Hlinsku.">
-<meta property="og:image" content="images/znak-fchlinsko.png">
+<meta property="og:image" content="images/og-hero.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Hřiště FC Hlinsko v areálu Olšinky">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="styles.css">
@@ -240,27 +244,38 @@
       </div>
     </div>
 
+    <!-- Loga institucí patří do images/partneri/. Dokud tam soubor není,
+         script.js místo rozbitého obrázku ukáže zkratku z data-zkratka. -->
     <div class="grid grid--3">
-      <article class="teamcard reveal" data-d="1">
-        <span class="chip chip--green">2026</span>
-        <h3 class="teamcard__name">Národní sportovní agentura</h3>
-        <p class="teamcard__comp">
+      <article class="dotace reveal" data-d="1">
+        <span class="dotace__logo" data-zkratka="NSA">
+          <img src="images/partneri/nsa.png" alt="Národní sportovní agentura"
+               loading="lazy" decoding="async" data-logo>
+        </span>
+        <h3 class="dotace__nazev">Národní sportovní agentura</h3>
+        <p class="dotace__text">
           Program Můj klub 2026. Podpora sportovní činnosti dětí a mládeže,
           prostředky jdou přímo do mládežnických kategorií.
         </p>
       </article>
-      <article class="teamcard reveal" data-d="2">
-        <span class="chip chip--gold">Kraj</span>
-        <h3 class="teamcard__name">Pardubický kraj</h3>
-        <p class="teamcard__comp">
+      <article class="dotace reveal" data-d="2">
+        <span class="dotace__logo" data-zkratka="Pardubický kraj">
+          <img src="images/partneri/pardubicky-kraj.png" alt="Pardubický kraj"
+               loading="lazy" decoding="async" data-logo>
+        </span>
+        <h3 class="dotace__nazev">Pardubický kraj</h3>
+        <p class="dotace__text">
           Podpora spolkových činností a sportu v regionu. Přispívá na provoz klubu
           a mládežnické soutěže.
         </p>
       </article>
-      <article class="teamcard reveal" data-d="3">
-        <span class="chip">Město</span>
-        <h3 class="teamcard__name">Město Hlinsko</h3>
-        <p class="teamcard__comp">
+      <article class="dotace reveal" data-d="3">
+        <span class="dotace__logo" data-zkratka="Město Hlinsko">
+          <img src="images/partneri/mesto-hlinsko.png" alt="Město Hlinsko"
+               loading="lazy" decoding="async" data-logo>
+        </span>
+        <h3 class="dotace__nazev">Město Hlinsko</h3>
+        <p class="dotace__text">
           Dlouhodobý partner klubu a vlastník sportovního zázemí. Bez podpory města
           by areál Olšinky nefungoval.
         </p>
