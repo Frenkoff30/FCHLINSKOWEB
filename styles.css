@@ -352,39 +352,43 @@ ul, ol { margin: 0 0 1.1em; padding-left: 1.2em; }
   transition: height var(--t);
 }
 
-.site-head.is-stuck .nav { height: var(--head-h-sm); }
+/* Lišta výšku nemění. Je sticky, takže by změna výšky posunula všechno
+   pod ní a obsah by při odrolování poskočil. Reaguje jen znak. */
 
 .brand { display: flex; align-items: center; gap: 12px; flex: none; }
 
 .brand__crest { width: 40px; height: auto; transition: width var(--t); }
 .site-head.is-stuck .brand__crest { width: 34px; }
 
-/* Znak je vyšší než lišta a přesahuje pod ni. Mění se jen šířka, výšku
-   dopočítá poměr souboru, takže se znak nedeformuje. */
+/* Znak je vyšší než lišta a přesahuje pod ni. Místo v řádku si drží
+   pořád stejné, výšku dopočítá poměr souboru, takže se nedeformuje. */
 .site-head .brand--znak {
   --znak: 82px;
+  --zmen: 1;
   position: relative;
   gap: 0;
   width: var(--znak);
   height: 100%;
   flex: none;
-  transition: width var(--t);
 }
 
 /* Prefix .site-head je nutný, jinak pravidlo pro .brand__crest výš
-   přebije šířku ve zmenšené liště. */
+   přebije šířku ve zmenšené liště.
+   Zmenšuje se přes transform, ne přes šířku: transform se jen složí na
+   grafice a nepřepočítává rozložení, takže odrolování neškube. */
 .site-head .brand--znak .brand__crest {
   position: absolute;
   left: 0;
   top: 3px;
   width: var(--znak);
   height: auto;
-  transition: width var(--t), top var(--t);
+  transform: scale(var(--zmen));
+  transform-origin: left top;
+  transition: transform var(--t);
   filter: drop-shadow(0 8px 18px rgba(3, 20, 10, 0.5));
 }
 
-.site-head.is-stuck .brand--znak { --znak: 54px; }
-.site-head.is-stuck .brand--znak .brand__crest { top: 4px; width: var(--znak); }
+.site-head.is-stuck .brand--znak { --zmen: 0.66; }
 
 /* Lišta nesmí přesah oříznout */
 .site-head { overflow: visible; }
@@ -1773,8 +1777,7 @@ table.tbl .t-name {
   :root { --head-h: 58px; --head-h-sm: 52px; }
   .site-head .brand--znak { --znak: 64px; }
   .site-head .brand--znak .brand__crest { top: 2px; }
-  .site-head.is-stuck .brand--znak { --znak: 56px; }
-  .site-head.is-stuck .brand--znak .brand__crest { top: 2px; }
+  .site-head.is-stuck .brand--znak { --zmen: 0.78; }
 }
 
 @media (max-width: 420px) {
@@ -2098,21 +2101,39 @@ table.tbl .t-name {
   .teamsw__tabs::-webkit-scrollbar { display: none; }
   .teamsw__tab { padding: 9px 15px; font-size: 15px; }
 
-  .teamsw__panel { aspect-ratio: 5 / 4; max-height: none; }
-  .teamsw__foto { object-position: center center; }
-
-  /* Název i tlačítko jsou nad sebou dole, závoj musí ztmavit celou
-     spodní třetinu */
-  .teamsw__veil {
-    background: linear-gradient(180deg,
-      rgba(4, 24, 13, 0) 24%,
-      rgba(4, 24, 13, 0.45) 48%,
-      rgba(4, 24, 13, 0.82) 72%,
-      rgba(4, 24, 13, 0.94) 100%);
+  /* Na telefonu se fotka neořezává vůbec: leží celá nahoře ve svém
+     poměru a název s tlačítkem jdou pod ni na tmavý proužek. Poměr
+     5:4 předtím z fotky na šířku ukrojil oba kraje. */
+  .teamsw__panel {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    aspect-ratio: auto;
+    max-height: none;
   }
 
-  .teamsw__info { right: clamp(18px, 2.6vw, 34px); bottom: 74px; }
-  .teamsw__go { left: clamp(18px, 2.6vw, 34px); right: auto; }
+  .teamsw__foto {
+    position: static;
+    grid-column: 1 / -1;
+    width: 100%;
+    height: auto;
+    object-fit: fill;
+  }
+
+  /* Závoj přes fotku už netřeba, text na ní neleží */
+  .teamsw__veil { display: none; }
+
+  .teamsw__info {
+    position: static;
+    grid-column: 1;
+    padding: 12px 0 14px clamp(14px, 3vw, 20px);
+  }
+
+  .teamsw__go {
+    position: static;
+    grid-column: 2;
+    margin: 0 clamp(14px, 3vw, 20px);
+  }
 }
 
 /* --------------------------------------------------------------------------
@@ -2330,7 +2351,12 @@ table.tbl tr.is-us td { border-color: var(--green-tint-2); }
 }
 
 .rail__track::-webkit-scrollbar { display: none; }
-.rail__track > * { scroll-snap-align: start; }
+
+/* scroll-snap-stop: always drží pás na celých kartách. Bez něj šlo
+   švihnutím zůstat mezi dvěma a karta pak koukala rozpůlená za okraj.
+   overscroll-behavior navíc zabrání tomu, aby se tah přelil na stránku. */
+.rail__track > * { scroll-snap-align: start; scroll-snap-stop: always; }
+.rail__track { overscroll-behavior-x: contain; }
 
 /* Šipky vedle pásu, ne přes karty */
 .rail__nav {
@@ -3459,6 +3485,25 @@ table.tbl tr.is-us td { border-color: var(--green-tint-2); }
 
 @media (max-width: 620px) {
   .bday-ico { display: none; }
+
+  /* Na telefonu mají karty zabrat co nejmíň: menší datum, užší mezery,
+     zbytek údajů na jeden řádek */
+  .bdays { gap: 8px; }
+
+  .bday {
+    grid-template-columns: 46px minmax(0, 1fr);
+    gap: 11px;
+    padding: 9px 12px 9px 9px;
+  }
+
+  .bday__date { height: 46px; }
+  .bday__day { font-size: 20px; }
+  .bday__mon { margin-top: 2px; font-size: 10px; }
+  .bday__when { margin-bottom: 1px; font-size: 11px; letter-spacing: 0.12em; }
+  .bday__name { font-size: 16.5px; margin-bottom: 2px; }
+  .bday__meta { font-size: 13px; }
+
+  .vic-btn { margin-top: 12px; }
 }
 
 /* --------------------------------------------------------------------------
@@ -3941,13 +3986,14 @@ table.tbl tr.is-us td { border-color: var(--green-tint-2); }
   }
 
   /* Na úzkém displeji by se vešla celá výška fotky, tedy hlavně obloha.
-     Rám je proto vyšší a přisazený dolů, ořízne se horní část. */
+     Rám je proto vyšší a přisazený dolů, ořízne se horní část. Čím vyšší
+     rám, tím je fotka přiblíženější a tribuna větší. */
   .hero__img {
     top: auto;
     bottom: 0;
     left: 0;
     right: 0;
-    height: 146%;
+    height: 200%;
     object-position: center center;
   }
 
@@ -3971,11 +4017,12 @@ table.tbl tr.is-us td { border-color: var(--green-tint-2); }
     filter: none;
   }
 
-  /* Nápis dole nad pruhem, kde je klidný trávník */
+  /* Nápis dole nad pruhem, kde je klidný trávník. Zarovnaný doleva ve
+     stejné ose jako zápasové tabule pod ním. */
   .hero__in {
     align-content: end;
-    justify-items: center;
-    text-align: center;
+    justify-items: start;
+    text-align: left;
     gap: 10px;
     padding-bottom: clamp(18px, 4vw, 30px);
   }
@@ -3983,7 +4030,7 @@ table.tbl tr.is-us td { border-color: var(--green-tint-2); }
   .hero__title {
     order: 1;
     margin: 0;
-    transform-origin: center bottom;
+    transform-origin: left bottom;
     text-shadow:
       0 2px 6px rgba(3, 20, 10, 0.85),
       0 8px 28px rgba(3, 20, 10, 0.7);
@@ -3991,7 +4038,7 @@ table.tbl tr.is-us td { border-color: var(--green-tint-2); }
 
   .hero__sub {
     order: 2;
-    justify-content: center;
+    justify-content: flex-start;
     margin: 0;
     color: #fff;
     text-shadow:

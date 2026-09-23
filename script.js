@@ -440,12 +440,19 @@
     }
 
     var tick = false;
+    var prilepeno = false;
     function onScroll() {
       if (tick) return;
       tick = true;
       window.requestAnimationFrame(function () {
         var y = window.pageYOffset;
-        if (head) head.classList.toggle('is-stuck', y > 30);
+        /* Dva různé prahy schválně: s jedním by znak kolem té hranice
+           blikal tam a zpět při každém chvění prstu na kolečku. */
+        if (head) {
+          if (!prilepeno && y > 64) prilepeno = true;
+          else if (prilepeno && y < 24) prilepeno = false;
+          head.classList.toggle('is-stuck', prilepeno);
+        }
         if (toTop) toTop.classList.toggle('is-on', y > 640);
         tick = false;
       });
@@ -1234,7 +1241,7 @@
         '</article>';
       }).join('');
 
-      zkratSeznam(host, 3, 'narozeniny');
+      zkratSeznam(host, 2, 'narozeniny');
     });
   }
 
