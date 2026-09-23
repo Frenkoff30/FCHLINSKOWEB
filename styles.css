@@ -2853,7 +2853,11 @@ table.tbl tr.is-us td { border-color: var(--green-tint-2); }
 .hero__bar {
   position: relative;
   z-index: 2;
-  padding-top: clamp(18px, 3vw, 38px);
+  /* Podsvícení půlky hřiště při najetí přetekaá ven z .hbar až k okraji
+     pruhu, overflow ho ořížkne, aby nevznikl vodorovný posuv */
+  overflow: hidden;
+  --hbar-vrch: clamp(18px, 3vw, 38px);
+  padding-top: var(--hbar-vrch);
   background: linear-gradient(180deg,
     rgba(4, 24, 13, 0) 0%,
     rgba(4, 24, 13, 0.34) 22%,
@@ -2918,8 +2922,13 @@ table.tbl tr.is-us td { border-color: var(--green-tint-2); }
   z-index: 1;
   display: grid;
   grid-template-columns: minmax(0, 1fr) 1px minmax(0, 1fr);
-  gap: clamp(24px, 3.4vw, 52px);
+  --hbar-mez: clamp(22px, 2.6vw, 44px);
+  gap: var(--hbar-mez);
   align-items: stretch;
+  /* Širší než zbytek webu. Pruh je přes celou šířku a obě půlky mají
+     díky tomu dost místa na názvy týmů v jednom řádku. Zároveň se tím
+     obsah přiblíží k vápnům na krajích, což hřišti sedí. */
+  max-width: 1440px;
 }
 
 .hbar.is-single { grid-template-columns: minmax(0, 700px); }
@@ -2951,9 +2960,12 @@ table.tbl tr.is-us td { border-color: var(--green-tint-2); }
 .hm {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(150px, auto) minmax(0, 1fr);
+  /* Údaje nad zápasem, ne vedle něj. Vedle sebe zbývalo na názvy týmů
+     kolem 75 px a delší jména se lámala na dva řádky. Takhle má zápas
+     celou šířku karty a všechno se vejde na jeden řádek. */
+  grid-template-columns: 1fr;
   align-items: center;
-  gap: clamp(16px, 2vw, 26px);
+  gap: 12px;
   padding: 14px clamp(14px, 1.4vw, 20px) 16px clamp(16px, 1.6vw, 24px);
   color: #fff;
   transition: background-color var(--t);
@@ -2976,10 +2988,30 @@ table.tbl tr.is-us td { border-color: var(--green-tint-2); }
 .hm--p::before { background: #FF7A70; }
 .hm--next::before { background: var(--gold); }
 
-/* Při najetí se rozsvítí jen linka a drobný nádech pozadí, nic se
-   nezvedá a nevyskakuje ven z pruhu */
-.hm:hover,
-.hm:focus-visible { background: rgba(255, 255, 255, 0.05); }
+/* Při najetí se rozsvítí linka a celá půlka hřiště, od kraje pruhu po
+   půlicí čáru. Karta sama je užší než půlka, proto podsvícení nese
+   pseudoprvek, který si přes záporné odsazení dojde až k okrajům.
+   Nic se nezvedá a nevyskakuje ven z pruhu. */
+.hm::after {
+  content: '';
+  position: absolute;
+  top: calc(-1 * var(--hbar-vrch));
+  bottom: 0;
+  z-index: -1;
+  background: rgba(255, 255, 255, 0.05);
+  opacity: 0;
+  transition: opacity var(--t);
+  pointer-events: none;
+}
+
+/* 50vw dojede na kraj i na nejširším displeji, .hero__bar to ořížne.
+   Půl pixelu navíc končí přesně ve středu půlicí čáry. */
+.hm--last::after { left: -50vw; right: calc(-1 * var(--hbar-mez) - 0.5px); }
+.hm--next::after { left: calc(-1 * var(--hbar-mez) - 0.5px); right: -50vw; }
+.hbar.is-single .hm::after { left: -50vw; right: -50vw; }
+
+.hm:hover::after,
+.hm:focus-visible::after { opacity: 1; }
 .hm:hover::before,
 .hm:focus-visible::before { width: 3px; }
 
@@ -2989,8 +3021,9 @@ table.tbl tr.is-us td { border-color: var(--green-tint-2); }
   align-items: center;
   gap: 7px;
   padding: 6px 12px;
-  margin-top: 3px;
   flex: none;
+  /* Vlastní řádek pod zápasem, u levého kraje karty jako předtím */
+  justify-self: start;
   border: 1px solid rgba(255, 255, 255, 0.22);
   border-radius: 999px;
   background: none;
@@ -3016,7 +3049,13 @@ table.tbl tr.is-us td { border-color: var(--green-tint-2); }
 .hm--next:hover .hm__go { background: var(--gold); border-color: var(--gold); color: var(--green-ink); }
 .hm:hover .hm__go svg { transform: translateX(3px); }
 
-.hm__head { display: flex; flex-direction: column; align-items: flex-start; gap: 7px; min-width: 0; }
+.hm__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  min-width: 0;
+}
 
 .hm__label {
   display: flex;
@@ -3035,7 +3074,14 @@ table.tbl tr.is-us td { border-color: var(--green-tint-2); }
 .hm--next .hm__label { color: var(--gold); }
 
 .hm__meta {
-  max-width: 17ch;
+  margin-left: auto;
+  text-align: right;
+  /* Pojistka, kdyby se na úzkém displeji trefilo dlouhé místo konání */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
   font-family: 'Barlow Condensed', sans-serif;
   font-weight: 600;
   font-size: 13px;
@@ -3065,7 +3111,14 @@ table.tbl tr.is-us td { border-color: var(--green-tint-2); }
   letter-spacing: 0.03em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.76);
-  overflow-wrap: anywhere;
+  /* break-word místo anywhere: 'FC HLINSKO' se zalomí v mezeře, ne
+     uprostřed slova na 'FC HLINSK' a 'O' */
+  overflow-wrap: break-word;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
 }
 
 .hm__team.is-us .hm__name { color: #fff; font-weight: 800; }
@@ -3142,14 +3195,6 @@ table.tbl tr.is-us td { border-color: var(--green-tint-2); }
   filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.3));
 }
 
-@media (max-width: 1160px) {
-  /* Užší obrazovka: údaje nad zápasem místo vedle */
-  .hm { grid-template-columns: 1fr; gap: 12px; }
-  .hm__head { flex-direction: row; align-items: center; justify-content: space-between; gap: 14px; }
-  .hm__meta { max-width: none; text-align: right; margin-left: auto; }
-  .hm__go { margin-top: 0; }
-}
-
 @media (max-width: 980px) {
   .hero__in { padding-bottom: clamp(20px, 5vw, 36px); }
 
@@ -3160,17 +3205,22 @@ table.tbl tr.is-us td { border-color: var(--green-tint-2); }
   .hbar__line { display: none; }
   .hm { padding: 11px 12px 12px 14px; gap: 8px; }
   .hm + .hm { border-top: 1px solid rgba(255, 255, 255, 0.12); }
+
+  /* Karty jsou pod sebou, podsvítí se tedy celá šířka jedné z nich */
+  .hm::after,
+  .hm--last::after,
+  .hm--next::after { top: 0; left: -50vw; right: -50vw; }
   .hm__go { padding: 6px 11px; font-size: 12px; }
 
   /* Na úzkém pruhu vápna jen ruší */
   .hero__vapno { display: none; }
 
-  .hero__bar { padding-top: clamp(14px, 4vw, 26px); }
+  .hero__bar { --hbar-vrch: clamp(14px, 4vw, 26px); }
 }
 
 @media (max-width: 560px) {
   .hm__head { flex-direction: column; align-items: flex-start; gap: 4px; }
-  .hm__meta { text-align: left; }
+  .hm__meta { margin-left: 0; text-align: left; }
   .hm__match { gap: 10px; }
   .hm__name { font-size: 15.5px; }
   .hm__team { gap: 8px; }
@@ -4136,19 +4186,25 @@ table.tbl tr.is-us td { border-color: var(--green-tint-2); }
 
 @media (max-width: 560px) {
   /* Nadpis a soutěž vlevo pod sebou, štítek vpravo vedle nich */
+  /* Na telefonu tlačítko není pod zápasem, ale vedle popisku jako dřív.
+     Sloupec 2 v .hm je jen pro ně, popisek i zápas berou sloupec 1. */
+  .hm { grid-template-columns: minmax(0, 1fr) auto; }
+  .hm__head,
+  .hm__match { grid-column: 1; }
+
   .hm__head {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-columns: minmax(0, 1fr);
     align-items: center;
-    gap: 2px 10px;
+    gap: 2px;
   }
   .hm__label { grid-column: 1; font-size: 12px; letter-spacing: 0.16em; gap: 7px; }
   .hm__label::before { width: 14px; }
   .hm__meta { grid-column: 1; margin-left: 0; text-align: left; font-size: 11px; letter-spacing: 0.05em; }
   .hm__go {
     grid-column: 2;
-    grid-row: 1 / span 2;
-    margin-top: 0;
+    grid-row: 1;
+    align-self: center;
     padding: 5px 10px;
     font-size: 11.5px;
     letter-spacing: 0.1em;

@@ -1247,11 +1247,11 @@
       '<span class="hm__head">' +
         '<span class="hm__label">' + (posledni ? 'Poslední zápas' : 'Příští zápas') + '</span>' +
         '<span class="hm__meta">' + meta + '</span>' +
-        go +
       '</span>' +
       '<span class="hm__match">' + tym(dom, 'dom', skore ? skore[0] : null) +
         '<span class="hm__center">' + stred + '</span>' +
         tym(hos, 'hos', skore ? skore[1] : null) + '</span>' +
+      go +
     '</a>';
   }
 
