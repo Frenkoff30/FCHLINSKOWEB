@@ -30,6 +30,29 @@ patnáct dohromady váží zhruba 73 kB.
 FC Hlinsko tady schválně není, vlastní znak se bere
 z `images/znak-fchlinsko.webp`.
 
+## Znaky u osobností
+
+Ve stejné složce leží i znaky klubů, kterými naši odchovanci prošli. Odkazuje
+se na ně pole `znaky` v `OSOBNOSTI` ve `script.js`. Na kartě stojí **místo názvu
+klubu** a každý je zároveň odkaz na stránky toho klubu.
+
+| Soubor | Klub | U koho |
+|--------|------|--------|
+| `reprezentace.webp` | Reprezentace ČR | Jakub Pešek |
+| `sparta-praha.webp` | AC Sparta Praha | Jakub Pešek |
+| `slovan-liberec.webp` | FC Slovan Liberec | Jakub Pešek, Roman Jůn |
+| `ceske-budejovice.webp` | SK Dynamo České Budějovice | Jakub Pešek |
+| `hradec-kralove.webp` | FC Hradec Králové | Roman Jůn, Tomáš Bouška |
+| `bohemians.webp` | Bohemians Praha 1905 | Roman Jůn |
+| `pardubice.webp` | FK Pardubice | Roman Jůn |
+| `sigma-olomouc.webp` | SK Sigma Olomouc | Tomáš Bouška |
+| `slavia-praha.webp` | SK Slavia Praha | František Jůn |
+
+Kdo znak nemá, nese jen text. František Jílek, Petr Popelka st., Jiří Ročňák,
+František Šíla a Miroslav Osvald hráli za Synthesii Pardubice, VCHZ Pardubice,
+Duklu Jičín a TŽ Třinec, tedy kluby, které v téhle podobě zanikly. Chybí také
+Chrudim u Romana Jůna a Drnovice u Tomáše Boušky.
+
 ## Složka zdroj/
 
 Leží v ní loga tak, jak se stáhla, včetně druhé varianty znaku Slavie

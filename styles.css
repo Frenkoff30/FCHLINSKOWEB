@@ -53,6 +53,9 @@
   --wrap: 1280px;
   --head-h: 76px;
   --head-h-sm: 62px;
+  /* Kontaktní lišta nad hlavičkou. Hero si o ni musí snížit výšku,
+     jinak mu spodek při načtení vyjede pod okraj okna. */
+  --topbar-h: 38px;
 
   /* Časování */
   --t-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -660,8 +663,8 @@ ul, ol { margin: 0 0 1.1em; padding-left: 1.2em; }
   position: relative;
   display: flex;
   align-items: center;
-  min-height: calc(100vh - var(--head-h));
-  min-height: calc(100svh - var(--head-h));
+  min-height: calc(100vh - var(--head-h) - var(--topbar-h));
+  min-height: calc(100svh - var(--head-h) - var(--topbar-h));
   padding: clamp(56px, 7vw, 96px) 0 clamp(64px, 8vw, 104px);
   overflow: hidden;
   background: var(--green-deep);
@@ -1307,37 +1310,205 @@ table.tbl .t-name {
    13. OSOBNOSTI
    -------------------------------------------------------------------------- */
 .legend {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 17px 20px;
+  padding: 15px 20px 17px;
   background: #fff;
   border: 1px solid var(--border);
   border-radius: var(--r-md);
   box-shadow: var(--sh-xs);
-  transition: box-shadow var(--t);
+  transition: box-shadow var(--t), border-color var(--t);
 }
 
-.legend:hover { box-shadow: var(--sh-sm); }
+.legend:hover { box-shadow: var(--sh-sm); border-color: var(--green-tint-2); }
 
-.legend__init {
-  display: grid;
-  place-items: center;
-  width: 50px;
-  height: 50px;
-  flex: none;
-  border-radius: var(--r-md);
-  background: var(--green-tint);
+/* Jméno nese čárku před sebou, stejně jako popisky jinde na webu.
+   Čárka je vždy černá, barvu nese samo jméno: zlatá patří hráčům
+   s největším dosahem, ostatní mají klubovou zelenou. */
+.legend__name {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin: 0;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 21px;
+  letter-spacing: 0.02em;
+  line-height: 1.14;
+  text-transform: uppercase;
   color: var(--green-dk);
+}
+
+.legend__name::before {
+  content: '';
+  width: 22px;
+  height: 3px;
+  flex: none;
+  border-radius: 3px;
+  background: var(--text);
+  transition: width var(--t);
+}
+
+.legend--star .legend__name { font-size: 23px; color: var(--gold-dk); }
+
+.legend:hover .legend__name::before { width: 32px; }
+
+/* Jméno vede na profil. Celá karta odkazem být nemůže, uvnitř jsou
+   odkazy na stránky klubů. */
+.legend__odkaz { color: inherit; text-decoration: none; }
+.legend__odkaz:hover,
+.legend__odkaz:focus-visible { text-decoration: underline; }
+
+/* Popis a za ním znaky klubů. Na úzké kartě se znaky zalomí pod text. */
+.legend__kde {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  margin: 5px 0 0 33px;
+}
+
+/* Znaky toho, kam to hráč dotáhl nejdál. Kdo hrál za klub, který už
+   neexistuje, nemá žádný — obal se pak odebere celý. */
+.legend__znaky {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  flex: none;
+}
+
+.legend__znaky:empty { display: none; }
+
+.legend__znak-l {
+  display: inline-flex;
+  border-radius: 4px;
+  transition: transform var(--t), opacity var(--t);
+}
+
+.legend__znak-l:hover { transform: translateY(-2px); }
+
+.legend__znak {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  opacity: 0.92;
+}
+
+/* Odsazení rodiče sedí na šířku čárky i s mezerou, text tak začíná
+   přesně pod jménem */
+.legend__where {
+  font-size: 14.5px;
+  line-height: 1.5;
+  color: var(--text-mute);
+}
+
+/* --------------------------------------------------------------------------
+   13b. PODSTRÁNKA OSOBNOSTI
+   -------------------------------------------------------------------------- */
+.osoba { max-width: 800px; margin-inline: auto; }
+
+/* Portrét vedle údajů. Bez fotky zůstanou údaje samy a roztáhnou se. */
+.osoba__hlava {
+  display: grid;
+  grid-template-columns: minmax(0, 260px) minmax(0, 1fr);
+  gap: clamp(20px, 3vw, 34px);
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.osoba__hlava:not(:has(.osoba__foto)) { grid-template-columns: minmax(0, 1fr); }
+
+.osoba__foto {
+  margin: 0;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  box-shadow: var(--sh-md);
+}
+
+.osoba__foto img { display: block; width: 100%; height: auto; }
+
+.osoba__uvod { display: flex; flex-direction: column; gap: 18px; align-items: flex-start; }
+
+/* Větší než na kartě v seznamu, tady je znak hlavní ozdobou */
+.osoba__znaky .legend__znaky { gap: 16px; }
+.osoba__znaky .legend__znak { width: 52px; height: 52px; }
+.osoba__znaky:empty { display: none; }
+
+.osoba__udaje { display: grid; gap: 12px; margin: 0; }
+
+.osoba__udaje dt {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 12.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+
+.osoba__udaje dd {
+  margin: 2px 0 0;
   font-family: 'Barlow Condensed', sans-serif;
   font-weight: 800;
   font-size: 19px;
+  text-transform: uppercase;
+  color: var(--text);
 }
 
-.legend--star .legend__init { background: var(--gold); color: #1A1403; }
+.osoba__text p {
+  font-size: 17.5px;
+  line-height: 1.75;
+  color: var(--text-soft);
+  margin: 0 0 18px;
+}
 
-.legend__name { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 20px; text-transform: uppercase; line-height: 1.14; }
-.legend__where { font-size: 14.5px; color: var(--text-mute); margin-top: 3px; }
+/* Chybějící životopis se nemá tvářit jako běžný odstavec */
+.osoba__chybi {
+  padding: 16px 20px;
+  border-left: 3px solid var(--gold);
+  background: var(--gold-tint);
+  border-radius: 0 var(--r-md) var(--r-md) 0;
+}
+
+.osoba__podnadpis {
+  margin: 34px 0 14px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 24px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--green-dk);
+}
+
+.osoba__tab { width: 100%; border-collapse: collapse; }
+
+.osoba__tab th,
+.osoba__tab td {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  vertical-align: baseline;
+  font-size: 16px;
+  color: var(--text-soft);
+}
+
+.osoba__tab th {
+  width: 130px;
+  padding-right: 16px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  white-space: nowrap;
+}
+
+.osoba__tab tr:last-child th,
+.osoba__tab tr:last-child td { border-bottom: 0; }
+
+@media (max-width: 620px) {
+  .osoba__hlava { grid-template-columns: minmax(0, 1fr); }
+  .osoba__foto { max-width: 260px; }
+  .osoba__tab th { width: 92px; font-size: 14px; }
+  .osoba__tab td { font-size: 15px; }
+}
 
 /* --------------------------------------------------------------------------
    14. PARTNEŘI
@@ -1802,7 +1973,8 @@ table.tbl .t-name {
 
   /* Nižší lišta, ať nesežere kus displeje. Znak z ní čouhá dolů zhruba
      třetinou, stejně jako na počítači. */
-  :root { --head-h: 58px; --head-h-sm: 52px; }
+  /* Lišta je schovaná (viz .topbar výš), hero si ji neodebírá */
+  :root { --head-h: 58px; --head-h-sm: 52px; --topbar-h: 0px; }
   .site-head .brand--znak { --znak: 64px; }
   .site-head .brand--znak .brand__crest { top: 2px; }
   .site-head.is-stuck .brand--znak { --zmen: 0.78; }
@@ -2027,9 +2199,7 @@ table.tbl .t-name {
   position: relative;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(210px, 290px);
-  /* Prázdné řádky nahoře a dole si rozeberou zbylé místo rovným dílem,
-     takže dvojice název + tlačítko sedí na půlce výšky fotky. */
-  grid-template-rows: 1fr auto auto 1fr;
+  grid-template-rows: auto;
   overflow: hidden;
   max-width: 920px;
   margin-inline: auto;
@@ -2039,13 +2209,24 @@ table.tbl .t-name {
 }
 
 /* align-self: start je nutné. Grid by jinak obrázek natáhl na výšku
-   buňky, přerostl by rám a zespodu se ořízl. */
+   buňky, přerostl by rám a zespodu se ořízl.
+
+   Pevný poměr stran drží kartičku stejně vysokou u všech mužstev.
+   Fotky mají různé poměry, od 1,60 u áčka po 1,33 u školičky, a bez něj
+   kartička při přepnutí poskočí. Míra 1500/937 je poměr fotek áčka
+   a béčka, podle kterých se kartička vyměřuje.
+
+   object-fit: contain, ne cover: mužstvo musí být vidět celé. U fotek
+   s jiným poměrem zůstane nahoře a dole proužek pozadí, což je pořád
+   lepší než uříznuté hlavy. */
 .teamsw__foto {
   grid-column: 1;
-  grid-row: 1 / -1;
+  grid-row: 1;
   align-self: start;
   width: 100%;
   height: auto;
+  aspect-ratio: 1500 / 937;
+  object-fit: contain;
   transition: transform var(--t-slow);
 }
 
@@ -2063,15 +2244,19 @@ table.tbl .t-name {
     rgba(4, 24, 13, 0.9) 100%);
 }
 
-/* Název sedí na spodní hraně horní poloviny a tlačítko na horní hraně
-   dolní: potkají se uprostřed výšky fotky, ať se to nastaví jakkoli. */
+/* Sloupec vedle fotky je vysoký jako ona a má spoustu místa. Popisek
+   sedí nahoře, název uprostřed a tlačítko dole, místo aby se všechno
+   tlačilo do jednoho chumáče ve středu. */
 .teamsw__info {
   grid-column: 2;
-  grid-row: 2;
+  grid-row: 1;
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  padding: 0 clamp(20px, 2.2vw, 30px);
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: clamp(24px, 2.6vw, 36px) clamp(20px, 2.2vw, 30px);
+  text-align: center;
 }
 
 .teamsw__soutez {
@@ -2093,11 +2278,29 @@ table.tbl .t-name {
   color: #fff;
 }
 
+/* Zlatá čárka pod názvem, stejný motiv jako u osobností. Drží název
+   opticky ve středu sloupce, ať je jméno mužstva krátké nebo dlouhé. */
+.teamsw__nazev {
+  position: relative;
+  padding-bottom: 20px;
+}
+
+.teamsw__nazev::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 46px;
+  height: 3px;
+  border-radius: 3px;
+  transform: translateX(-50%);
+  background: var(--gold);
+  transition: width var(--t);
+}
+
+.teamsw__panel:hover .teamsw__nazev::after { width: 70px; }
+
 .teamsw__go {
-  grid-column: 2;
-  grid-row: 3;
-  justify-self: start;
-  margin: 16px clamp(20px, 2.2vw, 30px) 0;
   display: inline-flex;
   align-items: center;
   gap: 9px;
@@ -2142,26 +2345,30 @@ table.tbl .t-name {
 
   /* Na úzkém okně se text vedle fotky nevejde, jde pod ni na proužek */
   .teamsw__panel {
-    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-columns: minmax(0, 1fr);
     grid-template-rows: auto auto;
     max-width: none;
   }
 
-  .teamsw__foto { grid-column: 1 / -1; grid-row: 1; }
+  .teamsw__foto { grid-column: 1; grid-row: 1; }
 
   .teamsw__info {
-    grid-column: 1;
-    grid-row: 2 / -1;
-    align-self: center;
-    padding: 12px 0 14px clamp(14px, 3vw, 20px);
+    grid-column: 1 / -1;
+    grid-row: 2;
+    flex-flow: row wrap;
+    align-items: center;
+    gap: 4px 12px;
+    padding: 12px clamp(14px, 3vw, 20px) 14px;
+    text-align: left;
   }
 
-  .teamsw__go {
-    grid-column: 2;
-    grid-row: 2 / -1;
-    align-self: center;
-    margin: 0 clamp(14px, 3vw, 20px);
-  }
+  /* V řádku pod fotkou by čárka pod názvem jen překážela */
+  .teamsw__nazev { padding-bottom: 0; }
+  .teamsw__nazev::after { display: none; }
+
+  /* Popisek zabere celý řádek, název a tlačítko se vejdou vedle sebe */
+  .teamsw__soutez { flex: 1 0 100%; }
+  .teamsw__go { margin-left: auto; }
 }
 
 /* --------------------------------------------------------------------------
@@ -3363,6 +3570,27 @@ table.tbl tr.is-us td { border-color: var(--green-tint-2); }
 .rrow__team--dom { text-align: right; }
 .rrow__team.is-us { color: var(--green-dk); font-weight: 900; }
 
+/* Ve výsledcích stojí místo názvu znak klubu, domácí vlevo od skóre,
+   hosté vpravo. Kdo znak nemá, dostane kolečko se zkratkou jako jinde. */
+.rrow__team { display: flex; align-items: center; }
+.rrow__team--dom { justify-content: flex-end; }
+.rrow__team--hos { justify-content: flex-start; }
+
+/* Panel výsledků má světlé pozadí, kolečko se zkratkou potřebuje jiné barvy */
+.rrow .tlogo {
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  font-size: 11px;
+  background: var(--bg-alt);
+  border-color: var(--border);
+  color: var(--text-mute);
+}
+
+.rrow .tlogo--znak { background: none; border: 0; color: transparent; }
+.rrow .tlogo--nas img { height: 32px; }
+.rrow .tlogo__img { filter: none; }
+
 .rrow__score {
   min-width: 54px;
   padding: 6px 8px;
@@ -3426,6 +3654,12 @@ table.tbl tr.is-us td { border-color: var(--green-tint-2); }
 /* Znak a název v jedné buňce. Ořezává se jen název, znak zůstává celý. */
 .c-team__in { display: flex; align-items: center; gap: 9px; min-width: 0; }
 .c-team__n { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+
+/* Odkaz na stránky klubu. Není nijak zvýrazněný, aby tabulka zůstala
+   tabulkou, podtržení se ukáže až při najetí. */
+.c-team__web { color: inherit; text-decoration: none; }
+.c-team__web:hover,
+.c-team__web:focus-visible { color: var(--green-dk); text-decoration: underline; }
 
 /* V tabulce je světlé pozadí, kolečko se zkratkou potřebuje jiné barvy */
 .ltable .c-team .tlogo {
@@ -4114,8 +4348,8 @@ table.tbl tr.is-us td { border-color: var(--green-tint-2); }
   /* Přesně zbytek displeje pod lištou, ať je hero na celou obrazovku
      a pod ním hned začíná další sekce */
   .hero {
-    min-height: calc(100vh - var(--head-h));
-    min-height: calc(100svh - var(--head-h));
+    min-height: calc(100vh - var(--head-h) - var(--topbar-h));
+    min-height: calc(100svh - var(--head-h) - var(--topbar-h));
     padding: clamp(24px, 6vw, 48px) 0 0;
   }
 

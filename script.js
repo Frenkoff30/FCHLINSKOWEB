@@ -167,27 +167,28 @@
      nazev:  plný název tak, jak je v TABULKA
      kratky: krátký název do tabulky, jak je v ZAPASY u souper
      znak:   název souboru v images/znaky/ bez přípony, hledá se .webp
+     web:    stránky klubu, z tabulky na ně vede název týmu (null = bez odkazu)
 
      Když soubor se znakem chybí nebo se nenačte, ukáže se kolečko se zkratkou
      jako dosud. Klub, který tu není uvedený, se chová úplně stejně.
      ---------------------------------------------------------------------- */
   var KLUBY = [
-    { nazev: 'FK Přepeře',                kratky: 'Přepeře',      znak: 'prepere' },
-    { nazev: 'SK Vysoké Mýto',            kratky: 'Vysoké Mýto',  znak: 'vysoke-myto' },
-    { nazev: 'SK Kosmonosy',              kratky: 'Kosmonosy',    znak: 'kosmonosy' },
-    { nazev: 'TJ Jiskra Ústí nad Orlicí', kratky: 'Ústí n/O.',    znak: 'usti-nad-orlici' },
-    { nazev: 'FC Hlinsko',                kratky: 'Hlinsko',      znak: null },
-    { nazev: 'SK Sparta Kolín',           kratky: 'Kolín',        znak: 'kolin' },
-    { nazev: 'FK Čechie Vykáň',           kratky: 'Vykáň',        znak: 'vykan' },
-    { nazev: 'FK Turnov',                 kratky: 'Turnov',       znak: 'turnov' },
-    { nazev: 'MFK Trutnov',               kratky: 'Trutnov',      znak: 'trutnov' },
-    { nazev: 'FK Chlumec nad Cidlinou',   kratky: 'Chlumec n/C.', znak: 'chlumec-nad-cidlinou' },
-    { nazev: 'TJ Dvůr Králové nad Labem', kratky: 'Dvůr Králové', znak: 'dvur-kralove' },
-    { nazev: 'FC Slavia Hradec Králové',  kratky: 'Slavia HK',    znak: 'slavia-hradec-kralove' },
-    { nazev: 'Spartak Police nad Metují', kratky: 'Police n/M.',  znak: 'police-nad-metuji' },
-    { nazev: 'TJ Svitavy',                kratky: 'Svitavy',      znak: 'svitavy' },
-    { nazev: 'MFK Chrudim B',             kratky: 'Chrudim B',    znak: 'chrudim' },
-    { nazev: 'FK Letohrad',               kratky: 'Letohrad',     znak: 'letohrad' }
+    { nazev: 'FK Přepeře',                kratky: 'Přepeře',      znak: 'prepere',               web: 'http://www.fkprepere.cz/' },
+    { nazev: 'SK Vysoké Mýto',            kratky: 'Vysoké Mýto',  znak: 'vysoke-myto',           web: 'https://skvm.wbs.cz/' },
+    { nazev: 'SK Kosmonosy',              kratky: 'Kosmonosy',    znak: 'kosmonosy',             web: 'https://www.skkosmonosy.cz/' },
+    { nazev: 'TJ Jiskra Ústí nad Orlicí', kratky: 'Ústí n/O.',    znak: 'usti-nad-orlici',       web: 'https://www.jiskraustifotbal.cz/' },
+    { nazev: 'FC Hlinsko',                kratky: 'Hlinsko',      znak: null,                    web: null },
+    { nazev: 'SK Sparta Kolín',           kratky: 'Kolín',        znak: 'kolin',                 web: 'https://sparta-kolin.cz/' },
+    { nazev: 'FK Čechie Vykáň',           kratky: 'Vykáň',        znak: 'vykan',                 web: 'https://www.fkcv.cz/' },
+    { nazev: 'FK Turnov',                 kratky: 'Turnov',       znak: 'turnov',                web: 'https://www.fkturnov.cz/' },
+    { nazev: 'MFK Trutnov',               kratky: 'Trutnov',      znak: 'trutnov',               web: 'https://www.mfktrutnov.cz/' },
+    { nazev: 'FK Chlumec nad Cidlinou',   kratky: 'Chlumec n/C.', znak: 'chlumec-nad-cidlinou',  web: 'https://www.chlumecky-fotbal.com/' },
+    { nazev: 'TJ Dvůr Králové nad Labem', kratky: 'Dvůr Králové', znak: 'dvur-kralove',          web: 'https://www.fotbal-dvur.cz/' },
+    { nazev: 'FC Slavia Hradec Králové',  kratky: 'Slavia HK',    znak: 'slavia-hradec-kralove', web: 'https://www.fcslaviahk.cz/' },
+    { nazev: 'Spartak Police nad Metují', kratky: 'Police n/M.',  znak: 'police-nad-metuji',     web: 'https://www.spartakpolice.cz/' },
+    { nazev: 'TJ Svitavy',                kratky: 'Svitavy',      znak: 'svitavy',               web: 'https://www.tjsvitavy.net/' },
+    { nazev: 'MFK Chrudim B',             kratky: 'Chrudim B',    znak: 'chrudim',               web: 'https://www.mfkchrudim.cz/' },
+    { nazev: 'FK Letohrad',               kratky: 'Letohrad',     znak: 'letohrad',              web: 'https://www.fkletohrad.cz/' }
   ];
 
   var TYP_NAZEV = { liga: 'Mistrovské utkání', pohar: 'MOL Cup', priprava: 'Přípravné utkání', turnaj: 'Turnaj' };
@@ -268,6 +269,187 @@
           + 'během dne v klidu projít.'
       ],
       odkaz: 'klub.html#stadion', odkazText: 'Náš stadion'
+    }
+  ];
+
+  /* ------------------------------------------------------------------------
+     ODCHOVANCI A OSOBNOSTI
+     ------------------------------------------------------------------------
+     Jediné místo, kde se osobnosti píšou. Skládají se z toho karty na úvodu
+     i na stránce Klub a k tomu podstránka osobnost.html?id=...
+
+     id:       krátký název bez diakritiky, tvoří adresu podstránky
+     jmeno:    jméno a příjmení
+     hvezda:   true = zlaté jméno, hráči s největším dosahem
+     shrnuti:  jedna věta do karty v seznamu
+     znaky:    kluby se znakem. { soubor, klub, web }, soubor je
+               název v images/znaky/ bez přípony, web vede na stránky klubu
+     foto:     portrét na podstránku, nebo null
+     post:     pozice na hřišti (nepovinné)
+     narozen:  rok narození (nepovinné)
+     kluby:    řádky tabulky kariéry, { kdy, kde } (nepovinné)
+     obsah:    odstavce podstránky
+
+     POZOR: u starší generace je zatím jen to, co ví klub. Kdo má obsah
+     prázdný, ukáže na podstránce výzvu k doplnění místo vymyšleného textu.
+     ---------------------------------------------------------------------- */
+  var OSOBNOSTI = [
+    {
+      id: 'jakub-pesek',
+      jmeno: 'Jakub Pešek',
+      hvezda: true,
+      shrnuti: '14 zápasů a 5 gólů v reprezentaci.',
+      znaky: [
+        { soubor: 'reprezentace', klub: 'Reprezentace ČR', web: 'https://www.fotbal.cz/repre' },
+        { soubor: 'sparta-praha', klub: 'AC Sparta Praha', web: 'https://sparta.cz/' },
+        { soubor: 'slovan-liberec', klub: 'FC Slovan Liberec', web: 'https://www.fcslovanliberec.cz/' },
+        { soubor: 'ceske-budejovice', klub: 'SK Dynamo České Budějovice', web: 'https://www.dynamocb.cz/' }
+      ],
+      foto: null,
+      post: 'Křídelní záložník',
+      narozen: 1993,
+      kluby: [
+        { kdy: '1997–2007', kde: 'FC Hlinsko' },
+        { kdy: '2007–2009', kde: 'AFK Chrudim' },
+        { kdy: '2009–2014', kde: 'AC Sparta Praha' },
+        { kdy: '2015–2018', kde: 'SK Dynamo České Budějovice' },
+        { kdy: '2018–2021', kde: 'FC Slovan Liberec' },
+        { kdy: '2021–2024', kde: 'AC Sparta Praha' }
+      ],
+      obsah: [
+        'Nejdál to z hlineckých odchovanců dotáhl Jakub Pešek. Narodil se v roce 1993 '
+          + 'v Chrudimi a prvních deset let strávil na hřištích v Hlinsku. Odtud odešel '
+          + 'do Chrudimi a v šestnácti do Sparty Praha.',
+        'První ligu si zahrál v listopadu 2014 za Spartu. Prošel Českými Budějovicemi '
+          + 'a Libercem, odkud se v roce 2021 na Letnou vrátil, tentokrát jako hotový '
+          + 'ligový křídelník.',
+        'V letech 2020 až 2022 nastoupil ve čtrnácti utkáních za reprezentaci České '
+          + 'republiky a vstřelil pět gólů. Nikdo jiný z Hlinska se zatím do národního '
+          + 'dresu neprosadil.'
+      ]
+    },
+    {
+      id: 'roman-jun',
+      jmeno: 'Roman Jůn',
+      hvezda: true,
+      shrnuti: 'Mistr české ligy 2002.',
+      znaky: [
+        { soubor: 'slovan-liberec', klub: 'FC Slovan Liberec', web: 'https://www.fcslovanliberec.cz/' },
+        { soubor: 'hradec-kralove', klub: 'FC Hradec Králové', web: 'https://www.fchk.cz/' },
+        { soubor: 'bohemians', klub: 'Bohemians Praha 1905', web: 'https://www.bohemians.cz/' },
+        { soubor: 'pardubice', klub: 'FK Pardubice', web: 'https://www.fkpardubice.cz/' }
+      ],
+      foto: null,
+      post: 'Záložník',
+      narozen: null,
+      kluby: [
+        { kdy: 'mládež', kde: 'FC Hlinsko' },
+        { kdy: '', kde: 'Chrudim, Pardubice, Bohemians' },
+        { kdy: 'od 2000', kde: 'FC Slovan Liberec' },
+        { kdy: '2002/03', kde: 'SK Dynamo České Budějovice, hostování' },
+        { kdy: '', kde: 'FC Hradec Králové' }
+      ],
+      obsah: [
+        'Leváček se slušnou střelou a ještě lepší finální přihrávkou. Začínal v Hlinsku, '
+          + 'pak prošel Chrudimí, Pardubicemi a Bohemians.',
+        'V roce 2000 přestoupil do Slovanu Liberec a byl u toho, když klub v sezóně '
+          + '2001/02 poprvé v historii vyhrál českou ligu. Po titulu šel na rok hostovat '
+          + 'do Českých Budějovic a poté přešel do Hradce Králové.',
+        'Fotbal má v rodině. Jeho otec František Jůn hrál a trénoval v Hlinsku a byl '
+          + 'u slavného pohárového tažení v roce 1980.'
+      ]
+    },
+    {
+      id: 'tomas-bouska',
+      jmeno: 'Tomáš Bouška',
+      hvezda: false,
+      shrnuti: '',
+      znaky: [
+        { soubor: 'hradec-kralove', klub: 'FC Hradec Králové', web: 'https://www.fchk.cz/' },
+        { soubor: 'sigma-olomouc', klub: 'SK Sigma Olomouc', web: 'https://www.sigmafotbal.cz/' }
+      ],
+      foto: null,
+      post: null,
+      narozen: null,
+      kluby: [
+        { kdy: 'mládež', kde: 'FC Hlinsko' },
+        { kdy: '', kde: 'FC Hradec Králové' },
+        { kdy: '', kde: 'SK Sigma Olomouc' },
+        { kdy: '', kde: 'FK Drnovice' }
+      ],
+      obsah: []
+    },
+    {
+      id: 'frantisek-jun',
+      jmeno: 'František Jůn',
+      hvezda: false,
+      shrnuti: 'Hrající trenér Hlinska v pohárovém roce 1980.',
+      znaky: [
+        { soubor: 'slavia-praha', klub: 'SK Slavia Praha', web: 'https://www.slavia.cz/' }
+      ],
+      foto: null,
+      post: null,
+      narozen: null,
+      kluby: [
+        { kdy: '', kde: 'SK Slavia Praha' },
+        { kdy: '1980', kde: 'FC Hlinsko, hrající trenér' }
+      ],
+      obsah: [
+        'Na podzim 1980 vedl jako hrající trenér hlinecké áčko v Československém poháru. '
+          + 'Hlinsko tehdy vyřadilo Baník Ostrava a došlo až do čtvrtfinále, což je dodnes '
+          + 'největší úspěch klubu.',
+        'Jeho syn Roman Jůn to dotáhl k ligovému titulu s Libercem.'
+      ]
+    },
+    {
+      id: 'frantisek-jilek',
+      jmeno: 'František Jílek',
+      hvezda: false,
+      shrnuti: 'Druhá liga, Synthesia Pardubice.',
+      znaky: [],
+      foto: null, post: null, narozen: null,
+      kluby: [{ kdy: '', kde: 'Synthesia Pardubice, druhá liga' }],
+      obsah: []
+    },
+    {
+      id: 'petr-popelka',
+      jmeno: 'Petr Popelka st.',
+      hvezda: false,
+      shrnuti: 'Druhá liga, Dukla Jičín.',
+      znaky: [],
+      foto: null, post: null, narozen: null,
+      kluby: [{ kdy: '', kde: 'Dukla Jičín, druhá liga' }],
+      obsah: []
+    },
+    {
+      id: 'jiri-rocnak',
+      jmeno: 'Jiří Ročňák',
+      hvezda: false,
+      shrnuti: 'Druhá liga, TŽ Třinec.',
+      znaky: [],
+      foto: null, post: null, narozen: null,
+      kluby: [{ kdy: '', kde: 'TŽ Třinec, druhá liga' }],
+      obsah: []
+    },
+    {
+      id: 'frantisek-sila',
+      jmeno: 'František Šíla',
+      hvezda: false,
+      shrnuti: 'VCHZ Pardubice.',
+      znaky: [],
+      foto: null, post: null, narozen: null,
+      kluby: [{ kdy: '', kde: 'VCHZ Pardubice' }],
+      obsah: []
+    },
+    {
+      id: 'miroslav-osvald',
+      jmeno: 'Miroslav Osvald',
+      hvezda: false,
+      shrnuti: 'VCHZ Pardubice.',
+      znaky: [],
+      foto: null, post: null, narozen: null,
+      kluby: [{ kdy: '', kde: 'VCHZ Pardubice' }],
+      obsah: []
     }
   ];
 
@@ -1044,7 +1226,7 @@
         return '<tr' + (cls.length ? ' class="' + cls.join(' ') + '"' : '') + '>' +
           '<td class="c-pos">' + esc(t.poradi) + '.</td>' +
           '<th class="c-team" scope="row"><span class="c-team__in">' + tymLogo(t.tym) +
-            '<span class="c-team__n">' + esc(tymKratce(t.tym)) + '</span></span></th>' +
+            '<span class="c-team__n">' + tymOdkaz(t.tym) + '</span></span></th>' +
           '<td>' + esc(t.z) + '</td>' +
           '<td class="c-opt">' + esc(t.v) + '</td>' +
           '<td class="c-opt">' + esc(t.r) + '</td>' +
@@ -1167,6 +1349,16 @@
     return k && k.kratky ? k.kratky : nazev;
   }
 
+  /* Název v tabulce vede na stránky klubu, pokud je v KLUBY vyplněný web.
+     Naše Hlinsko a kluby bez webu zůstanou obyčejným textem. */
+  function tymOdkaz(nazev) {
+    var k = najdiKlub(nazev);
+    var jmeno = esc(tymKratce(nazev));
+    if (!k || !k.web) return jmeno;
+    return '<a class="c-team__web" href="' + esc(k.web) + '" target="_blank" rel="noopener"'
+      + ' title="Stránky klubu ' + esc(k.nazev) + '">' + jmeno + '</a>';
+  }
+
   /* Znak leží přes kolečko se zkratkou a překryje ho. Když soubor chybí,
      initZnaky obrázek odebere a zkratka se zase objeví.
 
@@ -1193,10 +1385,27 @@
   function initZnaky() {
     document.addEventListener('error', function (e) {
       var el = e.target;
-      if (!el || el.tagName !== 'IMG' || !el.classList.contains('tlogo__img')) return;
-      var obal = el.parentNode;
-      if (obal) obal.classList.remove('tlogo--znak');
-      el.remove();
+      if (!el || el.tagName !== 'IMG') return;
+
+      if (el.classList.contains('tlogo__img')) {
+        var obal = el.parentNode;
+        if (obal) obal.classList.remove('tlogo--znak');
+        el.remove();
+        return;
+      }
+
+      /* Znak klubu u osobnosti. Chybí častěji, protože kluby jako VCHZ
+         Pardubice už neexistují. Když na kartě nezbyde ani jeden, zmizí
+         i jejich obal — jinak by po něm zůstala mezera z flexu. Na :empty
+         se spolehnout nejde, uvnitř obalu jsou odsazení a konce řádků. */
+      if (el.classList.contains('legend__znak')) {
+        var znaky = el.parentNode;
+        el.remove();
+        if (znaky && znaky.classList.contains('legend__znaky')
+            && !znaky.querySelector('.legend__znak')) {
+          znaky.remove();
+        }
+      }
     }, true);
   }
 
@@ -1310,8 +1519,12 @@
         var v = vysledek(z);
         var dom = z.domaci ? 'FC Hlinsko' : z.souper;
         var hos = z.domaci ? z.souper : 'FC Hlinsko';
+        /* Místo názvu stojí znak klubu. Jméno zůstává v title pro myš
+           a ve schovaném textu pro čtečky, ať se řádek dá přečíst i bez znaků. */
         var jmeno = function (n, strana) {
-          return '<span class="rrow__team rrow__team--' + strana + (n === 'FC Hlinsko' ? ' is-us' : '') + '">' + esc(n) + '</span>';
+          return '<span class="rrow__team rrow__team--' + strana
+            + (n === 'FC Hlinsko' ? ' is-us' : '') + '" title="' + esc(n) + '">'
+            + '<span class="sr-only">' + esc(n) + '</span>' + tymLogo(n) + '</span>';
         };
         return '<li class="rrow">' +
           '<span class="rrow__date"><b>' + d.getDate() + '. ' + (d.getMonth() + 1) + '.</b>' + DNY[d.getDay()] + '</span>' +
@@ -1947,13 +2160,15 @@
       '<a class="teamsw__panel" id="teamsw-panel" role="tabpanel" href="#">' +
         '<img class="teamsw__foto" src="" alt="" width="1500" height="937" loading="lazy" decoding="async">' +
         '<span class="teamsw__veil" aria-hidden="true"></span>' +
+        /* Popisek, název i tlačítko jsou v jednom sloupci, aby se daly
+           rozprostřít po celé výšce fotky */
         '<span class="teamsw__info">' +
           '<span class="teamsw__soutez"></span>' +
           '<span class="teamsw__nazev"></span>' +
+          '<span class="teamsw__go">Více o týmu'
+            + '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" '
+            + 'aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>' +
         '</span>' +
-        '<span class="teamsw__go">Více o týmu'
-          + '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" '
-          + 'aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>' +
       '</a>';
 
     var tabs = $$('.teamsw__tab', host);
@@ -2443,6 +2658,130 @@
   /* ------------------------------------------------------------------------
      11. DETAIL NOVINKY (novinka.html?id=...)
      ---------------------------------------------------------------------- */
+  /* ------------------------------------------------------------------------
+     12b. ODCHOVANCI A OSOBNOSTI
+     ------------------------------------------------------------------------
+     Karty v seznamu se skládají z pole OSOBNOSTI, data-limit řídí, kolik
+     se jich ukáže. Celá karta je odkaz na osobnost.html?id=...
+     ---------------------------------------------------------------------- */
+  /* Znak je odkaz na stránky klubu. Bez loading="lazy" schválně: když soubor
+     chybí, odložený obrázek by chybu nespustil a prázdný obal by neměl co
+     odebrat. Velikost řídí CSS, atributy jsou jen proti podělání layoutu. */
+  function osobnostZnaky(o, velikost) {
+    var px = velikost || 24;
+    var znaky = (o.znaky || []).map(function (z) {
+      var obr = '<img class="legend__znak" src="images/znaky/' + esc(z.soubor)
+        + '.webp" alt="" width="' + px + '" height="' + px + '" decoding="async">';
+      if (!z.web) return obr;
+      return '<a class="legend__znak-l" href="' + esc(z.web) + '" target="_blank" rel="noopener"'
+        + ' title="' + esc(z.klub) + '"><span class="sr-only">' + esc(z.klub) + '</span>'
+        + obr + '</a>';
+    }).join('');
+    return znaky ? '<span class="legend__znaky">' + znaky + '</span>' : '';
+  }
+
+  function initOsobnosti() {
+    $$('[data-osobnosti]').forEach(function (host) {
+      if (!OSOBNOSTI.length) { host.remove(); return; }
+
+      var limit = parseInt(host.getAttribute('data-limit'), 10) || 0;
+      var seznam = limit > 0 ? OSOBNOSTI.slice(0, limit) : OSOBNOSTI;
+
+      /* Celá karta odkazem být nemůže, uvnitř jsou odkazy na kluby a odkaz
+         v odkazu není platné HTML. Na profil proto vede jméno. */
+      host.innerHTML = seznam.map(function (o) {
+        return '<div class="legend' + (o.hvezda ? ' legend--star' : '') + '">'
+          + '<h3 class="legend__name"><a class="legend__odkaz" href="osobnost.html?id='
+            + encodeURIComponent(o.id) + '">' + esc(o.jmeno) + '</a></h3>'
+          + '<p class="legend__kde">'
+            + osobnostZnaky(o)
+            + (o.shrnuti ? '<span class="legend__where">' + esc(o.shrnuti) + '</span>' : '')
+          + '</p>'
+        + '</div>';
+      }).join('');
+    });
+  }
+
+  /* ------------------------------------------------------------------------
+     12c. PODSTRÁNKA OSOBNOSTI
+     ------------------------------------------------------------------------
+     Kdo nemá vyplněný obsah, dostane místo textu výzvu k doplnění. Vymýšlet
+     si životopisy lidí, o kterých nic nevíme, je horší než přiznat mezeru.
+     ---------------------------------------------------------------------- */
+  function initOsobnost() {
+    var host = $('[data-osobnost]');
+    if (!host) return;
+
+    var sip = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" '
+      + 'stroke-width="2.5" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+    var zpet = '<a class="link-arrow" href="klub.html#legendy">Všechny osobnosti' + sip + '</a>';
+
+    var m = /[?&]id=([^&]*)/.exec(location.search);
+    var id = m ? decodeURIComponent(m[1]) : '';
+    var o = null;
+    OSOBNOSTI.forEach(function (x) { if (x.id === id) o = x; });
+
+    var elNadpis = $('[data-osobnost-nadpis]');
+    var elMeta = $('[data-osobnost-meta]');
+    var elDrobek = $('[data-osobnost-drobek]');
+
+    if (!o) {
+      if (elNadpis) elNadpis.textContent = 'Osobnost nenalezena';
+      if (elMeta) elMeta.textContent = 'Tenhle profil na webu není, možná se přesunul.';
+      if (elDrobek) elDrobek.textContent = 'Osobnost nenalezena';
+      host.innerHTML = '<div class="clanek"><div class="clanek__foot">' + zpet + '</div></div>';
+      return;
+    }
+
+    document.title = o.jmeno + ' | FC Hlinsko';
+    if (elNadpis) elNadpis.textContent = o.jmeno;
+    if (elDrobek) elDrobek.textContent = o.jmeno;
+    if (elMeta) elMeta.textContent = o.shrnuti || '';
+
+    /* Údaje pod jménem: co je vyplněné, to se ukáže */
+    var udaje = [];
+    if (o.post) udaje.push({ dt: 'Post', dd: o.post });
+    if (o.narozen) udaje.push({ dt: 'Narozen', dd: String(o.narozen) });
+    var karieraRadky = (o.kluby || []).map(function (k) {
+      return '<tr><th scope="row">' + esc(k.kdy || '—') + '</th><td>' + esc(k.kde) + '</td></tr>';
+    }).join('');
+
+    var foto = o.foto
+      ? '<figure class="osoba__foto"><img src="' + esc(o.foto) + '" alt="' + esc(o.jmeno)
+        + '" width="900" height="1200" decoding="async"></figure>'
+      : '';
+
+    var text = o.obsah && o.obsah.length
+      ? o.obsah.map(function (t) { return '<p>' + esc(t) + '</p>'; }).join('')
+      : '<p class="osoba__chybi">O téhle éře hlineckého fotbalu toho na internetu mnoho '
+        + 'není. Máte fotky, výstřižky nebo vzpomínky? Ozvěte se nám, profil rádi '
+        + 'doplníme.</p>';
+
+    var udajeHtml = udaje.length
+      ? '<dl class="osoba__udaje">' + udaje.map(function (u) {
+          return '<div><dt>' + esc(u.dt) + '</dt><dd>' + esc(u.dd) + '</dd></div>';
+        }).join('') + '</dl>'
+      : '';
+
+    var kariera = karieraRadky
+      ? '<div class="osoba__kariera">'
+        + '<h2 class="osoba__podnadpis">Kariéra</h2>'
+        + '<table class="osoba__tab"><tbody>' + karieraRadky + '</tbody></table>'
+      + '</div>'
+      : '';
+
+    host.innerHTML = '<article class="osoba">'
+      + '<div class="osoba__hlava">' + foto
+        + '<div class="osoba__uvod">'
+          + '<div class="osoba__znaky">' + osobnostZnaky(o, 52) + '</div>'
+          + udajeHtml
+        + '</div>'
+      + '</div>'
+      + '<div class="osoba__text">' + text + kariera + '</div>'
+      + '<div class="clanek__foot">' + zpet + '</div>'
+    + '</article>';
+  }
+
   function initArticle() {
     var host = $('[data-novinka]');
     if (!host) return;
@@ -2711,6 +3050,8 @@
     initActiveNav();
     initNews();
     initArticle();
+    initOsobnosti();
+    initOsobnost();
     /* Vše, co vkládá prvky s třídou .reveal, musí proběhnout před initReveal */
     initHeroZapasy();
     initVysledky();

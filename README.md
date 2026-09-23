@@ -17,6 +17,7 @@ kalendar.html                 kalendář tréninků a zápasů
 nabor.html                    nábor dětí a přihláška
 cleny.html                    členské příspěvky a platební údaje
 novinky.html / novinka.html   výpis a detail aktuality
+osobnost.html                 profil odchovance, seznam je na Klubu
 partneri.html                 partneři a nabídka spolupráce
 kontakt.html                  kontakty, formulář, mapa
 *-podminky.html, cookies.html právní stránky
@@ -38,9 +39,10 @@ kvůli běžné údržbě upravovat nemusí.
 |------|---------|
 | `ZAPASY` | všechny zápasy všech mužstev |
 | `TABULKA` | tabulka divize C |
-| `KLUBY` | znaky a krátké názvy klubů divize C |
+| `KLUBY` | znaky, krátké názvy a weby klubů divize C |
 | `TRENINKY` | pravidelný týdenní rozvrh do kalendáře |
 | `NOVINKY` | aktuality a jejich detaily |
+| `OSOBNOSTI` | odchovanci, karty i podstránky |
 | `TYMY_PREHLED` | mužstva v přepínači na úvodu |
 | `NAROZENINY` | narozeniny do bloku na úvodu |
 | `PARTNERI` | partneři a jejich úrovně |
@@ -64,17 +66,48 @@ bere z pole `SOUTEZE`.
 Přepisuje se ručně z Fotbal.cz, řádek s `tym: 'FC Hlinsko'` se zvýrazní sám.
 Datum poslední aktualizace je v `TABULKA_AKTUALIZOVANO`.
 
+### Osobnosti
+
+Odchovanci se píšou do pole `OSOBNOSTI`. Skládají se z něj karty na úvodu
+i na stránce Klub a k tomu podstránka `osobnost.html?id=...`.
+
+```js
+{ id: 'jakub-pesek', jmeno: 'Jakub Pešek', hvezda: true,
+  shrnuti: 'Reprezentace ČR, 14 zápasů a 5 gólů.',
+  znaky: [{ soubor: 'sparta-praha', klub: 'AC Sparta Praha',
+            web: 'https://sparta.cz/' }], foto: null,
+  post: 'Křídelní záložník', narozen: 1993,
+  kluby: [{ kdy: '1997–2007', kde: 'FC Hlinsko' }],
+  obsah: ['první odstavec', 'druhý odstavec'] }
+```
+
+`id` musí být unikátní, tvoří adresu podstránky. `hvezda: true` dá jménu
+zlatou barvu. Počet karet na úvodu řídí `data-limit` v HTML.
+
+`znaky` stojí na kartě místo názvu klubu a vedou na jeho stránky, proto se
+kluby se znakem už do `shrnuti` nepíšou. Nejvýš dva na kartu, soubory jsou
+v `images/znaky/`. Když soubor chybí, znak se odebere a nezbyde po něm mezera.
+
+**Kdo má `obsah` prázdný**, ukáže podstránka výzvu k doplnění místo textu.
+U starší generace to tak zatím je schválně: o Františku Jílkovi, Petru
+Popelkovi, Františku Šílovi a Miroslavu Osvaldovi není na internetu nic
+kromě jména a klubu. Vymyslet si životopis je horší než přiznat mezeru,
+tohle musí doplnit klub z vlastní kroniky.
+
 ### Znaky soupeřů
 
 Pole `KLUBY` spáruje klub s jeho znakem a krátkým názvem:
 
 ```js
-{ nazev: 'SK Sparta Kolín', kratky: 'Kolín', znak: 'kolin' }
+{ nazev: 'SK Sparta Kolín', kratky: 'Kolín', znak: 'kolin', web: 'https://sparta-kolin.cz/' }
 ```
 
 `nazev` je plný název z `TABULKA`, `kratky` je ten z `ZAPASY`. Web hledá
 bez ohledu na diakritiku, tečky a mezery, takže stejný řádek najde pod
 oběma zápisy. Znak se pak ukáže v tabulce a v zápasovém pruhu na úvodu.
+
+Z `web` se v tabulce stane odkaz na stránky klubu, otevře se v nové záložce.
+U Hlinska je `null`, na sebe sami neodkazujeme.
 
 Soubory patří do `images/znaky/` jako `znak.webp`, seznam je
 v [images/znaky/README.md](images/znaky/README.md). Když soubor chybí nebo
