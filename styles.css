@@ -4014,9 +4014,7 @@ table.tbl tr.is-us td { border-color: var(--green-tint-2); }
   .hero {
     min-height: calc(100vh - var(--head-h));
     min-height: calc(100svh - var(--head-h));
-    /* Dole víc místa, ať čas posledního řádku nesedí natvrdo na
-       sekaném pruhu na hraně sekce */
-    padding: clamp(24px, 6vw, 48px) 0 24px;
+    padding: clamp(24px, 6vw, 48px) 0 0;
   }
 
   /* Na úzkém displeji by se vešla celá výška fotky, tedy hlavně obloha.
