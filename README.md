@@ -38,6 +38,7 @@ kvůli běžné údržbě upravovat nemusí.
 |------|---------|
 | `ZAPASY` | všechny zápasy všech mužstev |
 | `TABULKA` | tabulka divize C |
+| `KLUBY` | znaky a krátké názvy klubů divize C |
 | `TRENINKY` | pravidelný týdenní rozvrh do kalendáře |
 | `NOVINKY` | aktuality a jejich detaily |
 | `TYMY_PREHLED` | mužstva v přepínači na úvodu |
@@ -62,6 +63,23 @@ bere z pole `SOUTEZE`.
 
 Přepisuje se ručně z Fotbal.cz, řádek s `tym: 'FC Hlinsko'` se zvýrazní sám.
 Datum poslední aktualizace je v `TABULKA_AKTUALIZOVANO`.
+
+### Znaky soupeřů
+
+Pole `KLUBY` spáruje klub s jeho znakem a krátkým názvem:
+
+```js
+{ nazev: 'SK Sparta Kolín', kratky: 'Kolín', znak: 'kolin' }
+```
+
+`nazev` je plný název z `TABULKA`, `kratky` je ten z `ZAPASY`. Web hledá
+bez ohledu na diakritiku, tečky a mezery, takže stejný řádek najde pod
+oběma zápisy. Znak se pak ukáže v tabulce a v zápasovém pruhu na úvodu.
+
+Soubory patří do `images/znaky/` jako `znak.webp`, seznam je
+v [images/znaky/README.md](images/znaky/README.md). Když soubor chybí nebo
+se nenačte, zůstane na jeho místě kolečko se zkratkou názvu. Klub, který
+v `KLUBY` není, se chová stejně, takže doplnit se dá postupně.
 
 ### Aktuality
 

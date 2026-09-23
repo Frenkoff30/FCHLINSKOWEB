@@ -3130,6 +3130,18 @@ table.tbl tr.is-us td { border-color: var(--green-tint-2); }
 .tlogo--nas { background: none; border: 0; }
 .tlogo--nas img { width: auto; height: 42px; filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.35)); }
 
+/* Znak soupeře leží přes zkratku a překryje ji. Když se soubor nenačte,
+   skript třídu tlogo--znak odebere a zkratka se zase objeví. */
+.tlogo--znak { position: relative; background: none; border: 0; color: transparent; }
+.tlogo__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.3));
+}
+
 @media (max-width: 1160px) {
   /* Užší obrazovka: údaje nad zápasem místo vedle */
   .hm { grid-template-columns: 1fr; gap: 12px; }
@@ -3360,6 +3372,24 @@ table.tbl tr.is-us td { border-color: var(--green-tint-2); }
 }
 
 .ltable thead .c-team { text-align: left; }
+
+/* Znak a název v jedné buňce. Ořezává se jen název, znak zůstává celý. */
+.c-team__in { display: flex; align-items: center; gap: 9px; min-width: 0; }
+.c-team__n { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+
+/* V tabulce je světlé pozadí, kolečko se zkratkou potřebuje jiné barvy */
+.ltable .c-team .tlogo {
+  width: 24px;
+  height: 24px;
+  border-radius: 5px;
+  font-size: 10px;
+  background: var(--bg-alt);
+  border-color: var(--border);
+  color: var(--text-mute);
+}
+.ltable .c-team .tlogo--znak { background: none; border: 0; color: transparent; }
+.ltable .c-team .tlogo--nas img { height: 26px; }
+.ltable .c-team .tlogo__img { filter: none; }
 .ltable .c-score { white-space: nowrap; }
 
 .ltable tbody .c-pts {

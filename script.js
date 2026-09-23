@@ -156,6 +156,40 @@
     'zaci-u15': '3. liga starších žáků', 'zaci-u13': '3. liga mladších žáků'
   };
 
+  /* ------------------------------------------------------------------------
+     KLUBY DIVIZE C, ZNAKY A ZKRÁCENÁ JMÉNA
+     ------------------------------------------------------------------------
+     Jeden řádek = jeden klub. Web podle něj dohledá znak a krátký název,
+     ať už je klub zapsaný plným jménem (TABULKA) nebo zkráceně (ZAPASY).
+     Hledá se bez ohledu na diakritiku, tečky a mezery, takže 'Chlumec n/C.'
+     i 'Chlumec n. C.' najdou stejný řádek.
+
+     nazev:  plný název tak, jak je v TABULKA
+     kratky: krátký název do tabulky, jak je v ZAPASY u souper
+     znak:   název souboru v images/znaky/ bez přípony, hledá se .webp
+
+     Když soubor se znakem chybí nebo se nenačte, ukáže se kolečko se zkratkou
+     jako dosud. Klub, který tu není uvedený, se chová úplně stejně.
+     ---------------------------------------------------------------------- */
+  var KLUBY = [
+    { nazev: 'FK Přepeře',                kratky: 'Přepeře',      znak: 'prepere' },
+    { nazev: 'SK Vysoké Mýto',            kratky: 'Vysoké Mýto',  znak: 'vysoke-myto' },
+    { nazev: 'SK Kosmonosy',              kratky: 'Kosmonosy',    znak: 'kosmonosy' },
+    { nazev: 'TJ Jiskra Ústí nad Orlicí', kratky: 'Ústí n/O.',    znak: 'usti-nad-orlici' },
+    { nazev: 'FC Hlinsko',                kratky: 'Hlinsko',      znak: null },
+    { nazev: 'SK Sparta Kolín',           kratky: 'Kolín',        znak: 'kolin' },
+    { nazev: 'FK Čechie Vykáň',           kratky: 'Vykáň',        znak: 'vykan' },
+    { nazev: 'FK Turnov',                 kratky: 'Turnov',       znak: 'turnov' },
+    { nazev: 'MFK Trutnov',               kratky: 'Trutnov',      znak: 'trutnov' },
+    { nazev: 'FK Chlumec nad Cidlinou',   kratky: 'Chlumec n/C.', znak: 'chlumec-nad-cidlinou' },
+    { nazev: 'TJ Dvůr Králové nad Labem', kratky: 'Dvůr Králové', znak: 'dvur-kralove' },
+    { nazev: 'FC Slavia Hradec Králové',  kratky: 'Slavia HK',    znak: 'slavia-hradec-kralove' },
+    { nazev: 'Spartak Police nad Metují', kratky: 'Police n/M.',  znak: 'police-nad-metuji' },
+    { nazev: 'TJ Svitavy',                kratky: 'Svitavy',      znak: 'svitavy' },
+    { nazev: 'MFK Chrudim B',             kratky: 'Chrudim B',    znak: 'chrudim' },
+    { nazev: 'FK Letohrad',               kratky: 'Letohrad',     znak: 'letohrad' }
+  ];
+
   var TYP_NAZEV = { liga: 'Mistrovské utkání', pohar: 'MOL Cup', priprava: 'Přípravné utkání', turnaj: 'Turnaj' };
   var MESICE = ['led', 'úno', 'bře', 'dub', 'kvě', 'čvn', 'čvc', 'srp', 'zář', 'říj', 'lis', 'pro'];
   var MESICE_DLOUHE = ['ledna', 'února', 'března', 'dubna', 'května', 'června',
@@ -1009,7 +1043,8 @@
         if (sbalit && (i < od || i >= od + okno)) cls.push('is-extra');
         return '<tr' + (cls.length ? ' class="' + cls.join(' ') + '"' : '') + '>' +
           '<td class="c-pos">' + esc(t.poradi) + '.</td>' +
-          '<th class="c-team" scope="row">' + esc(t.tym) + '</th>' +
+          '<th class="c-team" scope="row"><span class="c-team__in">' + tymLogo(t.tym) +
+            '<span class="c-team__n">' + esc(tymKratce(t.tym)) + '</span></span></th>' +
           '<td>' + esc(t.z) + '</td>' +
           '<td class="c-opt">' + esc(t.v) + '</td>' +
           '<td class="c-opt">' + esc(t.r) + '</td>' +
@@ -1107,11 +1142,62 @@
     return slovo.slice(0, 3).toUpperCase();
   }
 
+  /* Klíč pro hledání v KLUBY: bez diakritiky, bez teček, mezer a lomítek */
+  function klicKlubu(nazev) {
+    return String(nazev).normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase().replace(/[^a-z0-9]+/g, '');
+  }
+
+  var KLUBY_INDEX = null;
+
+  function najdiKlub(nazev) {
+    if (!KLUBY_INDEX) {
+      KLUBY_INDEX = {};
+      KLUBY.forEach(function (k) {
+        KLUBY_INDEX[klicKlubu(k.nazev)] = k;
+        if (k.kratky) KLUBY_INDEX[klicKlubu(k.kratky)] = k;
+      });
+    }
+    return KLUBY_INDEX[klicKlubu(nazev)] || null;
+  }
+
+  /* Krátký název do tabulky. Klub mimo KLUBY si nechá svůj vlastní. */
+  function tymKratce(nazev) {
+    var k = najdiKlub(nazev);
+    return k && k.kratky ? k.kratky : nazev;
+  }
+
+  /* Znak leží přes kolečko se zkratkou a překryje ho. Když soubor chybí,
+     initZnaky obrázek odebere a zkratka se zase objeví.
+
+     Schválně bez loading="lazy": ve sbalené tabulce jsou řádky schované,
+     odložený obrázek by se v nich nenačetl, nespustil by chybu a místo
+     znaku by zůstalo prázdné místo.
+
+     Zkratka se počítá z krátkého názvu. Z plného by u půlky soutěže
+     vyšlo jen 'FK' nebo 'SK'. */
   function tymLogo(nazev) {
     if (nazev === 'FC Hlinsko') {
       return '<span class="tlogo tlogo--nas"><img src="images/znak-fchlinsko.webp" alt="" width="220" height="290"></span>';
     }
-    return '<span class="tlogo" aria-hidden="true">' + esc(zkratka(nazev)) + '</span>';
+    var k = najdiKlub(nazev);
+    var znak = k && k.znak
+      ? '<img class="tlogo__img" src="images/znaky/' + esc(k.znak) + '.webp" alt="" decoding="async">'
+      : '';
+    return '<span class="tlogo' + (znak ? ' tlogo--znak' : '') + '" aria-hidden="true">' +
+      esc(zkratka(tymKratce(nazev))) + znak + '</span>';
+  }
+
+  /* Chybějící soubor se znakem nesmí zůstat jako rozbitý obrázek. Událost
+     error nebublá, proto se poslouchá v zachytávací fázi na dokumentu. */
+  function initZnaky() {
+    document.addEventListener('error', function (e) {
+      var el = e.target;
+      if (!el || el.tagName !== 'IMG' || !el.classList.contains('tlogo__img')) return;
+      var obal = el.parentNode;
+      if (obal) obal.classList.remove('tlogo--znak');
+      el.remove();
+    }, true);
   }
 
   function soutezZapasu(z) {
@@ -2617,6 +2703,7 @@
 
   function boot() {
     /* Data dřív, než se cokoliv vykreslí */
+    initZnaky();
     initZdroj();
 
     initHeader();
