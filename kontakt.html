@@ -302,7 +302,7 @@
     </div>
 
     <div class="grid grid--2" style="gap:clamp(24px,3vw,40px);align-items:start">
-      <form class="form panel reveal" data-mailto="info@fchlinsko.cz" data-subject="Zpráva z webu FC Hlinsko" novalidate>
+      <form class="form panel reveal" data-formular="kontakt" data-mailto="info@fchlinsko.cz" data-subject="Zpráva z webu FC Hlinsko" novalidate>
         <div class="form-grid">
           <div class="field">
             <label for="k-jmeno">Jméno a příjmení <span class="req" aria-hidden="true">*</span></label>
@@ -347,6 +347,12 @@
           </label>
         </div>
 
+        <!-- Past na roboty. Člověk pole nevidí, robot ho vyplní a zpráva se zahodí. -->
+        <div class="hp" aria-hidden="true">
+          <label for="k-web">Nevyplňujte</label>
+          <input type="text" id="k-web" name="web" tabindex="-1" autocomplete="off">
+        </div>
+
         <p class="form__note" role="status"></p>
 
         <button class="btn btn--lg btn--block" type="submit">Odeslat zprávu</button>
@@ -371,10 +377,11 @@
         </div>
 
         <div class="panel">
-          <h3 class="panel__h">Formulář odesílá e-mail</h3>
+          <h3 class="panel__h">Co se stane po odeslání</h3>
           <p style="color:var(--text-soft);font-size:15.5px;margin:0">
-            Po odeslání se otevře váš e-mailový klient s předvyplněnou zprávou.
-            Pokud se nic nestane, napište nám prosím přímo na
+            Zpráva nám přijde rovnou do e-mailu a odpovíme na adresu, kterou
+            ve formuláři uvedete. Kdyby se odeslat nepodařilo, napište nám
+            prosím přímo na
             <a href="mailto:info@fchlinsko.cz" style="color:var(--green)">info@fchlinsko.cz</a>.
           </p>
         </div>

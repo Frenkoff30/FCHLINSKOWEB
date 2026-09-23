@@ -1,7 +1,8 @@
 # FC Hlinsko
 
 Web fotbalového klubu FC Hlinsko. Statické HTML, CSS a jeden JS soubor,
-bez frameworku a bez build kroku. Nahraje se na hosting tak, jak je.
+bez frameworku a bez build kroku. Jediná část, která běží na serveru, je
+odeslání formulářů ve složce `api/`, a i ta je bez závislostí.
 
 ## Struktura
 
@@ -21,6 +22,7 @@ kontakt.html                  kontakty, formulář, mapa
 
 styles.css                    styly, tokeny v sekci 1
 script.js                     data i logika, číslované sekce
+api/formular.js               odeslání formulářů, běží na serveru
 images/                       fotky, znak, loga partnerů
 data/                         volitelný zdroj dat, viz data/README.md
 ```
@@ -124,15 +126,51 @@ instituce. Nejlépe PNG s průhledným pozadím, výška kolem 160 px.
 
 ## Formuláře
 
-Formuláře na stránkách Nábor a Kontakt ověří vyplnění a otevřou e-mailového
-klienta (`mailto:`). Adresa se nastavuje atributem na formuláři:
+Formuláře na stránkách Nábor a Kontakt odesílají zprávu rovnou z webu.
+Prohlížeč pošle vyplněné údaje na `/api/formular`, serverová funkce je
+zkontroluje a předá službě [Resend](https://resend.com), která je doručí
+do klubové schránky. Odpovědět jde rovnou, `reply_to` nese adresu
+odesílatele.
+
+Atributy na formuláři:
 
 ```html
-<form data-mailto="info@fchlinsko.cz" data-subject="Předmět zprávy">
+<form data-formular="kontakt" data-mailto="info@fchlinsko.cz"
+      data-subject="Předmět zprávy">
 ```
 
-Pro odesílání přímo z webu by bylo potřeba doplnit serverový skript nebo
-službu typu Formspree.
+`data-formular` říká, podle kterého předpisu v `api/formular.js` se údaje
+ověří. Povolené hodnoty jsou `nabor` a `kontakt`. Když odeslání selže,
+nabídne web zprávu otevřít v e-mailovém klientu, k tomu slouží
+`data-mailto`. Formulář bez `data-formular` jede rovnou přes `mailto:`.
+
+### Zprovoznění
+
+1. Založit účet na resend.com.
+2. Přidat a ověřit doménu `fchlinsko.cz` (Resend vypíše DNS záznamy
+   DKIM a SPF, které je potřeba doplnit u správce domény).
+3. Vytvořit API klíč.
+4. Na Vercelu v Settings → Environment Variables nastavit:
+
+| Proměnná | Co drží |
+|----------|---------|
+| `RESEND_API_KEY` | klíč z Resendu, povinné |
+| `FORMULAR_PRIJEMCE` | kam zprávy chodí, výchozí `info@fchlinsko.cz` |
+| `FORMULAR_ODESILATEL` | odesílatel, musí být na ověřené doméně |
+
+Bez ověřené domény umí Resend odesílat jen z `onboarding@resend.dev`
+a pouze na e-mail majitele účtu. To stačí na vyzkoušení, ne na provoz.
+
+Po změně proměnných je potřeba projekt na Vercelu nasadit znovu, jinak
+se nové hodnoty nenačtou.
+
+### Ochrana proti robotům
+
+Ve formuláři je schované pole `web`, které člověk nevidí. Když dorazí
+vyplněné, zpráva se zahodí. Stejně dopadne odeslání dřív než tři vteřiny
+po načtení stránky. Z jedné IP adresy projde nejvýš pět zpráv za deset
+minut. Příjemce je vždy z proměnné prostředí, z požadavku ho přepsat
+nejde, takže se z endpointu nedá udělat rozesílač.
 
 ## Cookies
 

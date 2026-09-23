@@ -777,9 +777,31 @@
   /* ------------------------------------------------------------------------
      7. FORMULÁŘE
      ---------------------------------------------------------------------- */
+  /* Záloha, když serverová část neodpoví: předvyplněný e-mail v klientu */
+  function odesliMailem(form, to, predmet, note) {
+    var radky = [];
+    $$('input, select, textarea', form).forEach(function (f) {
+      if (f.type === 'checkbox' || !f.name || f.name === 'web' || !f.value.trim()) return;
+      var lab = form.querySelector('label[for="' + f.id + '"]');
+      var popis = lab ? lab.textContent.replace('*', '').trim() : f.name;
+      radky.push(popis + ': ' + f.value.trim());
+    });
+
+    window.location.href = 'mailto:' + to +
+      '?subject=' + encodeURIComponent(predmet) +
+      '&body=' + encodeURIComponent(radky.join('\n') + '\n\nOdesláno z webu fchlinsko.cz');
+
+    if (note) {
+      note.className = 'form__note is-ok';
+      note.textContent = 'Otevíráme váš e-mailový klient s předvyplněnou zprávou. Pokud se nic nestalo, napište nám přímo na ' + to + '.';
+    }
+  }
+
   function initForms() {
     $$('form[data-mailto]').forEach(function (form) {
       var note = form.querySelector('.form__note');
+      /* Kvůli pasti na roboty: kdo to vyplní do pár vteřin, není člověk */
+      var zacatek = Date.now();
 
       function setErr(field, on, msg) {
         var wrap = field.closest('.field');
@@ -813,23 +835,60 @@
 
         var to = form.getAttribute('data-mailto');
         var predmet = form.getAttribute('data-subject') || 'Zpráva z webu FC Hlinsko';
-        var radky = [];
+        var druh = form.getAttribute('data-formular');
 
+        /* Bez data-formular zbývá původní cesta přes e-mailový klient */
+        if (!druh) { odesliMailem(form, to, predmet, note); return; }
+
+        var pole = {};
         $$('input, select, textarea', form).forEach(function (f) {
-          if (f.type === 'checkbox' || !f.name) return;
-          var lab = form.querySelector('label[for="' + f.id + '"]');
-          var popis = lab ? lab.textContent.replace('*', '').trim() : f.name;
-          radky.push(popis + ': ' + f.value.trim());
+          if (f.type === 'checkbox' || !f.name || f.name === 'web') return;
+          pole[f.name] = f.value.trim();
         });
 
-        window.location.href = 'mailto:' + to +
-          '?subject=' + encodeURIComponent(predmet) +
-          '&body=' + encodeURIComponent(radky.join('\n') + '\n\nOdesláno z webu fchlinsko.cz');
+        var souhlas = form.querySelector('[name="souhlas"]');
+        var past = form.querySelector('[name="web"]');
+        var btn = form.querySelector('[type="submit"]');
+        var puvodni = btn ? btn.textContent : '';
 
-        if (note) {
-          note.className = 'form__note is-ok';
-          note.textContent = 'Otevíráme váš e-mailový klient s předvyplněnou zprávou. Pokud se nic nestalo, napište nám přímo na ' + to + '.';
-        }
+        if (btn) { btn.disabled = true; btn.textContent = 'Odesíláme…'; }
+        if (note) { note.className = 'form__note'; note.textContent = ''; }
+
+        window.fetch('/api/formular', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            formular: druh,
+            pole: pole,
+            souhlas: !!(souhlas && souhlas.checked),
+            web: past ? past.value : '',
+            trvani: Math.round((Date.now() - zacatek) / 1000)
+          })
+        }).then(function (r) {
+          return r.json()['catch'](function () { return {}; })
+            .then(function (data) { return { ok: r.ok, data: data }; });
+        }).then(function (v) {
+          if (!v.ok || !v.data || !v.data.ok) {
+            throw new Error((v.data && v.data.chyba) || 'Zprávu se nepodařilo odeslat.');
+          }
+          form.reset();
+          if (note) {
+            note.className = 'form__note is-ok';
+            note.textContent = 'Děkujeme, zpráva dorazila. Ozveme se vám co nejdřív.';
+          }
+        })['catch'](function (err) {
+          /* Když server selže, ať člověk neodejde s prázdnou: nabídneme
+             mu tu samou zprávu otevřít v e-mailovém klientu. */
+          if (note) {
+            note.className = 'form__note is-bad';
+            note.innerHTML = esc(err.message || 'Zprávu se nepodařilo odeslat.')
+              + ' <button class="form__nahrada" type="button">Otevřít v e-mailu</button>';
+            var n = note.querySelector('.form__nahrada');
+            if (n) n.addEventListener('click', function () { odesliMailem(form, to, predmet, null); });
+          }
+        }).then(function () {
+          if (btn) { btn.disabled = false; btn.textContent = puvodni; }
+        });
       });
 
       $$('[required]', form).forEach(function (f) {

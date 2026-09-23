@@ -412,7 +412,7 @@
     </div>
 
     <div class="grid grid--2 split-even" style="gap:clamp(24px,3vw,40px)">
-      <form class="form panel reveal" data-mailto="info@fchlinsko.cz" data-subject="Nábor, nová přihláška z webu" novalidate>
+      <form class="form panel reveal" data-formular="nabor" data-mailto="info@fchlinsko.cz" data-subject="Nábor, nová přihláška z webu" novalidate>
         <div class="form-grid">
           <div class="field">
             <label for="n-dite">Jméno dítěte <span class="req" aria-hidden="true">*</span></label>
@@ -474,6 +474,12 @@
           </label>
         </div>
 
+        <!-- Past na roboty. Člověk pole nevidí, robot ho vyplní a zpráva se zahodí. -->
+        <div class="hp" aria-hidden="true">
+          <label for="n-web">Nevyplňujte</label>
+          <input type="text" id="n-web" name="web" tabindex="-1" autocomplete="off">
+        </div>
+
         <p class="form__note" role="status"></p>
 
         <button class="btn btn--lg btn--block" type="submit">Odeslat přihlášku</button>
@@ -513,10 +519,11 @@
         </div>
 
         <div class="panel">
-          <h3 class="panel__h" style="font-size:20px">Formulář odesílá e-mail</h3>
+          <h3 class="panel__h" style="font-size:20px">Co se stane po odeslání</h3>
           <p style="color:var(--text-soft);font-size:15.5px;margin:0">
-            Po odeslání se otevře váš e-mailový klient s předvyplněnou zprávou.
-            Pokud se nic nestane, napište nám prosím přímo na adresu výše.
+            Přihláška nám přijde rovnou do e-mailu a ozveme se vám s termínem
+            nejbližšího tréninku. Kdyby se odeslat nepodařilo, nabídneme vám
+            zprávu otevřít ve vašem e-mailu, nebo nám napište na adresu výše.
           </p>
         </div>
       </div>

@@ -1472,7 +1472,29 @@ table.tbl .t-name {
 
 .field--check a { color: var(--green); text-decoration: underline; }
 
+/* Past na roboty. Ne display:none, to si část z nich hlídá. Pole je
+   mimo obrazovku, ale pro prohlížeč existuje. */
+.hp {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
 .form__note { display: none; padding: 14px 17px; border-radius: var(--r-md); font-size: 15.5px; }
+
+/* Nabídka otevřít zprávu v e-mailu, když odeslání selže */
+.form__nahrada {
+  display: inline;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
 .form__note.is-ok { display: block; background: var(--green-tint); border: 1px solid var(--green-tint-2); color: var(--green-dk); }
 .form__note.is-bad { display: block; background: #FDECEA; border: 1px solid #F5C6C1; color: #9B1C12; }
 
