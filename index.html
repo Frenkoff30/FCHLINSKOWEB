@@ -60,14 +60,6 @@
         <a href="tel:+420774424648">774 424 648</a>
       </span>
     </div>
-    <div class="topbar__social">
-      <a class="icon-btn" href="https://www.facebook.com/FcHlinsko" target="_blank" rel="noopener" aria-label="FC Hlinsko na Facebooku">
-        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0 0 22 12z"/></svg>
-      </a>
-      <a class="icon-btn" href="https://www.instagram.com/fchlinsko/" target="_blank" rel="noopener" aria-label="FC Hlinsko na Instagramu">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg>
-      </a>
-    </div>
   </div>
 </div>
 
@@ -285,8 +277,7 @@
     </div>
   </div>
 
-  <!-- Zápasový pruh na spodní hraně hera: poslední a příští zápas mužů A.
-       Počítá se samo z pole ZAPASY ve script.js. -->
+  <!-- Poslední a příští zápas áčka, počítá se z pole ZAPASY -->
   <div class="hero__bar">
     <span class="hero__vapno hero__vapno--l" aria-hidden="true"></span>
     <span class="hero__vapno hero__vapno--p" aria-hidden="true"></span>
@@ -295,9 +286,7 @@
   <span class="hero__stripes" aria-hidden="true"></span>
 </section>
 
-<!-- ================= AKTUALITY =================
-     Karty se skládají z pole NOVINKY ve script.js. Vodorovný pás (data-rail)
-     se sám posouvá po kartách, takže zvládne i větší počet novinek. -->
+<!-- ================= AKTUALITY ================= -->
 <section class="section section--tight" id="aktuality">
   <div class="wrap">
     <div class="sec-head sec-head--slim reveal">
@@ -321,9 +310,7 @@
   </div>
 </section>
 
-<!-- ================= MUŽSTVA =================
-     Přepínač kategorií a k němu fotka vybraného mužstva. Obsah se skládá
-     z pole TYMY_PREHLED ve script.js, podrobnosti jsou až na podstránkách. -->
+<!-- ================= MUŽSTVA ================= -->
 <section class="section teamsw-sec on-dark" id="tymy">
   <span class="corner-arc" aria-hidden="true"></span>
   <div class="wrap">
@@ -374,10 +361,11 @@
         <span class="kicker">Sto dvacet let fotbalu</span>
         <h2 class="sec-title">Odchovanci, kteří to <em>dotáhli</em></h2>
         <p class="sec-lead" style="margin-bottom:24px">
-          Hlinsko není jen okresní fotbal. Přes naše hřiště prošli hráči, kteří se prosadili
-          v nejvyšší soutěži i v reprezentaci. Postup do čtvrtfinále Českého poháru přes Baník
-          Ostrava v roce 1980 a účast ve druhé národní lize v sezoně 1984/85 jsou dodnes
-          nejcennějšími zápisy v klubové kronice.
+          Za sto dvacet let prošly Olšinkami stovky hráčů. Někteří zůstali u okresního
+          fotbalu, jiní se dostali až do ligy a do reprezentace. Všichni ale začínali na
+          stejném hřišti, na kterém dnes trénují naše přípravky. Nejcennější zápisy v kronice
+          jsou z roku 1980, kdy áčko vyřadilo v Českém poháru Baník Ostrava a došlo do
+          čtvrtfinále, a ze sezony 1984/85 strávené ve druhé národní lize.
         </p>
         <div class="btn-row">
           <a class="btn" href="klub.html#historie">Historie klubu</a>
@@ -419,9 +407,7 @@
   </div>
 </section>
 
-<!-- ================= NAROZENINY =================
-     Jména a data jsou v poli NAROZENINY ve script.js. Když v daném
-     období nikdo neslaví, sekce se sama schová. -->
+<!-- ================= NAROZENINY ================= -->
 <section class="section" id="narozeniny">
   <div class="wrap">
     <div class="sec-head reveal">
@@ -460,8 +446,7 @@
       </a>
     </div>
 
-    <!-- Loga a rozdělení partnerů jsou v poli PARTNERI ve script.js.
-         data-partneri="karusel" = běžící pásy, bez hodnoty = statická mřížka -->
+    <!-- data-partneri="karusel" = běžící pásy, bez hodnoty = mřížka -->
     <div class="ptiers" data-partneri="karusel"></div>
 
     <p class="ptier-note reveal">

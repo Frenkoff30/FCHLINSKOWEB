@@ -82,47 +82,13 @@
   ];
 
   /* ------------------------------------------------------------------------
-     ZDROJ DAT Z FAČR
+     ZDROJ DAT
      ------------------------------------------------------------------------
-     Pole ZAPASY a TABULKA výš jsou ruční záloha, se kterou web funguje vždy.
-     Tenhle blok umí místo nich vzít data ze souborů, které někdo doplňuje
-     automaticky, a ruční pole tím přepsat.
+     Zápasy a tabulku lze místo ručních polí brát z JSON souborů. FAČR API
+     nemá, soubory musí plnit skript na hostingu klubu. Podoba souborů
+     a postup zapnutí: data/README.md.
 
-     POZOR: FAČR žádné veřejné API nemá, fotbal.cz data ven nepouští a
-     neoficiální Scortes skončil, protože ho is.fotbal.cz začal blokovat.
-     Web se proto NEPŘIPOJUJE přímo na fotbal.cz, ani to nejde. Potřebuje
-     mezikrok na hostingu klubu: skript, který si data jednou za čas stáhne
-     a uloží je jako dva JSON soubory v podobě popsané níž. Tenhle blok už
-     s takovými soubory umí pracovat, stačí ho zapnout.
-
-     Zapnutí: zapnuto: true a zaklad nastavit na složku s JSON soubory.
-
-     zapnuto:        false = web bere jen ruční pole ZAPASY a TABULKA
-     zaklad:         složka s JSON soubory, musí být na stejné doméně jako web
-                     (jinak je potřeba na straně serveru povolit CORS)
-     cesty:          názvy obou souborů
-     platnostMinut:  jak dlouho se data drží v prohlížeči, než se stáhnou znovu
-     cekaniMs:       po jaké době se stahování vzdá a nechá ruční pole
-
-     Očekávaná podoba zapasy.json (stejná jako pole ZAPASY):
-
-       { "aktualizovano": "2026-09-21T10:00:00Z",
-         "zapasy": [
-           { "datum": "2026-08-08T10:30", "domaci": true, "souper": "Kolín",
-             "tym": "A", "typ": "liga", "kolo": 1,
-             "misto": "Olšinky, hřiště č. 1", "skore": "1:1" }
-         ] }
-
-     Očekávaná podoba tabulka.json (stejná jako pole TABULKA):
-
-       { "aktualizovano": "21. 9. 2026",
-         "tabulka": [
-           { "poradi": 1, "tym": "FK Přepeře", "z": 7, "v": 6, "r": 0, "p": 1,
-             "skore": "24:8", "b": 18 }
-         ] }
-
-     Když soubor chybí, nejde stáhnout nebo je poškozený, web se nezhroutí
-     a zůstane u ručních polí.
+     zaklad musí být na stejné doméně jako web, jinak je potřeba CORS.
      ---------------------------------------------------------------------- */
   var ZDROJ = {
     zapnuto: false,
@@ -327,17 +293,10 @@
   ];
 
   /* ------------------------------------------------------------------------
-     MUŽSTVA PRO PŘEPÍNAČ NA ÚVODNÍ STRÁNCE
+     MUŽSTVA PRO PŘEPÍNAČ NA ÚVODU
      ------------------------------------------------------------------------
-     Na úvodu je jen přepínač s fotkou, podrobnosti (soupisky, rozpisy,
-     tabulky) jsou až na podstránce každého mužstva. Pořadí v poli = pořadí
-     štítků, první mužstvo se ukáže po načtení stránky.
-
-     zkratka: text na štítku (Muži A, U19, ...)
-     nazev:   celý název pod fotkou
-     soutez:  soutěž nebo krátký popis
-     foto:    velká fotka mužstva
-     odkaz:   podstránka mužstva
+     Pořadí v poli = pořadí štítků, první mužstvo se ukáže po načtení.
+     Podrobnosti o mužstvu jsou až na jeho podstránce.
      ---------------------------------------------------------------------- */
   var TYMY_PREHLED = [
     { zkratka: 'Muži A',   nazev: 'Muži A',              soutez: 'Divize, skupina C',            foto: 'images/tymy/muzi-a.jpg',         odkaz: 'tym-muzi-a.html' },
@@ -359,13 +318,8 @@
     { klic: 'partner',   jeden: 'Partner',           vice: 'Partneři' }
   ];
 
-  /* ------------------------------------------------------------------------
-     VOLNÁ POZICE GENERÁLNÍHO PARTNERA
-     ------------------------------------------------------------------------
-     Ukáže se jen tehdy, když v PARTNERI nikdo s úrovní 'generalni' není.
-     Body jsou to, co klub generálnímu partnerovi skutečně nabízí, ať má
-     zájemce hned jasno, co za to dostane.
-     ---------------------------------------------------------------------- */
+  /* Nabídka na místo generálního partnera. Ukáže se, dokud v PARTNERI
+     nikdo s úrovní 'generalni' není. */
   var VOLNA_POZICE = {
     uroven: 'generalni',
     titulek: 'Tady může být vaše logo',
@@ -384,17 +338,9 @@
   /* ------------------------------------------------------------------------
      VYSKAKOVACÍ UPOUTÁVKA
      ------------------------------------------------------------------------
-     Okno, které se po načtení stránky samo otevře přes obsah. Používá se na
-     jednorázové akce, jako je turnaj nebo zápas, na který chce klub pozvat.
-
-     id:       klíč, pod kterým si prohlížeč pamatuje, že návštěvník okno zavřel.
-               Při nové akci ho ZMĚŇTE, jinak se okno lidem znovu neukáže.
-     od, do:   období, kdy se okno ukazuje ('RRRR-MM-DD', do včetně). Po datu do
-               se okno samo přestane zobrazovat, nemusí se nic mazat.
-     stranky:  na kterých stránkách se ukáže. Prázdné pole = na všech.
-     prodleva: za kolik milisekund po načtení stránky okno naskočí.
-
-     Upoutávku vypnete tak, že místo objektu napíšete null.
+     Pozvánka na akci. Ukáže se v období od–do, na stránkách ze seznamu
+     (prázdný = všude) a každému jednou. Při nové akci změnit id, jinak se
+     lidem, co zavřeli to minulé, znovu neukáže. Vypnutí: UPOUTAVKA = null.
      ---------------------------------------------------------------------- */
   var UPOUTAVKA = {
     id: 'planeo-cup-u11-2026',
@@ -478,6 +424,20 @@
     var head = $('.site-head');
     var toTop = $('.to-top');
     if (!head && !toTop) return;
+
+    /* Na úvodu jen vyjet nahoru, přenačtení by obnovilo pozici */
+    var znak = $('.site-head .brand');
+    if (znak) {
+      znak.addEventListener('click', function (e) {
+        var tady = location.pathname.split('/').pop();
+        if (tady && tady !== 'index.html') return;
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: (reduceMotion || document.hidden) ? 'auto' : 'smooth' });
+        if (window.history && history.replaceState) {
+          history.replaceState(null, '', location.pathname + location.search);
+        }
+      });
+    }
 
     var tick = false;
     function onScroll() {
@@ -706,7 +666,7 @@
       '</div>';
     }
 
-    /* Posluchač patří k obalu, který překreslení přežije, proto jen poprvé */
+    /* Obal překreslení přežije, posluchač patří navěsit jen jednou */
     if (!host.hasAttribute('data-vazano')) {
       host.setAttribute('data-vazano', '');
       host.addEventListener('click', function (e) {
@@ -1102,20 +1062,20 @@
       : esc(soutezZapasu(z)) + '<span class="hm__misto"> · ' + esc(z.misto) + '</span>';
 
     /* Domácí: znak a jméno k výsledku, hosté: jméno a znak od výsledku */
-    var tym = function (n, strana) {
+    var tym = function (n, strana, gol) {
       var jmeno = '<span class="hm__name">' + esc(n) + '</span>';
+      /* Gól u mužstva, vidět jen na mobilu */
+      var cislo = gol === null ? '' : '<span class="hm__gol">' + esc(gol) + '</span>';
       return '<span class="hm__team hm__team--' + strana + (n === 'FC Hlinsko' ? ' is-us' : '') + '">' +
-        (strana === 'dom' ? tymLogo(n) + jmeno : jmeno + tymLogo(n)) + '</span>';
+        (strana === 'dom' ? tymLogo(n) + jmeno : jmeno + tymLogo(n)) + cislo + '</span>';
     };
 
-    /* Na konci je štítek s šipkou, aby bylo na první pohled vidět,
-       že se celý zápas dá rozkliknout */
+    /* Štítek se šipkou: celá karta je odkaz */
     var go = '<span class="hm__go">' + (posledni ? 'Výsledky' : 'Rozpis')
       + '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" '
       + 'aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>';
 
-    /* Třída podle výsledku obarví podsvícení karty při najetí:
-       výhra zeleně, prohra červeně, remíza neutrálně */
+    /* Třída podle výsledku řídí barvu podsvícení při najetí */
     return '<a class="hm' + (posledni ? ' hm--last hm--' + v : ' hm--next') + '" href="'
       + (posledni ? 'tym-muzi-a.html#vysledky' : 'zapasy.html#muzi-a') + '">' +
       '<span class="hm__head">' +
@@ -1123,7 +1083,9 @@
         '<span class="hm__meta">' + meta + '</span>' +
         go +
       '</span>' +
-      '<span class="hm__match">' + tym(dom, 'dom') + '<span class="hm__center">' + stred + '</span>' + tym(hos, 'hos') + '</span>' +
+      '<span class="hm__match">' + tym(dom, 'dom', skore ? skore[0] : null) +
+        '<span class="hm__center">' + stred + '</span>' +
+        tym(hos, 'hos', skore ? skore[1] : null) + '</span>' +
     '</a>';
   }
 
@@ -1257,7 +1219,43 @@
           '</div>' +
         '</article>';
       }).join('');
+
+      zkratSeznam(host, 3, 'narozeniny');
     });
+  }
+
+  /* Na mobilu ukáže prvních pár karet, zbytek za tlačítkem. */
+  function zkratSeznam(host, kolik, jmeno) {
+    var karty = $$(':scope > *', host);
+    if (karty.length <= kolik) return;
+
+    var uzky = window.matchMedia('(max-width: 780px)');
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'link-arrow vic-btn';
+    btn.setAttribute('aria-expanded', 'false');
+    btn.setAttribute('aria-controls', jmeno);
+    host.id = host.id || jmeno;
+    host.parentNode.insertBefore(btn, host.nextSibling);
+
+    var rozbaleno = false;
+
+    function stav() {
+      var schovat = uzky.matches && !rozbaleno;
+      karty.forEach(function (k, i) { k.hidden = schovat && i >= kolik; });
+      btn.hidden = !uzky.matches;
+      btn.setAttribute('aria-expanded', rozbaleno ? 'true' : 'false');
+      btn.innerHTML = (rozbaleno ? 'Zobrazit méně' : 'Zobrazit všechny (' + karty.length + ')')
+        + IKONA_DOLU;
+      btn.classList.toggle('is-open', rozbaleno);
+    }
+
+    btn.addEventListener('click', function () { rozbaleno = !rozbaleno; stav(); });
+
+    if (uzky.addEventListener) uzky.addEventListener('change', stav);
+    else if (uzky.addListener) uzky.addListener(stav);
+
+    stav();
   }
 
   /* ------------------------------------------------------------------------
@@ -1279,7 +1277,7 @@
   var KARUSEL_MIN = { generalni: 4, hlavni: 8, partner: 12 };
   var KARUSEL_RYCHLOST = { generalni: 28, hlavni: 38, partner: 42 };   /* px za sekundu */
 
-  /* Nabídka na místě úrovně, kterou zatím nikdo nemá obsazenou */
+  /* Nabídka na neobsazené úrovni */
   function volnaPozice(u) {
     if (!VOLNA_POZICE || VOLNA_POZICE.uroven !== u.klic) return '';
     return '<div class="ptier ptier--volna reveal">' +
@@ -1309,7 +1307,7 @@
 
       host.innerHTML = UROVNE_PARTNERU.map(function (u, i) {
         var seznam = PARTNERI.filter(function (p) { return p.uroven === u.klic; });
-        /* Prázdná úroveň: buď nabídka volného místa, nebo se vynechá */
+        /* Prázdná úroveň: nabídka volného místa, nebo nic */
         if (!seznam.length) return volnaPozice(u);
         var hlava = '<h3 class="ptier__h"><span>' + (seznam.length > 1 ? u.vice : u.jeden) + '</span></h3>';
 
@@ -1545,8 +1543,7 @@
       }
     }
 
-    /* Ať se kalendář dá překreslit po příchodu nových dat, aniž by se
-       posluchače kliknutí navěsily podruhé */
+    /* Pro překreslení po příchodu nových dat */
     kalendarPrekresli = render;
 
     mrizka.addEventListener('click', function (e) {
@@ -1766,9 +1763,7 @@
   /* ------------------------------------------------------------------------
      9b. PŘEPÍNAČ MUŽSTEV NA ÚVODU
      ------------------------------------------------------------------------
-     Řada štítků s kategoriemi a pod ní fotka vybraného mužstva s odkazem na
-     jeho podstránku. Skládá se z pole TYMY_PREHLED. Fotky se přednačítají až
-     po prvním přepnutí, úvodní stránka tak nestahuje jedenáct fotek zbytečně.
+     Štítky kategorií a k nim fotka vybraného mužstva (TYMY_PREHLED).
      ---------------------------------------------------------------------- */
   function initTymyPas() {
     var host = $('[data-tymy-pas]');
@@ -1820,14 +1815,14 @@
       panel.href = t.odkaz;
       panel.setAttribute('aria-labelledby', 'teamsw-tab-' + i);
 
-      /* Fotka po přepnutí krátce prosvitne, ať je změna vidět */
+      /* Krátké prolnutí, ať je přepnutí vidět */
       if (!reduceMotion) {
         panel.classList.remove('is-new');
         void panel.offsetWidth;
         panel.classList.add('is-new');
       }
 
-      /* Vybraný štítek doskrolovat do viditelné části řady */
+      /* Vybraný štítek do viditelné části řady */
       if (tabs[i].scrollIntoView) {
         tabs[i].scrollIntoView({ block: 'nearest', inline: 'nearest' });
       }
@@ -1838,7 +1833,7 @@
       b.addEventListener('click', function () { ukaz(i); });
     });
 
-    /* Šipkami mezi kategoriemi, Home a End na okraje */
+    /* Šipky mezi kategoriemi, Home a End na okraje */
     $('.teamsw__tabs', host).addEventListener('keydown', function (e) {
       var posun = { ArrowRight: 1, ArrowLeft: -1, ArrowDown: 1, ArrowUp: -1 }[e.key];
       if (posun) {
@@ -1856,12 +1851,10 @@
   }
 
   /* ------------------------------------------------------------------------
-     10b. POSUVNÝ PÁS (KARUSEL)
+     10b. POSUVNÝ PÁS KARET
      ------------------------------------------------------------------------
-     Obecná komponenta pro vodorovné pásy karet. Obal má atribut data-rail,
-     uvnitř je .rail__track s kartami. Šipky a tečky si pás doplní sám podle
-     toho, kolik karet se do něj vejde. Když se vejdou všechny, ovládání se
-     schová. Posouvá se prstem, šipkami i klávesnicí, nic se nezamyká.
+     Obal s data-rail, uvnitř .rail__track s kartami. Ovládání se schová,
+     když se všechny karty vejdou naráz.
      ---------------------------------------------------------------------- */
   function initRails() {
     $$('[data-rail]').forEach(function (rail) {
@@ -1893,9 +1886,8 @@
         return d ? Math.round(track.scrollLeft / d) : 0;
       }
 
-      /* Vlastní animace posunu. Prohlížeč umí scrollTo se smooth, ale zarážky
-         (scroll-snap) mu ji strhnou zpátky na první kartu, proto se posouvá
-         ručně po snímcích a zarážky se na tu chvíli vypnou. */
+      /* scrollTo se smooth tu nejde, scroll-snap ho strhne zpátky na první
+         kartu. Posouvá se proto ručně po snímcích s vypnutými zarážkami. */
       var bezi = null;
 
       function posunNa(cil) {
@@ -1907,8 +1899,7 @@
 
         if (bezi) window.cancelAnimationFrame(bezi);
 
-        /* Bez animace: omezený pohyb v systému, nebo skrytá záložka, kde
-           prohlížeč snímky nekreslí a pás by zůstal viset na místě */
+        /* Skrytá záložka nekreslí snímky, animace by se zasekla */
         if (reduceMotion || document.hidden) {
           track.style.scrollSnapType = 'none';
           track.scrollLeft = cil;
@@ -1923,7 +1914,7 @@
         bezi = window.requestAnimationFrame(function snimek(t) {
           if (!zacatek) zacatek = t;
           var p = Math.min(1, (t - zacatek) / doba);
-          /* Rozjezd a dojezd, uprostřed nejrychleji */
+          /* easeInOutQuad */
           var e = p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
           track.scrollLeft = od + delta * e;
           if (p < 1) {
@@ -1959,7 +1950,7 @@
       }
 
       function stav() {
-        /* Rezerva kvůli zaokrouhlování šířek a vnitřnímu odsazení pásu */
+        /* Rezerva na zaokrouhlení šířek a odsazení pásu */
         var vule = 8;
         var prostor = track.scrollWidth - track.clientWidth;
         var jePas = prostor > vule;
@@ -1987,17 +1978,11 @@
   }
 
   /* ------------------------------------------------------------------------
-     10d. NAČÍTÁNÍ DAT ZE ZDROJE (viz ZDROJ nahoře v souboru)
+     10d. NAČÍTÁNÍ DAT ZE ZDROJE
      ------------------------------------------------------------------------
-     Postup je schválně dvoufázový, aby stránka nikdy nečekala na síť:
-
-     1. Při načtení se vezmou data uložená v prohlížeči z minule a hned
-        přepíšou ruční pole. Stránka se tedy vykreslí okamžitě.
-     2. Na pozadí se stáhne čerstvá verze. Když přijde a od uložené se liší,
-        web se překreslí. Když nepřijde, nic se neděje a platí, co bylo.
-
-     Všechno je obalené v try, takže zablokované localStorage, výpadek sítě
-     ani poškozený JSON stránku nerozbijí.
+     Dvoufázově, ať stránka nečeká na síť: nejdřív se použije poslední
+     uložená verze z prohlížeče, čerstvá se dotáhne na pozadí a případně
+     se překreslí. Při jakékoli chybě platí ruční pole ZAPASY a TABULKA.
      ---------------------------------------------------------------------- */
   var ZDROJ_KLIC = 'fch-zdroj-';
 
@@ -2026,7 +2011,7 @@
     return (Date.now() - zaznam.cas) < (ZDROJ.platnostMinut || 60) * 60000;
   }
 
-  /* Stažení s časovým stropem, ať se čekání nikdy neprotáhne */
+  /* Stažení s časovým stropem */
   function zdrojStahni(klic) {
     if (!window.fetch) return Promise.resolve(null);
 
@@ -2043,9 +2028,8 @@
     return Promise.race([stahovani, strop]);
   }
 
-  /* --- Kontrola tvaru dat -------------------------------------------------
-     Vadný řádek se zahodí, ne aby kvůli jedné chybě zmizel celý rozpis.
-     Když po kontrole nezbude nic, vrací se null a platí ruční pole. */
+  /* Kontrola tvaru dat. Vadný řádek se zahodí, prázdný výsledek vrací
+     null a platí ruční pole. */
   function zdrojZapasy(json) {
     var pole = json && (json.zapasy || json);
     if (!pole || !pole.length) return null;
@@ -2091,9 +2075,8 @@
     return ok.length ? ok : null;
   }
 
-  /* Překreslení všech míst, která z dat žijí. initKalendar si svoji
-     překreslovací funkci uloží do kalendarPrekresli, aby se posluchače
-     kliknutí nevěšely podruhé. */
+  /* Kalendář se překresluje přes uloženou funkci, ne přes initKalendar,
+     aby se posluchače nevěšely podruhé. */
   var kalendarPrekresli = null;
 
   function zdrojPrekresli() {
@@ -2107,8 +2090,7 @@
     initRails();
   }
 
-  /* Fáze 1: co je v paměti prohlížeče, použít hned. Vrací true, když se
-     některé z polí přepsalo. */
+  /* Fáze 1: poslední uložená data, hned. Vrací true při změně. */
   function zdrojZPametiPouzij() {
     var zmena = false;
 
@@ -2126,8 +2108,7 @@
     return zmena;
   }
 
-  /* Fáze 2: čerstvá data na pozadí. Stahuje se jen to, čemu vypršela
-     platnost, ať web nezatěžuje hosting při každém překliknutí stránky. */
+  /* Fáze 2: na pozadí, jen co má prošlou platnost */
   function zdrojObnov() {
     var ukoly = [];
 
@@ -2173,10 +2154,8 @@
   /* ------------------------------------------------------------------------
      10c. VYSKAKOVACÍ UPOUTÁVKA
      ------------------------------------------------------------------------
-     Okno s pozvánkou na akci. Řídí se objektem UPOUTAVKA nahoře v souboru:
-     ukáže se jen v zadaném období, jen na vybraných stránkách a každému
-     návštěvníkovi jednou. Zavírá se křížkem, klávesou Esc nebo kliknutím
-     mimo okno, fokus se přitom nedostane mimo něj.
+     Řídí se objektem UPOUTAVKA nahoře v souboru. Zavírá se křížkem, Esc
+     nebo kliknutím mimo, fokus zůstává uvnitř okna.
      ---------------------------------------------------------------------- */
   var UPOUTAVKA_KLIC = 'fch-upoutavka';
 
@@ -2253,7 +2232,7 @@
       }, reduceMotion ? 0 : 220);
     }
 
-    /* Esc zavírá, Tab cykluje uvnitř okna */
+    /* Esc zavírá, Tab cykluje uvnitř */
     function naKlavesu(e) {
       if (e.key === 'Escape') { e.preventDefault(); zavri(); return; }
       if (e.key !== 'Tab') return;
@@ -2277,8 +2256,7 @@
       if (prvni) prvni.focus();
     }
 
-    /* Nejdřív ať návštěvník vyřeší lištu se souhlasem cookies, upoutávka
-       by ji jinak překryla. Bez odpovědi se okno neukáže vůbec. */
+    /* Počkat na vyřešení lišty s cookies, jinak by ji okno překrylo */
     if (nactiSouhlas()) {
       window.setTimeout(otevri, u.prodleva || 800);
     } else {
@@ -2374,7 +2352,7 @@
   }
 
   function boot() {
-    /* Data ze zdroje musí být na místě dřív, než se cokoliv vykreslí */
+    /* Data dřív, než se cokoliv vykreslí */
     initZdroj();
 
     initHeader();
@@ -2394,7 +2372,7 @@
     initFixtureList();
     initTeamFixtures();
     initMarquee();
-    /* Pásy až po vykreslení karet, počítají se ze skutečných šířek */
+    /* Až po vykreslení karet, počítá se ze skutečných šířek */
     initRails();
     initForms();
     initLightbox();
@@ -2402,7 +2380,7 @@
     initYear();
     /* Upoutávka až nakonec, ať nepřekryje lištu se souhlasem cookies */
     initUpoutavka();
-    /* Čerstvá data na pozadí, stránka na ně nečeká */
+    /* Čerstvá data na pozadí */
     if (ZDROJ && ZDROJ.zapnuto) zdrojObnov();
   }
 
