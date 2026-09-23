@@ -8,6 +8,7 @@ odeslání formulářů ve složce `api/`, a i ta je bez závislostí.
 
 ```
 index.html                    úvod
+404.html                      stránka pro neexistující adresu
 klub.html                     o klubu, historie, osobnosti, stadion, oblečení
 tymy.html                     přehled mužstev
 tym-*.html                    podstránka každého mužstva
@@ -20,6 +21,7 @@ partneri.html                 partneři a nabídka spolupráce
 kontakt.html                  kontakty, formulář, mapa
 *-podminky.html, cookies.html právní stránky
 
+robots.txt / sitemap.xml      pro vyhledávače
 styles.css                    styly, tokeny v sekci 1
 script.js                     data i logika, číslované sekce
 api/formular.js               odeslání formulářů, běží na serveru
@@ -108,10 +110,28 @@ pravidlo pro `.brand__crest` výš v souboru.
 
 ## Fotky
 
-Leží v `images/`, mužstva v `images/tymy/` vždy jako dvojice `nazev.jpg`
-a `nazev-nahled.jpg` (velká a náhled do karty). Výměna fotky = nahradit
-soubor stejným názvem. Doporučené šířky: hero 1920 px, ostatní 1400 až
-1600 px, JPEG kvalita kolem 80.
+Leží v `images/`, mužstva v `images/tymy/` vždy jako dvojice `nazev.webp`
+a `nazev-nahled.webp` (velká a náhled do karty). Výměna fotky = nahradit
+soubor stejným názvem.
+
+Fotky jsou ve formátu **WebP**, který je při stejné kvalitě zhruba
+o polovinu menší než JPEG. Novou fotku je proto potřeba převést. Nejkratší
+cesta, pokud je po ruce Python s knihovnou Pillow:
+
+```bash
+python -c "from PIL import Image; im=Image.open('nova.jpg').convert('RGB'); im.thumbnail((1920,1920)); im.save('images/tymy/nazev.webp','WEBP',quality=72,method=6)"
+```
+
+Doporučené šířky: hero a velké fotky nejvýš 1920 px, náhledy 760 px,
+kvalita 72. Nad 1920 px už to na webu není vidět a soubor jen roste.
+
+Dvě výjimky zůstávají mimo WebP schválně:
+
+- `images/og-hero.jpg` je náhled při sdílení odkazu (1200 × 630). Facebook
+  a další čtečky náhledů WebP spolehlivě neumí. Po výměně hero fotky se
+  musí přegenerovat.
+- `images/znak-fchlinsko.png` drží logo ve strukturovaných datech na
+  úvodní stránce. V samotném webu se používá WebP verze.
 
 `images/og-hero.jpg` (1200 × 630) je náhled, který se ukáže při sdílení
 odkazu na Facebooku a v chatech. Je to výřez z hero fotky, po výměně hera
@@ -171,6 +191,20 @@ vyplněné, zpráva se zahodí. Stejně dopadne odeslání dřív než tři vte�
 po načtení stránky. Z jedné IP adresy projde nejvýš pět zpráv za deset
 minut. Příjemce je vždy z proměnné prostředí, z požadavku ho přepsat
 nejde, takže se z endpointu nedá udělat rozesílač.
+
+## Export zápasů do kalendáře
+
+Na stránce Zápasy a na stránkách mužstev je tlačítko „Přidat do
+kalendáře". Vyrobí soubor `.ics` s rozpisem vybrané kategorie, který si
+lidé otevřou v telefonu. Skládá se v prohlížeči z pole `ZAPASY`, nic se
+nikam neposílá a nic se nenastavuje.
+
+Každý zápas má stálé `UID`, takže opakované stažení zápasy v kalendáři
+přepíše a nezdvojí. Čas je v zóně Europe/Prague, délka zápasu dvě hodiny.
+
+Tréninky se schválně neexportují. Rozpis v `TRENINKY` zatím neprošel
+trenéry a natahat lidem do telefonu časy, které nesedí, je horší než nic.
+Až bude rozpis potvrzený, dá se doplnit.
 
 ## Cookies
 

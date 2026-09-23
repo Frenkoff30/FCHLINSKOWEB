@@ -1,0 +1,13 @@
+# FC Hlinsko
+# Web je veřejný, procházení je vítané.
+
+User-agent: *
+Allow: /
+
+# Detail aktuality bez parametru nic nezobrazí
+Disallow: /novinka.html$
+
+# Serverová funkce formuláře, pro vyhledávače nemá obsah
+Disallow: /api/
+
+Sitemap: https://fchlinsko.cz/sitemap.xml

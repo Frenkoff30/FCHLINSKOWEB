@@ -186,7 +186,7 @@
       id: 'planeo-cup-u11-v-olsinkach',
       datum: '2026-09-23',
       stitek: 'Turnaj', stitekZlaty: true,
-      obrazek: 'images/tymy/pripravka-u11.jpg', sirka: 1500, vyska: 858,
+      obrazek: 'images/tymy/pripravka-u11.webp', sirka: 1500, vyska: 858,
       popisObrazku: 'Starší přípravka U11 FC Hlinsko',
       nadpis: 'PLANEO Cup U11 hostíme v Olšinkách',
       perex: 'Turnaj ročníku 2016 se hraje u nás v Olšinkách. Kromě domácí U11 přijedou '
@@ -205,7 +205,7 @@
       id: 'fotbalovy-den-a-drazba-dresu',
       datum: '2026-07-18',
       stitek: 'Akce pro děti',
-      obrazek: 'images/tym-mladez.jpg', sirka: 1400, vyska: 933,
+      obrazek: 'images/tym-mladez.webp', sirka: 1400, vyska: 933,
       popisObrazku: 'Mládežníci FC Hlinsko na hřišti',
       nadpis: 'Fotbalový den a dražba dresů',
       perex: 'Děti od 5 do 9 let si vyzkouší cvičení z našich tréninků. Součástí dne je '
@@ -222,7 +222,7 @@
       id: 'slavnostni-otevreni-arealu-olsinky',
       datum: '2026-07-18',
       stitek: 'Areál', stitekZlaty: true,
-      obrazek: 'images/areal-otevreni.jpg', sirka: 1600, vyska: 1000,
+      obrazek: 'images/areal-otevreni.webp', sirka: 1600, vyska: 1000,
       popisObrazku: 'Nová tribuna a hlavní hrací plocha areálu Olšinky od branky',
       nadpis: 'Slavnostní otevření areálu Olšinky',
       perex: 'Utkání přípravek, exhibiční zápas staré gardy, soutěže, hudba a občerstvení. '
@@ -279,17 +279,17 @@
      nabídka zmizí a nic dalšího se nastavovat nemusí.
      ---------------------------------------------------------------------- */
   var PARTNERI = [
-    { nazev: 'Tatra mléko',          logo: 'images/partneri/tatra.png',         web: 'https://www.tatramleko.cz',             uroven: 'hlavni' },
-    { nazev: 'Pivovar Rychtář',      logo: 'images/partneri/rychtar.png',       web: 'https://pivo-rychtar.cz',               uroven: 'hlavni' },
-    { nazev: 'MIAS OC',              logo: 'images/partneri/mias.png',          web: 'https://miasoc.cz',                     uroven: 'hlavni' },
-    { nazev: 'Instav',               logo: 'images/partneri/instav.png',        web: 'https://www.instav.cz',                 uroven: 'hlavni' },
-    { nazev: 'Renos',                logo: 'images/partneri/renos.png',         web: 'https://www.renos.cz',                  uroven: 'hlavni' },
-    { nazev: 'Linea Art',            logo: 'images/partneri/lineaart.png',      web: 'https://lineaart.cz',                   uroven: 'partner' },
-    { nazev: 'Euro Wellness',        logo: 'images/partneri/euro-wellness.png', web: 'https://www.spa-virivky.cz',            uroven: 'partner' },
-    { nazev: 'Steak Bar Bison',      logo: 'images/partneri/bison.png',         web: 'http://www.bisonsteak.cz',              uroven: 'partner' },
-    { nazev: 'Edera',                logo: 'images/partneri/edera.png',         web: 'https://www.edera.cz',                  uroven: 'partner' },
-    { nazev: 'Trigi',                logo: 'images/partneri/trigi.png',         web: 'https://trigi.cz',                      uroven: 'partner' },
-    { nazev: 'Huky elektromontáže',  logo: 'images/partneri/huky.png',          web: 'https://www.elektro-montaze-prodej.com', uroven: 'partner' }
+    { nazev: 'Tatra mléko',          logo: 'images/partneri/tatra.webp',         web: 'https://www.tatramleko.cz',             uroven: 'hlavni' },
+    { nazev: 'Pivovar Rychtář',      logo: 'images/partneri/rychtar.webp',       web: 'https://pivo-rychtar.cz',               uroven: 'hlavni' },
+    { nazev: 'MIAS OC',              logo: 'images/partneri/mias.webp',          web: 'https://miasoc.cz',                     uroven: 'hlavni' },
+    { nazev: 'Instav',               logo: 'images/partneri/instav.webp',        web: 'https://www.instav.cz',                 uroven: 'hlavni' },
+    { nazev: 'Renos',                logo: 'images/partneri/renos.webp',         web: 'https://www.renos.cz',                  uroven: 'hlavni' },
+    { nazev: 'Linea Art',            logo: 'images/partneri/lineaart.webp',      web: 'https://lineaart.cz',                   uroven: 'partner' },
+    { nazev: 'Euro Wellness',        logo: 'images/partneri/euro-wellness.webp', web: 'https://www.spa-virivky.cz',            uroven: 'partner' },
+    { nazev: 'Steak Bar Bison',      logo: 'images/partneri/bison.webp',         web: 'http://www.bisonsteak.cz',              uroven: 'partner' },
+    { nazev: 'Edera',                logo: 'images/partneri/edera.webp',         web: 'https://www.edera.cz',                  uroven: 'partner' },
+    { nazev: 'Trigi',                logo: 'images/partneri/trigi.webp',         web: 'https://trigi.cz',                      uroven: 'partner' },
+    { nazev: 'Huky elektromontáže',  logo: 'images/partneri/huky.webp',          web: 'https://www.elektro-montaze-prodej.com', uroven: 'partner' }
   ];
 
   /* ------------------------------------------------------------------------
@@ -299,17 +299,17 @@
      Podrobnosti o mužstvu jsou až na jeho podstránce.
      ---------------------------------------------------------------------- */
   var TYMY_PREHLED = [
-    { zkratka: 'Muži A',   nazev: 'Muži A',              soutez: 'Divize, skupina C',            foto: 'images/tymy/muzi-a.jpg',         odkaz: 'tym-muzi-a.html' },
-    { zkratka: 'Muži B',   nazev: 'Muži B',              soutez: '1.B třída, skupina A',         foto: 'images/tymy/muzi-b.jpg',         odkaz: 'tym-muzi-b.html' },
-    { zkratka: 'U19',      nazev: 'Starší dorost U19',   soutez: '4. liga dorostu, skupina A',   foto: 'images/tymy/dorost-u19.jpg',     odkaz: 'tym-dorost-u19.html' },
-    { zkratka: 'U17',      nazev: 'Mladší dorost U17',   soutez: '4. liga mladšího dorostu',     foto: 'images/tymy/dorost-u17.jpg',     odkaz: 'tym-dorost-u17.html' },
-    { zkratka: 'U15',      nazev: 'Starší žáci U15',     soutez: '3. liga starších žáků, sk. A', foto: 'images/tymy/zaci-u15.jpg',       odkaz: 'tym-zaci-u15.html' },
-    { zkratka: 'U13',      nazev: 'Mladší žáci U13',     soutez: '3. liga mladších žáků, sk. A', foto: 'images/tymy/zaci-u13.jpg',       odkaz: 'tym-zaci-u13.html' },
-    { zkratka: 'U11',      nazev: 'Starší přípravka U11', soutez: 'Soutěž starších přípravek',   foto: 'images/tymy/pripravka-u11.jpg',  odkaz: 'tym-pripravka-u11.html' },
-    { zkratka: 'U10',      nazev: 'Mladší přípravka U10', soutez: 'Okresní soutěž přípravek',    foto: 'images/tymy/pripravka-u10.jpg',  odkaz: 'tym-pripravka-u10.html' },
-    { zkratka: 'U9',       nazev: 'Mladší přípravka U9',  soutez: 'Okresní soutěž přípravek',    foto: 'images/tymy/pripravka-u9.jpg',   odkaz: 'tym-pripravka-u9.html' },
-    { zkratka: 'U8',       nazev: 'Mladší přípravka U8',  soutez: 'Nejmladší soutěžní kategorie', foto: 'images/hero-travnik.jpg',       odkaz: 'tym-pripravka-u8.html' },
-    { zkratka: 'Školička', nazev: 'Fotbalová školička',   soutez: 'Od pěti let, bez soutěží',    foto: 'images/tymy/skolicka.jpg',       odkaz: 'nabor.html' }
+    { zkratka: 'Muži A',   nazev: 'Muži A',              soutez: 'Divize, skupina C',            foto: 'images/tymy/muzi-a.webp',         odkaz: 'tym-muzi-a.html' },
+    { zkratka: 'Muži B',   nazev: 'Muži B',              soutez: '1.B třída, skupina A',         foto: 'images/tymy/muzi-b.webp',         odkaz: 'tym-muzi-b.html' },
+    { zkratka: 'U19',      nazev: 'Starší dorost U19',   soutez: '4. liga dorostu, skupina A',   foto: 'images/tymy/dorost-u19.webp',     odkaz: 'tym-dorost-u19.html' },
+    { zkratka: 'U17',      nazev: 'Mladší dorost U17',   soutez: '4. liga mladšího dorostu',     foto: 'images/tymy/dorost-u17.webp',     odkaz: 'tym-dorost-u17.html' },
+    { zkratka: 'U15',      nazev: 'Starší žáci U15',     soutez: '3. liga starších žáků, sk. A', foto: 'images/tymy/zaci-u15.webp',       odkaz: 'tym-zaci-u15.html' },
+    { zkratka: 'U13',      nazev: 'Mladší žáci U13',     soutez: '3. liga mladších žáků, sk. A', foto: 'images/tymy/zaci-u13.webp',       odkaz: 'tym-zaci-u13.html' },
+    { zkratka: 'U11',      nazev: 'Starší přípravka U11', soutez: 'Soutěž starších přípravek',   foto: 'images/tymy/pripravka-u11.webp',  odkaz: 'tym-pripravka-u11.html' },
+    { zkratka: 'U10',      nazev: 'Mladší přípravka U10', soutez: 'Okresní soutěž přípravek',    foto: 'images/tymy/pripravka-u10.webp',  odkaz: 'tym-pripravka-u10.html' },
+    { zkratka: 'U9',       nazev: 'Mladší přípravka U9',  soutez: 'Okresní soutěž přípravek',    foto: 'images/tymy/pripravka-u9.webp',   odkaz: 'tym-pripravka-u9.html' },
+    { zkratka: 'U8',       nazev: 'Mladší přípravka U8',  soutez: 'Nejmladší soutěžní kategorie', foto: 'images/hero-travnik.webp',       odkaz: 'tym-pripravka-u8.html' },
+    { zkratka: 'Školička', nazev: 'Fotbalová školička',   soutez: 'Od pěti let, bez soutěží',    foto: 'images/tymy/skolicka.webp',       odkaz: 'nabor.html' }
   ];
 
   var UROVNE_PARTNERU = [
@@ -352,7 +352,7 @@
     nadpis: 'Turnaj přípravek hostíme v Olšinkách',
     text: 'Ročník 2016 se utká v areálu Olšinky. Kromě naší U11 přijedou Svitavy, '
         + 'Orlicko, Česká Třebová, Humpolec a Žďár nad Sázavou. Vstup zdarma.',
-    obrazek: 'images/tymy/pripravka-u11.jpg',
+    obrazek: 'images/tymy/pripravka-u11.webp',
     popisObrazku: 'Starší přípravka U11 FC Hlinsko',
     udaje: [
       { k: 'Kdy', v: 'Středa 23. 9. od 12:00' },
@@ -1109,7 +1109,7 @@
 
   function tymLogo(nazev) {
     if (nazev === 'FC Hlinsko') {
-      return '<span class="tlogo tlogo--nas"><img src="images/znak-fchlinsko.png" alt="" width="220" height="290"></span>';
+      return '<span class="tlogo tlogo--nas"><img src="images/znak-fchlinsko.webp" alt="" width="220" height="290"></span>';
     }
     return '<span class="tlogo" aria-hidden="true">' + esc(zkratka(nazev)) + '</span>';
   }
@@ -1364,7 +1364,7 @@
       '<h3 class="ptier__h"><span>' + esc(u.jeden) + '</span></h3>' +
       '<a class="pfree" href="' + esc(VOLNA_POZICE.odkaz) + '">' +
         '<span class="pfree__ramec" aria-hidden="true">' +
-          '<img src="images/znak-fchlinsko.png" alt="" width="220" height="290" loading="lazy">' +
+          '<img src="images/znak-fchlinsko.webp" alt="" width="220" height="290" loading="lazy">' +
           '<b>Volné místo</b>' +
         '</span>' +
         '<span class="pfree__text">' +
@@ -2409,6 +2409,184 @@
   /* ------------------------------------------------------------------------
      13. ROZPIS ZÁPASŮ NA STRÁNCE MUŽSTVA
      ---------------------------------------------------------------------- */
+  /* ------------------------------------------------------------------------
+     10e. EXPORT ZÁPASŮ DO KALENDÁŘE (.ics)
+     ------------------------------------------------------------------------
+     Rozpis mužstva jako soubor, který si rodič otevře v telefonu a zápasy
+     mu naskočí do kalendáře. Skládá se v prohlížeči, nic se nikam neposílá.
+
+     Tréninky tu schválně nejsou. Rozpis v TRENINKY zatím neprošel trenéry
+     a natahat lidem do telefonu časy, které nesedí, je horší než nic.
+     ---------------------------------------------------------------------- */
+
+  /* Pravidla středoevropského času. Bez nich by kalendář v zahraničí
+     posunul výkop, s plovoucím časem zase kdekoli jinde. */
+  var ICS_ZONA = [
+    'BEGIN:VTIMEZONE',
+    'TZID:Europe/Prague',
+    'BEGIN:DAYLIGHT',
+    'TZOFFSETFROM:+0100',
+    'TZOFFSETTO:+0200',
+    'TZNAME:CEST',
+    'DTSTART:19700329T020000',
+    'RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=-1SU',
+    'END:DAYLIGHT',
+    'BEGIN:STANDARD',
+    'TZOFFSETFROM:+0200',
+    'TZOFFSETTO:+0100',
+    'TZNAME:CET',
+    'DTSTART:19701025T030000',
+    'RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU',
+    'END:STANDARD',
+    'END:VTIMEZONE'
+  ];
+
+  function icsCas(d) {
+    return d.getFullYear() + pad(d.getMonth() + 1) + pad(d.getDate())
+      + 'T' + pad(d.getHours()) + pad(d.getMinutes()) + '00';
+  }
+
+  /* Čárky, středníky a zalomení mají v .ics vlastní význam */
+  function icsText(v) {
+    return String(v == null ? '' : v)
+      .replace(/\\/g, '\\\\')
+      .replace(/;/g, '\\;')
+      .replace(/,/g, '\\,')
+      .replace(/\r?\n/g, '\\n');
+  }
+
+  /* Řádek delší než 75 oktetů se podle normy láme a odsazuje mezerou */
+  function icsRadek(r) {
+    if (r.length <= 74) return r;
+    var kus = [r.slice(0, 74)];
+    var zbytek = r.slice(74);
+    while (zbytek.length > 73) {
+      kus.push(' ' + zbytek.slice(0, 73));
+      zbytek = zbytek.slice(73);
+    }
+    if (zbytek) kus.push(' ' + zbytek);
+    return kus.join('\r\n');
+  }
+
+  function icsZapasy(klic) {
+    var data = zapasyTymu(klic);
+    if (!data.length) return null;
+
+    var ted = new Date();
+    var radky = [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//FC Hlinsko//Rozpis zapasu//CS',
+      'CALSCALE:GREGORIAN',
+      'METHOD:PUBLISH',
+      'X-WR-CALNAME:' + icsText('FC Hlinsko, ' + (TYM_NAZEV[klic] || klic)),
+      'X-WR-TIMEZONE:Europe/Prague'
+    ].concat(ICS_ZONA);
+
+    data.forEach(function (z) {
+      var zac = parseDatum(z.datum);
+      var kon = new Date(zac.getTime() + 2 * 3600 * 1000);
+      var dom = z.domaci ? 'FC Hlinsko' : z.souper;
+      var hos = z.domaci ? z.souper : 'FC Hlinsko';
+      var v = vysledek(z);
+
+      var nazev = dom + ' – ' + hos;
+      if (v && z.skore) nazev += ' (' + z.skore + ')';
+
+      var popis = soutezZapasu(z);
+      if (z.domaci) popis += ', domácí zápas';
+      else popis += ', venku';
+
+      /* Stálé UID, aby opakovaný import zápas přepsal a nezdvojil */
+      var uid = 'fch-' + klic + '-' + z.datum.replace(/[^0-9]/g, '') + '-'
+        + String(z.souper).toLowerCase().replace(/[^a-z0-9]/g, '') + '@fchlinsko.cz';
+
+      radky.push('BEGIN:VEVENT');
+      radky.push('UID:' + uid);
+      radky.push('DTSTAMP:' + icsCas(ted));
+      radky.push('DTSTART;TZID=Europe/Prague:' + icsCas(zac));
+      radky.push('DTEND;TZID=Europe/Prague:' + icsCas(kon));
+      radky.push(icsRadek('SUMMARY:' + icsText(nazev)));
+      radky.push(icsRadek('DESCRIPTION:' + icsText(popis)));
+      if (z.misto) radky.push(icsRadek('LOCATION:' + icsText(z.misto)));
+      radky.push('END:VEVENT');
+    });
+
+    radky.push('END:VCALENDAR');
+    return radky.map(icsRadek).join('\r\n') + '\r\n';
+  }
+
+  function stahniIcs(klic) {
+    var obsah = icsZapasy(klic);
+    if (!obsah) return false;
+    var blob = new Blob([obsah], { type: 'text/calendar;charset=utf-8' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'fc-hlinsko-' + klic.toLowerCase().replace(/[^a-z0-9]+/g, '-') + '.ics';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    /* Prohlížeč si soubor odnese hned, uklidíme až po něm */
+    window.setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+    return true;
+  }
+
+  var IKONA_KALENDAR = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" '
+    + 'stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/>'
+    + '<path d="M3 10h18M8 3v4M16 3v4"/></svg>';
+
+  function tlacitkoIcs(klic) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'btn btn--ghost ics-btn';
+    b.setAttribute('data-ics', klic);
+    b.innerHTML = IKONA_KALENDAR + '<span>Přidat do kalendáře</span>';
+    b.addEventListener('click', function () {
+      var cil = b.getAttribute('data-ics');
+      var popis = b.querySelector('span');
+      if (stahniIcs(cil)) {
+        var puv = popis.textContent;
+        popis.textContent = 'Staženo';
+        b.classList.add('is-ok');
+        window.setTimeout(function () {
+          popis.textContent = puv;
+          b.classList.remove('is-ok');
+        }, 2600);
+      }
+    });
+    return b;
+  }
+
+  /* Na stránce Zápasy sedí tlačítko u přepínače a řídí se vybranou
+     kategorií, na stránkách mužstev se přidá nad rozpis. */
+  function initIcs() {
+    var tabs = $('.tabs[aria-label="Mužstvo"]');
+    var seznam = $('#fixture-list');
+    if (tabs && seznam && ZAPASY.length) {
+      var aktivni = $('.tab.is-active', tabs);
+      var b = tlacitkoIcs(aktivni ? aktivni.getAttribute('data-filter') : 'A');
+      var pruh = document.createElement('div');
+      pruh.className = 'ics-pruh';
+      pruh.appendChild(b);
+      seznam.parentNode.insertBefore(pruh, seznam);
+
+      tabs.addEventListener('click', function (e) {
+        var t = e.target.closest('.tab[data-filter]');
+        if (t) b.setAttribute('data-ics', t.getAttribute('data-filter'));
+      });
+    }
+
+    $$('[data-rozpis]').forEach(function (host) {
+      var klic = host.getAttribute('data-rozpis');
+      if (!zapasyTymu(klic).length) return;
+      var pruh = document.createElement('div');
+      pruh.className = 'ics-pruh';
+      pruh.appendChild(tlacitkoIcs(klic));
+      host.parentNode.insertBefore(pruh, host);
+    });
+  }
+
   function initTeamFixtures() {
     $$('[data-rozpis]').forEach(function (host) {
       var klic = host.getAttribute('data-rozpis');
@@ -2457,6 +2635,8 @@
     initReveal();
     initFixtureList();
     initTeamFixtures();
+    /* Až po vykreslení rozpisů, tlačítko se k nim přidává */
+    initIcs();
     initLoga();
     initMarquee();
     /* Až po vykreslení karet, počítá se ze skutečných šířek */

@@ -4524,6 +4524,90 @@ table.tbl tr.is-us td { border-color: var(--green-tint-2); }
 }
 
 /* --------------------------------------------------------------------------
+   43a. TLAČÍTKO EXPORTU DO KALENDÁŘE
+   -------------------------------------------------------------------------- */
+.ics-pruh {
+  display: flex;
+  justify-content: flex-end;
+  margin: 0 0 18px;
+}
+
+.ics-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.ics-btn svg { width: 17px; height: 17px; flex: none; }
+
+.ics-btn.is-ok {
+  border-color: var(--green);
+  background: var(--green);
+  color: #fff;
+}
+
+@media (max-width: 620px) {
+  .ics-pruh { justify-content: stretch; margin-bottom: 14px; }
+  .ics-btn { width: 100%; justify-content: center; }
+}
+
+/* --------------------------------------------------------------------------
+   43b. STRÁNKA 404
+   -------------------------------------------------------------------------- */
+.chyba__cislo {
+  font-family: 'Anton', 'Barlow Condensed', sans-serif;
+  font-size: clamp(64px, 11vw, 132px);
+  line-height: 0.82;
+  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.14);
+  margin: 0 0 6px;
+  transform: skewX(-8deg);
+  transform-origin: left bottom;
+}
+
+.chyba__rozcestnik { gap: 14px; }
+
+.chyba__karta {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding: 20px 22px 22px;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--green);
+  border-radius: var(--r-md);
+  box-shadow: var(--sh-xs);
+  transition: box-shadow var(--t), transform var(--t), border-color var(--t);
+}
+
+.chyba__karta:hover {
+  box-shadow: var(--sh-md);
+  transform: translateY(-2px);
+  border-color: var(--border-hi);
+  border-left-color: var(--green);
+}
+
+.chyba__k {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 20px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.chyba__p { font-size: 15px; line-height: 1.55; color: var(--text-soft); }
+
+.chyba__pata {
+  margin: clamp(26px, 3vw, 38px) 0 0;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  color: var(--text-soft);
+}
+
+.chyba__pata a { color: var(--green); font-weight: 600; }
+
+/* --------------------------------------------------------------------------
    44. TLAČÍTKO NAHORU JAKO MÍČ
    -------------------------------------------------------------------------- */
 .to-top {

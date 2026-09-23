@@ -1,0 +1,6 @@
+# Zdrojové soubory ke kresleným postavám, na web se neservírují
+images/animovanepostavy/zdroj/
+
+# Vývojové věci
+.claude/
+skills/
