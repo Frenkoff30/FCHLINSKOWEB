@@ -88,6 +88,12 @@
 *::before,
 *::after { box-sizing: border-box; }
 
+/* Prvky jako .bday nebo .card mají v pravidle vlastní display, a ten
+   přebije display:none z prohlížeče pro atribut hidden. Bez tohohle
+   řádku zůstávají schované karty vidět a tlačítka „Zobrazit všechny“
+   nedělají nic. */
+[hidden] { display: none !important; }
+
 html {
   -webkit-text-size-adjust: 100%;
   scroll-behavior: smooth;
@@ -1991,29 +1997,38 @@ table.tbl .t-name {
 }
 
 /* Celá fotka je odkaz na podstránku */
-/* Nízký pruh, na velkém monitoru navíc zastropovaný, ať sekce
-   nezabere celou obrazovku */
+/* Fotka se neořezává nikde: leží celá ve svém poměru a název s
+   tlačítkem jdou vedle ní (na širokém okně) nebo pod ni (na telefonu).
+   Šířka je zastropovaná, jinak by celá fotka na velkém monitoru
+   zabrala půl obrazovky. */
 .teamsw__panel {
   position: relative;
-  display: block;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(210px, 290px);
+  /* Prázdné řádky nahoře a dole si rozeberou zbylé místo rovným dílem,
+     takže dvojice název + tlačítko sedí na půlce výšky fotky. */
+  grid-template-rows: 1fr auto auto 1fr;
   overflow: hidden;
-  aspect-ratio: 16 / 6;
-  max-height: 440px;
+  max-width: 920px;
+  margin-inline: auto;
   border-radius: var(--r-lg);
   background: var(--green-ink);
   box-shadow: var(--sh-lg);
 }
 
-/* Výřez posunutý nahoru: ukrajuje se trávník dole, ne hlavy nahoře */
+/* align-self: start je nutné. Grid by jinak obrázek natáhl na výšku
+   buňky, přerostl by rám a zespodu se ořízl. */
 .teamsw__foto {
-  position: absolute;
-  inset: 0;
+  grid-column: 1;
+  grid-row: 1 / -1;
+  align-self: start;
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center 22%;
+  height: auto;
   transition: transform var(--t-slow);
 }
+
+/* Text neleží na fotce, závoj pod ním nemá co ztmavovat */
+.teamsw__veil { display: none; }
 
 .teamsw__panel:hover .teamsw__foto { transform: scale(1.03); }
 
@@ -2026,14 +2041,15 @@ table.tbl .t-name {
     rgba(4, 24, 13, 0.9) 100%);
 }
 
+/* Název sedí na spodní hraně horní poloviny a tlačítko na horní hraně
+   dolní: potkají se uprostřed výšky fotky, ať se to nastaví jakkoli. */
 .teamsw__info {
-  position: absolute;
-  left: clamp(18px, 2.6vw, 34px);
-  bottom: clamp(16px, 2.2vw, 28px);
-  right: clamp(18px, 2.6vw, 34px);
+  grid-column: 2;
+  grid-row: 2;
   display: flex;
   flex-direction: column;
   gap: 6px;
+  padding: 0 clamp(20px, 2.2vw, 30px);
 }
 
 .teamsw__soutez {
@@ -2056,9 +2072,10 @@ table.tbl .t-name {
 }
 
 .teamsw__go {
-  position: absolute;
-  right: clamp(18px, 2.6vw, 34px);
-  bottom: clamp(16px, 2.2vw, 28px);
+  grid-column: 2;
+  grid-row: 3;
+  justify-self: start;
+  margin: 16px clamp(20px, 2.2vw, 30px) 0;
   display: inline-flex;
   align-items: center;
   gap: 9px;
@@ -2101,37 +2118,26 @@ table.tbl .t-name {
   .teamsw__tabs::-webkit-scrollbar { display: none; }
   .teamsw__tab { padding: 9px 15px; font-size: 15px; }
 
-  /* Na telefonu se fotka neořezává vůbec: leží celá nahoře ve svém
-     poměru a název s tlačítkem jdou pod ni na tmavý proužek. Poměr
-     5:4 předtím z fotky na šířku ukrojil oba kraje. */
+  /* Na úzkém okně se text vedle fotky nevejde, jde pod ni na proužek */
   .teamsw__panel {
-    display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
-    align-items: center;
-    aspect-ratio: auto;
-    max-height: none;
+    grid-template-rows: auto auto;
+    max-width: none;
   }
 
-  .teamsw__foto {
-    position: static;
-    grid-column: 1 / -1;
-    width: 100%;
-    height: auto;
-    object-fit: fill;
-  }
-
-  /* Závoj přes fotku už netřeba, text na ní neleží */
-  .teamsw__veil { display: none; }
+  .teamsw__foto { grid-column: 1 / -1; grid-row: 1; }
 
   .teamsw__info {
-    position: static;
     grid-column: 1;
+    grid-row: 2 / -1;
+    align-self: center;
     padding: 12px 0 14px clamp(14px, 3vw, 20px);
   }
 
   .teamsw__go {
-    position: static;
     grid-column: 2;
+    grid-row: 2 / -1;
+    align-self: center;
     margin: 0 clamp(14px, 3vw, 20px);
   }
 }
@@ -3486,24 +3492,30 @@ table.tbl tr.is-us td { border-color: var(--green-tint-2); }
 @media (max-width: 620px) {
   .bday-ico { display: none; }
 
-  /* Na telefonu mají karty zabrat co nejmíň: menší datum, užší mezery,
-     zbytek údajů na jeden řádek */
-  .bdays { gap: 8px; }
+  /* Na telefonu jsou z karet úzké řádky. Datum je malý štítek vlevo,
+     jméno a mužstvo pod sebou, žádné zbytečné výšky. */
+  #narozeniny { padding: clamp(30px, 7vw, 44px) 0; }
+  #narozeniny .sec-head { padding-bottom: 14px; margin-bottom: 16px; }
+  #narozeniny .sec-lead { display: none; }
+
+  .bdays { gap: 6px; }
 
   .bday {
-    grid-template-columns: 46px minmax(0, 1fr);
-    gap: 11px;
-    padding: 9px 12px 9px 9px;
+    grid-template-columns: 38px minmax(0, 1fr);
+    gap: 10px;
+    padding: 7px 10px 7px 7px;
+    border-radius: var(--r-sm);
   }
 
-  .bday__date { height: 46px; }
-  .bday__day { font-size: 20px; }
-  .bday__mon { margin-top: 2px; font-size: 10px; }
-  .bday__when { margin-bottom: 1px; font-size: 11px; letter-spacing: 0.12em; }
-  .bday__name { font-size: 16.5px; margin-bottom: 2px; }
-  .bday__meta { font-size: 13px; }
+  .bday__date { height: 38px; border-radius: var(--r-sm); }
+  .bday__day { font-size: 16px; }
+  .bday__mon { margin-top: 1px; font-size: 8.5px; letter-spacing: 0.06em; }
 
-  .vic-btn { margin-top: 12px; }
+  .bday__when { margin-bottom: 0; font-size: 10px; letter-spacing: 0.1em; }
+  .bday__name { font-size: 15px; line-height: 1.15; margin-bottom: 0; }
+  .bday__meta { font-size: 12px; line-height: 1.25; }
+
+  .vic-btn { margin-top: 10px; min-height: 38px; }
 }
 
 /* --------------------------------------------------------------------------
@@ -3993,7 +4005,7 @@ table.tbl tr.is-us td { border-color: var(--green-tint-2); }
     bottom: 0;
     left: 0;
     right: 0;
-    height: 200%;
+    height: 172%;
     object-position: center center;
   }
 
@@ -4017,15 +4029,18 @@ table.tbl tr.is-us td { border-color: var(--green-tint-2); }
     filter: none;
   }
 
-  /* Nápis dole nad pruhem, kde je klidný trávník. Zarovnaný doleva ve
-     stejné ose jako zápasové tabule pod ním. */
+  /* Nápis dole nad pruhem, kde je klidný trávník. Celá dvojice je na
+     střed, ale uvnitř zarovnaná doleva: šířku dává nápis a Est. 1905
+     pod ním začíná přesně pod jeho prvním písmenem. */
   .hero__in {
     align-content: end;
-    justify-items: start;
+    justify-items: center;
     text-align: left;
     gap: 10px;
     padding-bottom: clamp(18px, 4vw, 30px);
   }
+
+  .hero__in > div { width: fit-content; }
 
   .hero__title {
     order: 1;
