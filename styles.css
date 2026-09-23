@@ -3709,8 +3709,28 @@ table.tbl tr.is-us td { border-color: var(--green-tint-2); }
 .pfree:hover .pfree__cta svg { transform: translateX(4px); }
 
 @media (max-width: 720px) {
-  .pfree { grid-template-columns: 1fr; text-align: left; }
-  .pfree__ramec { height: 112px; }
+  .pfree { grid-template-columns: 1fr; text-align: left; gap: 16px; }
+  .pfree__ramec { height: 104px; }
+}
+
+@media (max-width: 620px) {
+  /* Na telefonu je to jen nabídka, ne hlavní obsah stránky: nižší rám,
+     menší nadpis a sražené odrážky, ať nezabere celou obrazovku. */
+  .pfree { gap: 13px; padding: 14px; }
+
+  .pfree__ramec { height: 72px; gap: 7px; }
+  .pfree__ramec img { width: 34px; }
+  .pfree__ramec b { font-size: 11px; letter-spacing: 0.18em; }
+
+  .pfree__h { font-size: 20px; margin-bottom: 5px; }
+  .pfree__p { font-size: 14px; line-height: 1.5; }
+
+  .pfree__body { gap: 4px; margin: 10px 0 12px; }
+  .pfree__body span { font-size: 13.5px; line-height: 1.4; gap: 7px; }
+  .pfree__body span::before { width: 5px; height: 5px; margin-top: 6px; }
+
+  .pfree__cta { font-size: 13.5px; letter-spacing: 0.12em; }
+  .pfree__cta svg { width: 15px; height: 15px; }
 }
 
 .ptier-note {
@@ -3994,7 +4014,9 @@ table.tbl tr.is-us td { border-color: var(--green-tint-2); }
   .hero {
     min-height: calc(100vh - var(--head-h));
     min-height: calc(100svh - var(--head-h));
-    padding: clamp(24px, 6vw, 48px) 0 0;
+    /* Dole víc místa, ať čas posledního řádku nesedí natvrdo na
+       sekaném pruhu na hraně sekce */
+    padding: clamp(24px, 6vw, 48px) 0 24px;
   }
 
   /* Na úzkém displeji by se vešla celá výška fotky, tedy hlavně obloha.
@@ -4141,7 +4163,7 @@ table.tbl tr.is-us td { border-color: var(--green-tint-2); }
   }
 
   .hm--last .hm__center .hm__score { display: none; }
-  .hm--next .hm__center .hm__score { font-size: 20px; }
+  .hm--next .hm__center .hm__score { font-size: 17px; }
   .hm__res, .hm__date, .hm__when { font-size: 11.5px; }
 
   .tlogo { width: 28px; height: 28px; font-size: 10.5px; }
