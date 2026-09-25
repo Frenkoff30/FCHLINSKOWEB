@@ -2,7 +2,8 @@
 
 Web fotbalového klubu FC Hlinsko. Statické HTML, CSS a jeden JS soubor,
 bez frameworku a bez build kroku. Jediná část, která běží na serveru, je
-odeslání formulářů ve složce `api/`, a i ta je bez závislostí.
+odeslání formulářů ve složce `api/`, jejíž jedinou závislostí je
+nodemailer.
 
 ## Struktura
 
@@ -199,9 +200,8 @@ instituce. Nejlépe PNG s průhledným pozadím, výška kolem 160 px.
 
 Formuláře na stránkách Nábor a Kontakt odesílají zprávu rovnou z webu.
 Prohlížeč pošle vyplněné údaje na `/api/formular`, serverová funkce je
-zkontroluje a předá službě [Resend](https://resend.com), která je doručí
-do klubové schránky. Odpovědět jde rovnou, `reply_to` nese adresu
-odesílatele.
+zkontroluje a odešle přes SMTP klubové schránky do `info@fchlinsko.cz`.
+Odpovědět jde rovnou, `replyTo` nese adresu odesílatele.
 
 Atributy na formuláři:
 
@@ -217,20 +217,24 @@ nabídne web zprávu otevřít v e-mailovém klientu, k tomu slouží
 
 ### Zprovoznění
 
-1. Založit účet na resend.com.
-2. Přidat a ověřit doménu `fchlinsko.cz` (Resend vypíše DNS záznamy
-   DKIM a SPF, které je potřeba doplnit u správce domény).
-3. Vytvořit API klíč.
-4. Na Vercelu v Settings → Environment Variables nastavit:
+1. U správce e-mailu (Webglobe) založit schránku, ze které se odesílá,
+   například `formular@fchlinsko.cz`, a poznamenat si její heslo.
+2. SMTP server schránky je v administraci Webglobe pod E-mail →
+   Detail, v kartě „Poštovní servery + porty". Pro fchlinsko.cz je to
+   `mail.webglobe.cz` na portu 465.
+3. Na Vercelu v Settings → Environment Variables nastavit:
 
 | Proměnná | Co drží |
 |----------|---------|
-| `RESEND_API_KEY` | klíč z Resendu, povinné |
+| `SMTP_HOST` | SMTP server, povinné, `mail.webglobe.cz` |
+| `SMTP_PORT` | port, nepovinné, výchozí `465` |
+| `SMTP_UZIVATEL` | celá adresa schránky, povinné |
+| `SMTP_HESLO` | heslo k té schránce, povinné |
 | `FORMULAR_PRIJEMCE` | kam zprávy chodí, výchozí `info@fchlinsko.cz` |
-| `FORMULAR_ODESILATEL` | odesílatel, musí být na ověřené doméně |
+| `FORMULAR_ODESILATEL` | adresa v poli Od, výchozí `SMTP_UZIVATEL` |
 
-Bez ověřené domény umí Resend odesílat jen z `onboarding@resend.dev`
-a pouze na e-mail majitele účtu. To stačí na vyzkoušení, ne na provoz.
+Odesílatel musí být na doméně `fchlinsko.cz`, jinak zprávu odmítne SPF
+u příjemce. Heslo schránky do repozitáře nepatří, drží ho jen Vercel.
 
 Po změně proměnných je potřeba projekt na Vercelu nasadit znovu, jinak
 se nové hodnoty nenačtou.

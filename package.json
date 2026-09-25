@@ -1,0 +1,8 @@
+{
+  "name": "fchlinsko-web",
+  "private": true,
+  "description": "Web FC Hlinsko. Statické stránky, jediná serverová část je odeslání formuláře.",
+  "dependencies": {
+    "nodemailer": "^10.0.10"
+  }
+}

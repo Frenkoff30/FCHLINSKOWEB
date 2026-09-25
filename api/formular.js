@@ -1,21 +1,32 @@
 /* ==========================================================================
-   ODESLÁNÍ FORMULÁŘE PŘES RESEND
+   ODESLÁNÍ FORMULÁŘE PŘES SMTP
    ==========================================================================
    Serverová funkce pro Vercel. Web sám zůstává statický, tohle je jediná
    část, která běží na serveru, a to jen když někdo odešle formulář.
 
-   Proč to nejde z prohlížeče: klíč k Resendu se nesmí dostat do script.js,
-   odkud by si ho kdokoli přečetl a rozesílal na cizí účet.
+   Proč to nejde z prohlížeče: heslo ke schránce se nesmí dostat do script.js,
+   odkud by si ho kdokoli přečetl a rozesílal poštu jménem klubu.
+
+   Odesílá se přes SMTP klubové schránky u Webglobe, ne přes cizí službu.
+   Doručitelnost tím řeší doména sama a nic se nikde neověřuje navíc.
 
    Nastavení v proměnných prostředí na Vercelu:
 
-     RESEND_API_KEY        povinné, klíč z resend.com/api-keys
+     SMTP_HOST             povinné, server Webglobe
+     SMTP_PORT             nepovinné, výchozí 465
+     SMTP_UZIVATEL         povinné, celá adresa schránky, ze které se odesílá,
+                           např. formular@fchlinsko.cz
+     SMTP_HESLO            povinné, heslo k té schránce
      FORMULAR_PRIJEMCE     kam zprávy chodí, výchozí info@fchlinsko.cz
-     FORMULAR_ODESILATEL   adresa odesílatele, musí být na doméně ověřené
-                           v Resendu, výchozí onboarding@resend.dev
+     FORMULAR_ODESILATEL   adresa v poli Od, výchozí je SMTP_UZIVATEL.
+                           Musí být na doméně fchlinsko.cz, jinak zprávu
+                           odmítne SPF u příjemce.
 
+   Heslo schránky do repozitáře nepatří, drží ho jen Vercel.
    Podrobnosti a postup jsou v README v sekci Formuláře.
    ========================================================================== */
+
+var nodemailer = require('nodemailer');
 
 /* Podoba formulářů je schválně tady na serveru, ne v požadavku. Prohlížeč
    posílá jen hodnoty, takže z endpointu nejde udělat rozesílač libovolných
@@ -78,6 +89,27 @@ function text(v, max) {
   if (typeof v !== 'string') return '';
   /* Řídicí znaky pryč, jinak by šlo do hlaviček e-mailu propašovat nesmysly */
   return v.replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, '').trim().slice(0, max);
+}
+
+/* Spojení se serverem se drží mezi požadavky. Vercel instanci občas
+   vyhodí, pak se navaže znovu, nic se tím nerozbije. */
+var preprava = null;
+
+function posta() {
+  if (preprava) return preprava;
+  var port = Number(process.env.SMTP_PORT) || 465;
+  preprava = nodemailer.createTransport({
+    host: process.env.SMTP_HOST,
+    port: port,
+    /* Port 465 mluví šifrovaně od začátku, 587 se šifruje až příkazem
+       STARTTLS. Nodemailer to podle secure pozná. */
+    secure: port === 465,
+    auth: {
+      user: process.env.SMTP_UZIVATEL,
+      pass: process.env.SMTP_HESLO
+    }
+  });
+  return preprava;
 }
 
 function odpoved(res, kod, telo) {
@@ -151,47 +183,33 @@ module.exports = async function (req, res) {
     return odpoved(res, 400, { chyba: 'Bez souhlasu se zpracováním údajů zprávu odeslat nelze.' });
   }
 
-  var klic = process.env.RESEND_API_KEY;
-  if (!klic) {
-    console.error('Chybí RESEND_API_KEY, formulář nelze odeslat.');
+  if (!process.env.SMTP_HOST || !process.env.SMTP_UZIVATEL || !process.env.SMTP_HESLO) {
+    console.error('Chybí nastavení SMTP, formulář nelze odeslat.');
     return odpoved(res, 500, {
       chyba: 'Odesílání zpráv na webu zatím není nastavené. Napište nám prosím přímo e-mailem.'
     });
   }
 
   var prijemce = process.env.FORMULAR_PRIJEMCE || 'info@fchlinsko.cz';
-  var odesilatel = process.env.FORMULAR_ODESILATEL || 'onboarding@resend.dev';
+  var odesilatel = process.env.FORMULAR_ODESILATEL || process.env.SMTP_UZIVATEL;
 
   var obsah = radky.join('\n')
     + '\n\n---\nOdesláno z formuláře na webu fchlinsko.cz'
     + '\nDatum: ' + new Date().toLocaleString('cs-CZ', { timeZone: 'Europe/Prague' });
 
   try {
-    var r = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        'Authorization': 'Bearer ' + klic,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        from: 'Web FC Hlinsko <' + odesilatel + '>',
-        to: [prijemce],
-        /* Odpověď půjde rovnou tomu, kdo formulář vyplnil */
-        reply_to: odpovedetNa || undefined,
-        subject: predpis.predmet,
-        text: obsah
-      })
+    await posta().sendMail({
+      from: 'Web FC Hlinsko <' + odesilatel + '>',
+      to: prijemce,
+      /* Odpověď půjde rovnou tomu, kdo formulář vyplnil */
+      replyTo: odpovedetNa || undefined,
+      subject: predpis.predmet,
+      text: obsah
     });
-
-    if (!r.ok) {
-      var detail = await r.text();
-      console.error('Resend odmítl zprávu:', r.status, detail);
-      return odpoved(res, 502, {
-        chyba: 'Zprávu se nepodařilo odeslat. Zkuste to prosím znovu, nebo nám napište přímo e-mailem.'
-      });
-    }
   } catch (e) {
-    console.error('Resend je nedostupný:', e);
+    console.error('SMTP zprávu nepřijalo:', e);
+    /* Spojení mohlo zůstat viset, příště se naváže znovu */
+    preprava = null;
     return odpoved(res, 502, {
       chyba: 'Zprávu se nepodařilo odeslat. Zkuste to prosím znovu, nebo nám napište přímo e-mailem.'
     });
