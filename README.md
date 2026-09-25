@@ -239,6 +239,14 @@ u příjemce. Heslo schránky do repozitáře nepatří, drží ho jen Vercel.
 Po změně proměnných je potřeba projekt na Vercelu nasadit znovu, jinak
 se nové hodnoty nenačtou.
 
+Funkce musí běžet v Evropě. Webglobe hlídá schránky přes GeoIP a odesílá
+jen ze zemí PL, CZ, SK, AT, HU a DE, takže z výchozího regionu Vercelu
+(Washington) zprávu odmítne s `550 Sending mail from your country (us)
+is not allowed`. Ve Vercelu proto v Settings → Functions nastavit region
+Frankfurt (fra1). Případně jde ve Webglobe u schránky povolit další zemi
+v Nastavení e-mailů → Upravit → třetí záložka → Země, ale tím se ochrana
+schránky zbytečně rozvolní.
+
 ### Ochrana proti robotům
 
 Ve formuláři je schované pole `web`, které člověk nevidí. Když dorazí
