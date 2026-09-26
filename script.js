@@ -49,7 +49,7 @@
     { datum: '2026-09-05T17:00', domaci: false, souper: 'Ústí n/O.',       tym: 'A', typ: 'liga', kolo: 5,  misto: 'Ústí nad Orlicí',      skore: '2:1' },
     { datum: '2026-09-12T10:30', domaci: true,  souper: 'Trutnov',         tym: 'A', typ: 'liga', kolo: 6,  misto: 'Olšinky, hřiště č. 1', skore: '1:0' },
     { datum: '2026-09-19T10:30', domaci: false, souper: 'Přepeře',         tym: 'A', typ: 'liga', kolo: 7,  misto: 'Přepeře',              skore: '5:0' },
-    { datum: '2026-09-26T10:30', domaci: true,  souper: 'Vysoké Mýto',     tym: 'A', typ: 'liga', kolo: 8,  misto: 'Olšinky, hřiště č. 1', skore: null },
+    { datum: '2026-09-26T10:30', domaci: true,  souper: 'Vysoké Mýto',     tym: 'A', typ: 'liga', kolo: 8,  misto: 'Olšinky, hřiště č. 1', skore: '2:3' },
     { datum: '2026-10-04T10:15', domaci: false, souper: 'Chlumec n/C.',    tym: 'A', typ: 'liga', kolo: 9,  misto: 'Chlumec nad Cidlinou', skore: null },
     { datum: '2026-10-10T10:30', domaci: true,  souper: 'Kosmonosy',       tym: 'A', typ: 'liga', kolo: 10, misto: 'Olšinky, hřiště č. 1', skore: null },
     { datum: '2026-10-18T15:30', domaci: false, souper: 'Police n/M.',     tym: 'A', typ: 'liga', kolo: 11, misto: 'Police nad Metují',    skore: null },
@@ -1177,24 +1177,24 @@
      Nezapomeňte pak aktualizovat i datum v TABULKA_AKTUALIZOVANO.
      ---------------------------------------------------------------------- */
   var TABULKA = [
-    { poradi: 1,  tym: 'FK Přepeře',                z: 7, v: 6, r: 0, p: 1, skore: '24:8',  b: 18 },
-    { poradi: 2,  tym: 'SK Vysoké Mýto',            z: 7, v: 5, r: 2, p: 0, skore: '24:12', b: 17 },
+    { poradi: 1,  tym: 'SK Vysoké Mýto',            z: 8, v: 6, r: 2, p: 0, skore: '27:14', b: 20 },
+    { poradi: 2,  tym: 'FK Přepeře',                z: 7, v: 6, r: 0, p: 1, skore: '24:8',  b: 18 },
     { poradi: 3,  tym: 'SK Kosmonosy',              z: 7, v: 5, r: 1, p: 1, skore: '23:10', b: 16 },
     { poradi: 4,  tym: 'TJ Jiskra Ústí nad Orlicí', z: 7, v: 4, r: 2, p: 1, skore: '16:7',  b: 14 },
-    { poradi: 5,  tym: 'FC Hlinsko',                z: 7, v: 4, r: 1, p: 2, skore: '14:11', b: 13 },
+    { poradi: 5,  tym: 'FC Hlinsko',                z: 8, v: 4, r: 1, p: 3, skore: '16:14', b: 13 },
     { poradi: 6,  tym: 'SK Sparta Kolín',           z: 7, v: 3, r: 3, p: 1, skore: '13:12', b: 12 },
-    { poradi: 7,  tym: 'FK Čechie Vykáň',           z: 6, v: 3, r: 1, p: 2, skore: '16:9',  b: 10 },
+    { poradi: 7,  tym: 'FK Čechie Vykáň',           z: 7, v: 3, r: 1, p: 3, skore: '17:12', b: 10 },
     { poradi: 8,  tym: 'FK Turnov',                 z: 7, v: 3, r: 1, p: 3, skore: '17:14', b: 10 },
     { poradi: 9,  tym: 'MFK Trutnov',               z: 7, v: 3, r: 1, p: 3, skore: '12:10', b: 10 },
     { poradi: 10, tym: 'FK Chlumec nad Cidlinou',   z: 7, v: 3, r: 1, p: 3, skore: '12:13', b: 10 },
-    { poradi: 11, tym: 'TJ Dvůr Králové nad Labem', z: 7, v: 2, r: 1, p: 4, skore: '8:11',  b: 7 },
-    { poradi: 12, tym: 'FC Slavia Hradec Králové',  z: 6, v: 2, r: 1, p: 3, skore: '11:15', b: 7 },
+    { poradi: 11, tym: 'FC Slavia Hradec Králové',  z: 7, v: 3, r: 1, p: 3, skore: '14:16', b: 10 },
+    { poradi: 12, tym: 'TJ Dvůr Králové nad Labem', z: 7, v: 2, r: 1, p: 4, skore: '8:11',  b: 7 },
     { poradi: 13, tym: 'Spartak Police nad Metují', z: 7, v: 2, r: 0, p: 5, skore: '10:17', b: 6 },
     { poradi: 14, tym: 'TJ Svitavy',                z: 7, v: 1, r: 2, p: 4, skore: '6:14',  b: 5 },
     { poradi: 15, tym: 'MFK Chrudim B',             z: 7, v: 0, r: 1, p: 6, skore: '10:33', b: 1 },
     { poradi: 16, tym: 'FK Letohrad',               z: 7, v: 0, r: 0, p: 7, skore: '8:28',  b: 0 }
   ];
-  var TABULKA_AKTUALIZOVANO = '21. 9. 2026';
+  var TABULKA_AKTUALIZOVANO = '26. 9. 2026';
 
   var IKONA_SIPKA = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" '
     + 'aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
